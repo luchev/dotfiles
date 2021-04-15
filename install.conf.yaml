@@ -1,0 +1,9 @@
+- clean: ['~']
+
+- link:
+    ~/.profile: profile
+    ~/.gitconfig: gitconfig
+    ~/.vimrc: vimrc
+    ~/.zshrc: zshrc
+
+
