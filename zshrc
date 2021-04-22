@@ -1,5 +1,5 @@
 # Path to oh-my-zsh config
-export ZSH='/home/luchev/.oh-my-zsh'
+export ZSH=$HOME'/.oh-my-zsh'
 
 # Map Caps to Esc
 setxkbmap -option caps:escape
@@ -69,6 +69,21 @@ function touchp () {
 
     touch '$1'
 }
+
+alias gst='git status .'
+alias gco='git checkout'
+alias gc='git commit'
+alias gcv='git commit verbose'
+alias ga='git add'
+alias gb='git branch'
+alias gd='git diff'
+alias gp='git pull --rebase'
+alias gs='git stash'
+alias gr='git rebase'
+
+alias ta='tmux a -t'
+alias tn='tmux new -s'
+
 
 # Load starship
 eval "$(starship init zsh)"

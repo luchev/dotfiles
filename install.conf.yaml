@@ -6,3 +6,4 @@
     ~/.zshrc: zshrc
     ~/.config/nvim/init.vim: nvim
     ~/.config/starship.toml: starship 
+    ~/.tmux.conf: tmux
