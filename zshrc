@@ -70,7 +70,7 @@ function touchp () {
     touch '$1'
 }
 
-alias gst='git status .'
+alias gst='git status'
 alias gco='git checkout'
 alias gc='git commit'
 alias gcv='git commit verbose'
