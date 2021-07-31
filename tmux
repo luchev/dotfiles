@@ -1,3 +1,7 @@
+unbind C-b
+set-option -g prefix C-a
+bind-key C-a send-prefix
+
 bind v split-window -h
 bind f split-window -v
 unbind '"'
