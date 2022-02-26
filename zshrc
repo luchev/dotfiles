@@ -1,3 +1,7 @@
+# Install zsh if missing
+if ! -f "~/.oh-my-zsh/oh-my-zsh.sh" ; then
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+fi
 # Path to oh-my-zsh config
 export ZSH=$HOME'/.oh-my-zsh'
 
@@ -86,4 +90,8 @@ alias tn='tmux new -s'
 
 
 # Load starship
+if ! which starship ; then
+    sh -c "$(curl -fsSL https://starship.rs/install.sh)" -s '-f' >/dev/null 2>&1
+fi
 eval "$(starship init zsh)"
+
