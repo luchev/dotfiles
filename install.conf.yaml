@@ -1,3 +1,8 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+
 - clean: ['~']
 
 - link:
@@ -8,8 +13,32 @@
         force: true
     ~/.config/nvim/init.vim:
         path: nvim
-        create: true
     ~/.config/starship.toml: starship 
     ~/.tmux.conf:
         path: tmux
         force: true
+
+- shell:
+    - command:
+        test -d "${HOME}/.oh-my-zsh" ||
+        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+      description: Install Oh-My-ZSH
+      quiet: true
+    - command:
+        test -d "${HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting" || 
+        git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+      description: Install zsh plugin zsh-autosuggestions
+      quiet: true
+    - command:
+        test -d "${HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting" ||
+        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting || true
+      description: Install zsh plugin zsh-syntax-highlight
+      quiet: true
+    - command:
+        test -f "${HOME}/.local/share/nvim/site/autoload/plug.vim" ||
+        sh -c 'curl -fLo ${$HOME}/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim' && 
+        nvim -c ":PlugInstall" -c ":qa!"
+      description: Install Vim-Plug
+      quiet: true
+
+
