@@ -3,7 +3,13 @@
 - link:
     ~/.profile: profile
     ~/.vimrc: vimrc
-    ~/.zshrc: zshrc
-    ~/.config/nvim/init.vim: nvim
+    ~/.zshrc:
+        path: zshrc
+        force: true
+    ~/.config/nvim/init.vim:
+        path: nvim
+        create: true
     ~/.config/starship.toml: starship 
-    ~/.tmux.conf: tmux
+    ~/.tmux.conf:
+        path: tmux
+        force: true
