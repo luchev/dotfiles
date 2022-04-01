@@ -136,3 +136,27 @@ inoremap <C-j> <esc>:m .+1<CR>==
 inoremap <C-k> <esc>:m .-2<CR>==
 nnoremap <leader>k :m .-2<CR>==
 nnoremap <leader>j :m .+1<CR>==
+
+nnoremap n <Left>
+nnoremap e <Down>
+nnoremap o <Up>
+nnoremap i <Right>
+
+nnoremap N <Left>
+nnoremap E <Down>
+nnoremap O <Up>
+nnoremap I <Right>
+
+nnoremap t e
+nnoremap a b
+nnoremap p o
+nnoremap P O
+nnoremap T $
+nnoremap A ^
+nnoremap u i
+nnoremap U I
+nnoremap f a
+nnoremap F A
+nnoremap h e
+nnoremap s ge
+

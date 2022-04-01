@@ -7,6 +7,14 @@ bind f split-window -v
 unbind '"'
 unbind %
 
+set -g status-keys vi
+setw -g mode-keys vi
+
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+
 # switch panes using Alt-arrow without prefix
 bind -n M-Left select-pane -L
 bind -n M-Right select-pane -R

@@ -1,0 +1,16 @@
+# This is Git's per-user configuration file.
+[user]
+	email = luchevz@gmail.com
+	name = Ivan Luchev
+# Please adapt and uncomment the following lines:
+#	name = z
+#	email = z@arch.localdomain
+[core]
+	editor = nvim
+[diff]
+	tool = vimdiff
+[merge]
+	tool = vimdiff
+	conflictstyle = diff3
+[mergetool]
+	prompt = false

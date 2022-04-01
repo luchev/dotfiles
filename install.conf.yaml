@@ -14,6 +14,7 @@
     ~/.config/nvim/init.vim:
         path: nvim
     ~/.config/starship.toml: starship 
+    ~/.gitconfig: gitconfig
     ~/.tmux.conf:
         path: tmux
         force: true
@@ -40,5 +41,3 @@
         nvim -c ":PlugInstall" -c ":qa!"
       description: Install Vim-Plug
       quiet: true
-
-
