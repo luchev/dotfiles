@@ -112,26 +112,92 @@ inoremap <C-k> <esc>:m .-2<CR>==
 nnoremap <leader>k :m .-2<CR>==
 nnoremap <leader>j :m .+1<CR>==
 
-nnoremap n <Left>
-nnoremap e <Down>
-nnoremap o <Up>
-nnoremap i <Right>
+fu! ColemakBindings()
+    " Move keys <hjkl>
+    nnoremap n <Left>
+    nnoremap e <Down>
+    nnoremap i <Up>
+    nnoremap o <Right>
+    nnoremap N <Left>
+    nnoremap E <Down>
+    nnoremap I <Up>
+    nnoremap O <Right>
 
-nnoremap N <Left>
-nnoremap E <Down>
-nnoremap O <Up>
-nnoremap I <Right>
+    " Move keys <web>
+    nnoremap a b
+    nnoremap r ge
+    nnoremap s w
+    nnoremap t e
+    nnoremap A B
+    nnoremap R gE
+    nnoremap S W
+    nnoremap T E
 
-nnoremap t e
-nnoremap a b
-nnoremap p o
-nnoremap P O
-nnoremap T $
-nnoremap A ^
-nnoremap u i
-nnoremap U I
-nnoremap f a
-nnoremap F A
-nnoremap h e
-nnoremap s ge
+    " Move keys $^
+    nnoremap O $
+    nnoremap $ ^
 
+    " Move keys <tf>
+    nnoremap p t
+
+    " Search
+    nnoremap P T
+
+    " Undo/Redo
+    nnoremap l <C-r>
+
+    " Paste
+    nnoremap j p
+    nnoremap J P
+
+    " Insert
+    nnoremap w o
+    nnoremap W O
+    nnoremap m i
+    nnoremap M I
+    nnoremap h a
+    nnoremap H A
+    nnoremap q s
+    nnoremap Q S
+
+    " Search
+    nnoremap n b
+    nnoremap N B
+
+endfunction
+
+fu! QwertyBindings()
+    nnoremap n n
+    nnoremap e e
+    nnoremap i i
+    nnoremap o o
+    nnoremap N N
+    nnoremap E E
+    nnoremap I I
+    nnoremap O O
+    nnoremap a a
+    nnoremap r r
+    nnoremap s s
+    nnoremap t t
+    nnoremap A A
+    nnoremap R R
+    nnoremap S S
+    nnoremap T T
+    nnoremap O O
+    nnoremap $ $
+    nnoremap p p
+    nnoremap P p
+    nnoremap l l
+    nnoremap j j
+    nnoremap J J
+    nnoremap w w
+    nnoremap W W
+    nnoremap m m
+    nnoremap M M
+    nnoremap h h
+    nnoremap H H
+    nnoremap q q
+    nnoremap Q Q
+    nnoremap n n
+    nnoremap N N
+endfunction
