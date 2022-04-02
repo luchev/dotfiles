@@ -151,9 +151,11 @@ fu! ColemakBindings()
     nnoremap J P
 
     " Insert
-    nnoremap w o
-    nnoremap W O
+    nnoremap k o
+    nnoremap K O
     nnoremap m i
+    nnoremap w w
+    nnoremap W W
     nnoremap M I
     nnoremap h a
     nnoremap H A
@@ -161,8 +163,12 @@ fu! ColemakBindings()
     nnoremap Q S
 
     " Search
-    nnoremap n b
-    nnoremap N B
+    nnoremap b n
+    nnoremap B N
+
+    " Replace
+    nnoremap w r
+    nnoremap W R
 
 endfunction
 
@@ -190,8 +196,8 @@ fu! QwertyBindings()
     nnoremap l l
     nnoremap j j
     nnoremap J J
-    nnoremap w w
-    nnoremap W W
+    nnoremap k k
+    nnoremap K K
     nnoremap m m
     nnoremap M M
     nnoremap h h
@@ -200,4 +206,6 @@ fu! QwertyBindings()
     nnoremap Q Q
     nnoremap n n
     nnoremap N N
+    nnoremap w w
+    nnoremap W W
 endfunction
