@@ -118,10 +118,6 @@ fu! ColemakBindings()
     nnoremap e <Down>
     nnoremap i <Up>
     nnoremap o <Right>
-    nnoremap N <Left>
-    nnoremap E <Down>
-    nnoremap I <Up>
-    nnoremap O <Right>
 
     " Move keys <web>
     nnoremap a b
@@ -135,7 +131,9 @@ fu! ColemakBindings()
 
     " Move keys $^
     nnoremap O $
-    nnoremap $ ^
+    nnoremap E <C-d>
+    nnoremap I <C-u>
+    nnoremap N ^
 
     " Move keys <tf>
     nnoremap p t
