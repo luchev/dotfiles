@@ -6,13 +6,16 @@
 - clean: ['~']
 
 - link:
-    ~/.profile: profile
+    ~/.profile:
+        path: profile
+        force: true
     ~/.vimrc: vimrc
     ~/.zshrc:
         path: zshrc
         force: true
-    ~/.config/nvim/init.vim:
-        path: nvim
+    ~/.config/nvim:
+      path: nvim
+      force: true
     ~/.config/starship.toml: starship 
     ~/.gitconfig: gitconfig
     ~/.tmux.conf:
@@ -36,8 +39,8 @@
       description: Install zsh plugin zsh-syntax-highlight
       quiet: true
     - command:
-        test -f "${HOME}/.local/share/nvim/site/autoload/plug.vim" ||
-        sh -c 'curl -fLo ${$HOME}/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim' && 
-        nvim -c ":PlugInstall" -c ":qa!"
-      description: Install Vim-Plug
+        test -d "${HOME}/.local/share/nvim/site/pack/packer/start/packer.nvim" ||
+        git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim && 
+        nvim -c ':PackerSync' -c ':qa!'
+      description: Install packer.nvim
       quiet: true
