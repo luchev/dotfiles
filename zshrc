@@ -27,7 +27,7 @@ source $ZSH/oh-my-zsh.sh
 
 # PATH
 # - Local cargo packages
-export PATH=/home/luchev/.cargo/bin:$PATH
+export PATH=$HOME/.local/bin/diff-so-fancy:$HOME/.cargo/bin:$PATH
 
 # Preferred editor
 export EDITOR='nvim'

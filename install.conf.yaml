@@ -44,3 +44,8 @@
         nvim -c ':PackerSync' -c ':qa!'
       description: Install packer.nvim
       quiet: true
+    - command:
+        test -d "${HOME}/.local/bin/diff-so-fancy" ||
+        git clone https://github.com/so-fancy/diff-so-fancy ~/.local/bin/diff-so-fancy
+      description: Install diff-so-fancy
+      quiet: true
