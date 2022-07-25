@@ -89,6 +89,16 @@ _G.packer_plugins = {
     path = "/home/z/.local/share/nvim/site/pack/packer/start/nerdtree",
     url = "https://github.com/preservim/nerdtree"
   },
+  ["nvim-dap"] = {
+    loaded = true,
+    path = "/home/z/.local/share/nvim/site/pack/packer/start/nvim-dap",
+    url = "https://github.com/mfussenegger/nvim-dap"
+  },
+  ["nvim-dap-ui"] = {
+    loaded = true,
+    path = "/home/z/.local/share/nvim/site/pack/packer/start/nvim-dap-ui",
+    url = "https://github.com/rcarriga/nvim-dap-ui"
+  },
   ["nvim-lspconfig"] = {
     loaded = true,
     path = "/home/z/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
@@ -118,11 +128,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/z/.local/share/nvim/site/pack/packer/start/vim-startify",
     url = "https://github.com/mhinz/vim-startify"
-  },
-  vimspector = {
-    loaded = true,
-    path = "/home/z/.local/share/nvim/site/pack/packer/start/vimspector",
-    url = "https://github.com/puremourning/vimspector"
   }
 }
 

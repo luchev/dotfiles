@@ -19,7 +19,8 @@ return require('packer').startup(function()
 
     use 'preservim/nerdtree'
     
-    use 'puremourning/vimspector'
+    use 'mfussenegger/nvim-dap'
+    use 'rcarriga/nvim-dap-ui'
 
     use 'mhinz/vim-startify'
 
