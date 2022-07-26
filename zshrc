@@ -1,8 +1,6 @@
 # Path to oh-my-zsh config
 export ZSH=$HOME'/.oh-my-zsh'
 
-# Map Caps to Esc
-setxkbmap -option caps:escape
 # Set the locale of the shell, without relying on locale.conf
 export LANG=en_US.utf8
 export LC_ALL=en_US.utf8
@@ -40,6 +38,7 @@ alias diff='diff --color=auto'
 alias ls='ls --color=auto'
 alias k='k -h'
 
+# Required so some tools like bazel and go, which have '...' argumeents work correctly
 unalias '...'
 
 # Custom format for the time function
@@ -70,6 +69,7 @@ function touchp () {
     touch '$1'
 }
 
+# Git aliases
 alias gst='git status'
 alias gco='git checkout'
 alias gc='git commit'
@@ -81,13 +81,11 @@ alias gp='git pull --rebase'
 alias gs='git stash'
 alias gr='git rebase'
 
+# Tmux aliases
 alias ta='tmux a -t'
 alias tn='tmux new -s'
 
 
 # Load starship
-if ! which starship ; then
-    sh -c "$(curl -fsSL https://starship.rs/install.sh)" -s '-f' >/dev/null 2>&1
-fi
 eval "$(starship init zsh)"
-
+:
