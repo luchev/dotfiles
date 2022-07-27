@@ -1,1 +1,1 @@
-require('custom.packer')
+require('custom/packer')
