@@ -134,6 +134,11 @@ _G.packer_plugins = {
     path = "/home/z/.local/share/nvim/site/pack/packer/start/syntastic",
     url = "https://github.com/vim-syntastic/syntastic"
   },
+  undotree = {
+    loaded = true,
+    path = "/home/z/.local/share/nvim/site/pack/packer/start/undotree",
+    url = "https://github.com/mbbill/undotree"
+  },
   ["vim-airline"] = {
     loaded = true,
     path = "/home/z/.local/share/nvim/site/pack/packer/start/vim-airline",
@@ -148,6 +153,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/z/.local/share/nvim/site/pack/packer/start/vim-commentary",
     url = "https://github.com/tpope/vim-commentary"
+  },
+  ["vim-flog"] = {
+    loaded = true,
+    path = "/home/z/.local/share/nvim/site/pack/packer/start/vim-flog",
+    url = "https://github.com/rbong/vim-flog"
   },
   ["vim-fugitive"] = {
     loaded = true,
