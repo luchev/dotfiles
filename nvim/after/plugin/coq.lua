@@ -1,1 +1,1 @@
-vim.cmd([[COQnow -s]])
+vim.cmd [[COQnow -s]]
