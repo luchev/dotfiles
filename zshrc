@@ -25,14 +25,13 @@ source $ZSH/oh-my-zsh.sh
 
 # PATH
 # - Local cargo packages
-export PATH=$HOME/.local/bin/diff-so-fancy:$HOME/.cargo/bin:$PATH
+export PATH=/opt/homebrew/opt/openjdk@17/bin:$HOME/.local/bin/diff-so-fancy:$HOME/.cargo/bin:$PATH
 
 # Preferred editor
 export EDITOR='nvim'
 
 # Aliases
 alias v='nvim'
-alias open='xdg-open'
 alias grep='grep --color=auto'
 alias diff='diff --color=auto'
 alias ls='ls --color=auto'
@@ -88,8 +87,5 @@ alias tn='tmux new -s'
 
 # Load starship
 eval "$(starship init zsh)"
-
 # Load direnv
 eval "$(direnv hook zsh)"
-
-:
