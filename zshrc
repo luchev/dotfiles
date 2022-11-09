@@ -88,4 +88,8 @@ alias tn='tmux new -s'
 
 # Load starship
 eval "$(starship init zsh)"
+
+# Load direnv
+eval "$(direnv hook zsh)"
+
 :
