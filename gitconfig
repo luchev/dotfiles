@@ -32,3 +32,22 @@
 	old = red bold
 	new = green bold
 	whitespace = red reverse
+[alias]
+    a = add
+    aa = add --all
+    amend = commit --amend --reuse-message=HEAD
+    b = branch
+    bd = branch --delete
+    c = commit
+    cv = commit --verbose
+    cl = clone
+    cn = config
+    cng = config --global
+    cp = cherry-pick -x
+    f = fetch
+    # Pretty log of commits. Supports options of git log
+    # The 8-char abbreviation works well with the default pretty format below
+    l = log --abbrev-commit --abbrev=8
+    s = status
+    # Remove branches that have already been merged with main
+    dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
