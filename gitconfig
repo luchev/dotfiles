@@ -44,10 +44,24 @@
     cn = config
     cng = config --global
     cp = cherry-pick -x
+    # Remove branches that have already been merged with main
+    dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
     f = fetch
     # Pretty log of commits. Supports options of git log
     # The 8-char abbreviation works well with the default pretty format below
     l = log --abbrev-commit --abbrev=8
-    s = status
-    # Remove branches that have already been merged with main
-    dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+    lg = log --abbrev-commit --abbrev=8 --graph
+    m = merge
+    mt = mergetool
+    p = push
+    pl = pull --ff-only --rebase
+    r = remote
+    rb = rebase
+    rs = reset
+    s = status --short --branch
+    sh = show
+    sw = switch
+    swc = switch --create
+    st = stash
+    t = tag
+    upstream = reset --soft @{u}
