@@ -32,6 +32,7 @@ return require('packer').startup(function()
     use 'sumneko/lua-language-server'
     use 'vim-syntastic/syntastic'
     use 'dense-analysis/ale'
+    use 'vim-autoformat/vim-autoformat'
 
 end)
 
