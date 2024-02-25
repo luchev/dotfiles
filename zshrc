@@ -1,9 +1,11 @@
 # Path to oh-my-zsh config
 export ZSH=$HOME'/.oh-my-zsh'
 
-# Set the locale of the shell, without relying on locale.conf
-export LANG=en_US.utf8
-export LC_ALL=en_US.utf8
+export LANGUAGE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LC_CTYPE=en_US.UTF-8
+
 
 # Remove trailing % at the end of output which doesn't end with new line
 PROMPT_EOL_MARK=''
@@ -25,7 +27,7 @@ source $ZSH/oh-my-zsh.sh
 
 # PATH
 # - Local cargo packages
-export PATH=/opt/homebrew/opt/openjdk@17/bin:$HOME/.local/bin/diff-so-fancy:$HOME/.cargo/bin:$PATH
+export PATH=/opt/homebrew/opt/openjdk@17/bin:$HOME/.local/bin/diff-so-fancy:$HOME/.cargo/bin:$HOME/.local/bin:${KREW_ROOT:-$HOME/.krew}/bin:$PATH
 
 # Preferred editor
 export EDITOR='nvim'
@@ -90,3 +92,5 @@ alias tn='tmux new -s'
 eval "$(starship init zsh)"
 # Load direnv
 eval "$(direnv hook zsh)"
+
+source /Users/z/.docker/init-zsh.sh || true # Added by Docker Desktop
