@@ -25,22 +25,16 @@
       path: alacritty.toml
       force: true
     ~/.zsh_plugins.txt: zsh_plugins.txt
+  # NvChad custom configs should come from the dotfiles
+    ~/.config/nvim/lua/custom:
+      path: nvim/lua/custom
+      force: true
 
 - shell:
   # - command:
   #     test -d "${HOME}/.oh-my-zsh" ||
   #     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   #   description: Install Oh-My-ZSH
-  #   quiet: true
-  # - command:
-  #     test -d "${HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting" || 
-  #     git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-  #   description: Install zsh plugin zsh-autosuggestions
-  #   quiet: true
-  # - command:
-  #     test -d "${HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting" ||
-  #     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting || true
-  #   description: Install zsh plugin zsh-syntax-highlight
   #   quiet: true
   # - command:
   #     test -d "${HOME}/.local/share/nvim/site/pack/packer/start/packer.nvim" ||
