@@ -35,10 +35,28 @@ export EDITOR='nvim'
 # Aliases
 alias v='nvim'
 alias g='git'
-alias grep='grep --color=auto'
+alias e='eza'
+alias h='hstr'
+alias grep='rg --color=auto'
 alias diff='diff --color=auto'
 alias ls='ls --color=auto'
 alias k='k -h'
+
+# Git aliases
+alias gst='git status'
+alias gco='git checkout'
+alias gc='git commit'
+alias gcv='git commit verbose'
+alias ga='git add'
+alias gb='git branch'
+alias gd='git diff'
+alias gp='git pull --rebase'
+alias gs='git stash'
+alias gr='git rebase'
+
+# Tmux aliases
+alias ta='tmux a -t'
+alias tn='tmux new -s'
 
 # Required so some tools like bazel and go, which have '...' argumeents work correctly
 unalias '...'
@@ -70,23 +88,6 @@ function touchp () {
 
     touch '$1'
 }
-
-# Git aliases
-alias gst='git status'
-alias gco='git checkout'
-alias gc='git commit'
-alias gcv='git commit verbose'
-alias ga='git add'
-alias gb='git branch'
-alias gd='git diff'
-alias gp='git pull --rebase'
-alias gs='git stash'
-alias gr='git rebase'
-
-# Tmux aliases
-alias ta='tmux a -t'
-alias tn='tmux new -s'
-
 
 # Load starship
 eval "$(starship init zsh)"

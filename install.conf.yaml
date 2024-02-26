@@ -14,13 +14,16 @@
         path: zshrc
         force: true
     ~/.config/nvim:
-      path: nvim
+      path: NvChad
       force: true
     ~/.config/starship.toml: starship 
     ~/.gitconfig: gitconfig
     ~/.tmux.conf:
         path: tmux
         force: true
+    ~/.config/alacritty/alacritty.toml:
+      path: alacritty.toml
+      force: true
 
 - shell:
     - command:
