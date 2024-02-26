@@ -1,33 +1,28 @@
-# Path to oh-my-zsh config
-export ZSH=$HOME'/.oh-my-zsh'
+# Clone antidote plugin manager if necessary.
+[[ -d ${ZDOTDIR:-~}/.antidote ]] ||
+  git clone https://github.com/mattmc3/antidote ${ZDOTDIR:-~}/.antidote
 
+# Create an amazing Zsh config using antidote plugins
+source ${ZDOTDIR:-~}/.antidote/antidote.zsh
+antidote load ${ZDOTDIR:-$HOME}/.zsh_plugins.txt
+
+# PATH
+export PATH=/opt/homebrew/opt/openjdk@17/bin:$HOME/.local/bin/diff-so-fancy:$HOME/.cargo/bin:$HOME/.local/bin:${KREW_ROOT:-$HOME/.krew}/bin:$PATH
+
+# Language settings for Mac
 export LANGUAGE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 
-
 # Remove trailing % at the end of output which doesn't end with new line
 PROMPT_EOL_MARK=''
-
 # Hyphen-insensitive completion.
 HYPHEN_INSENSITIVE='true'
-
 # Make repository status check for large repositories faster
 DISABLE_UNTRACKED_FILES_DIRTY='true'
-
 # History timestamp
 HIST_STAMPS='yyyy-mm-dd'
-
-# Plugins
-plugins=(extract z zsh-autosuggestions zsh-syntax-highlighting)
-
-# Load oh-my-zsh
-source $ZSH/oh-my-zsh.sh
-
-# PATH
-# - Local cargo packages
-export PATH=/opt/homebrew/opt/openjdk@17/bin:$HOME/.local/bin/diff-so-fancy:$HOME/.cargo/bin:$HOME/.local/bin:${KREW_ROOT:-$HOME/.krew}/bin:$PATH
 
 # Preferred editor
 export EDITOR='nvim'
@@ -35,12 +30,18 @@ export EDITOR='nvim'
 # Aliases
 alias v='nvim'
 alias g='git'
-alias e='eza'
+alias e='eza --color=auto'
 alias h='hstr'
+alias f='fd'
+alias b='bat'
+alias rg='rg --color=auto'
+alias cat='bat'
+alias find='fd'
 alias grep='rg --color=auto'
 alias diff='diff --color=auto'
 alias ls='ls --color=auto'
-alias k='k -h'
+alias -- -='cd -'
+alias ..='cd ..'
 
 # Git aliases
 alias gst='git status'
@@ -57,9 +58,6 @@ alias gr='git rebase'
 # Tmux aliases
 alias ta='tmux a -t'
 alias tn='tmux new -s'
-
-# Required so some tools like bazel and go, which have '...' argumeents work correctly
-unalias '...'
 
 # Custom format for the time function
 TIMEFMT='%J'$'\n'\
