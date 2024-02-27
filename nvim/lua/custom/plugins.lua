@@ -16,12 +16,46 @@ local plugins = {
   -- override plugin configs
   {
     "williamboman/mason.nvim",
-    opts = overrides.mason
+    opts = {
+      ensure_installed = {
+        "lua-language-server",
+        "html-lsp",
+        "prettier",
+        "stylua",
+        "pyright",
+        "gopls",
+      }
+    }
   },
 
   {
     "nvim-treesitter/nvim-treesitter",
-    opts = overrides.treesitter,
+    opts = {
+      ensure_installed = {
+        "vim",
+        "lua",
+        "latex",
+        "proto",
+        "dockerfile",
+
+        -- web dev 
+        "html",
+        "css",
+        "javascript",
+        "typescript",
+        "tsx",
+        "json",
+
+        -- low level
+        "c",
+        "rust",
+        "python",
+        "cpp",
+        "go",
+        "java",
+        "sql",
+      }
+    }
   },
 
   {
@@ -45,6 +79,40 @@ local plugins = {
     config = function()
       require "custom.configs.conform"
     end,
+  },
+
+  {
+    "zbirenbaum/copilot.lua",
+    event = "InsertEnter",
+    cmd = "Copilot",
+    config = function()
+      require("copilot").setup({
+        suggestion = { enabled = false },
+        panel = { enabled = false },
+      })
+    end,
+  },
+
+  {
+    "zbirenbaum/copilot-cmp",
+    event = "InsertEnter",
+    config = function ()
+      require("copilot_cmp").setup()
+    end
+  },
+
+  {
+    "hrsh7th/nvim-cmp",
+    opts = {
+      sources = {
+        { name = "copilot" },
+      },
+    },
+    dependencies = {
+      {
+        "zbirenbaum/copilot-cmp",
+      },
+    },
   },
 
   -- To make a plugin not be loaded

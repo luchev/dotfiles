@@ -23,6 +23,8 @@ HYPHEN_INSENSITIVE='true'
 DISABLE_UNTRACKED_FILES_DIRTY='true'
 # History timestamp
 HIST_STAMPS='yyyy-mm-dd'
+# Disable --auto-update for homebrew
+HOMEBREW_NO_AUTO_UPDATE=1
 
 # Preferred editor
 export EDITOR='nvim'
@@ -42,18 +44,6 @@ alias diff='diff --color=auto'
 alias ls='ls --color=auto'
 alias -- -='cd -'
 alias ..='cd ..'
-
-# Git aliases
-alias gst='git status'
-alias gco='git checkout'
-alias gc='git commit'
-alias gcv='git commit verbose'
-alias ga='git add'
-alias gb='git branch'
-alias gd='git diff'
-alias gp='git pull --rebase'
-alias gs='git stash'
-alias gr='git rebase'
 
 # Tmux aliases
 alias ta='tmux a -t'

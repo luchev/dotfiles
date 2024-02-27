@@ -45,6 +45,7 @@
     cng = config --global
     cp = cherry-pick -x
     # Remove branches that have already been merged with main
+    d = diff
     dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
     f = fetch
     # Pretty log of commits. Supports options of git log
