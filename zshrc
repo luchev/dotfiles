@@ -81,5 +81,7 @@ function touchp () {
 eval "$(starship init zsh)"
 # Load direnv
 eval "$(direnv hook zsh)"
+# Fuck
+eval "$(thefuck --alias)"
 
 source /Users/z/.docker/init-zsh.sh || true # Added by Docker Desktop
