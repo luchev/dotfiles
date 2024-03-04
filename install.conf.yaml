@@ -37,6 +37,12 @@
     ~/Library/Application Support/nushell/env.nu:
       path: env.nu
       force: true
+    ~/.config/nushell/config.nu:
+      path: config.nu
+      force: true
+    ~/.config/nushell/env.nu:
+      path: env.nu
+      force: true
     ~/.config/zellij:
       path: zellij
       force: true
@@ -62,4 +68,9 @@
     - command:
         which starship || sh -c "$(curl -fsSL https://starship.rs/install.sh)" -s '-f' >/dev/null 2>&1
       description: Install starship
+      quiet: true
+    - command:
+        test -d "${HOME}/.zoxide.nu" ||
+        zoxide init nushell > ~/.zoxide.nu
+      description: Setup zoxide
       quiet: true

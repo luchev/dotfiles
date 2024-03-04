@@ -98,14 +98,16 @@ $env.NU_PLUGIN_DIRS = [
 ]
 
 # To add entries to PATH (on Windows you might use Path), you can use the following pattern:
-$env.PATH = ($env.PATH | split row (char esep) | prepend '/opt/homebrew/bin/' | prepend '~/.cargo/bin/')
+$env.PATH = ($env.PATH | split row (char esep)
+  | prepend '/opt/homebrew/bin/'
+  | prepend '~/.cargo/bin/')
 
 # Setup zoxide
 zoxide init nushell | save -f ~/.zoxide.nu
 
 # Setup starship
 mkdir ~/.cache/starship
-starship init nu | save -f ~/.cache/starship/init.ny
+starship init nu | save -f ~/.cache/starship/init.nu
 
 # Make repository status check for large repositories faster
 $env.DISABLE_UNTRACKED_FILES_DIRTY = true
