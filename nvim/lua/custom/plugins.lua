@@ -37,6 +37,7 @@ local plugins = {
         "latex",
         "proto",
         "dockerfile",
+        "nu",
 
         -- web dev 
         "html",
@@ -55,7 +56,11 @@ local plugins = {
         "java",
         "sql",
       }
-    }
+    },
+    dependencies = {
+      { "nushell/tree-sitter-nu" },
+    },
+    build = ":TSUpdate",
   },
 
   {

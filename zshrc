@@ -83,5 +83,7 @@ eval "$(starship init zsh)"
 eval "$(direnv hook zsh)"
 # Fuck
 eval "$(thefuck --alias)"
+# Zoxide
+eval "$(zoxide init zsh)"
 
 source /Users/z/.docker/init-zsh.sh || true # Added by Docker Desktop
