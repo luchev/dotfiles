@@ -851,6 +851,7 @@ alias e = eza --color=auto
 alias h = hstr
 alias f = fd
 alias b = bat
+alias zj = zellij
 alias rg = rg --color=auto
 alias diff = diff --color=auto
 
