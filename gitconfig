@@ -35,17 +35,19 @@
 [alias]
     a = add
     aa = add --all
+    au = add --update
     amend = commit --amend --reuse-message=HEAD
     b = branch
     bd = branch --delete
     c = commit
     cv = commit --verbose
+    ce = commit --allow-empty
     cl = clone
     cn = config
     cng = config --global
     cp = cherry-pick -x
-    # Remove branches that have already been merged with main
     d = diff
+    # Remove branches that have already been merged with main
     dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
     f = fetch
     # Pretty log of commits. Supports options of git log

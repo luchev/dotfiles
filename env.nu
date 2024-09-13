@@ -100,6 +100,7 @@ $env.NU_PLUGIN_DIRS = [
 # To add entries to PATH (on Windows you might use Path), you can use the following pattern:
 $env.PATH = ($env.PATH | split row (char esep)
   | prepend '/opt/homebrew/bin/'
+  | prepend '/opt/uber/bin/'
   | prepend '~/.cargo/bin/')
 
 # Setup zoxide
@@ -112,7 +113,7 @@ starship init nu | save -f ~/.cache/starship/init.nu
 # Make repository status check for large repositories faster
 $env.DISABLE_UNTRACKED_FILES_DIRTY = true
 # History timestamp
-$env.HIST_STAMPS = yyyy-mm-dd
+$env.HIST_STAMPS = "yyyy-mm-dd"
 # Disable --auto-update for homebrew
 $env.HOMEBREW_NO_AUTO_UPDATE = 1
 

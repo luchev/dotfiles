@@ -17,7 +17,6 @@
       path: NvChad
       force: true
     ~/.config/starship.toml: starship 
-    ~/.gitconfig: gitconfig
     ~/.tmux.conf:
         path: tmux
         force: true
@@ -73,4 +72,11 @@
         test -d "${HOME}/.zoxide.nu" ||
         zoxide init nushell > ~/.zoxide.nu
       description: Setup zoxide
+      quiet: true
+    - command:
+        test -f ~/.gitconfig &&
+        ! grep -q '~/.dotfiles/gitconfig' ~/.gitconfig &&
+        echo -e '[include]\n  path = "~/.dotfiles/gitconfig"' >> ~/.gitconfig ||
+        true
+      description: Include custom gitconfig into global gitconfig
       quiet: true
