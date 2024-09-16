@@ -891,7 +891,7 @@ alias af = arc flow
 alias ac = arc cascade
 alias ad = arc diff
 alias as = arc sync
-alias at = arc tidy
+alias at = arc tidy --prune-abandoned
 
 # Load the zoxide plugin
 source ~/.zoxide.nu
