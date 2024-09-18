@@ -18,6 +18,33 @@ M.on_attach = function(client, bufnr)
   end
 end
 
+local on_attach = function(client, bufnr)
+  local opts = { noremap=true, silent=true, buffer=bufnr }
+  -- Enable completion triggered by <c-x><c-o>
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+  -- Mappings.
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+  vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
+  vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, opts)
+  vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+  -- You can delete this if you enable format-on-save.
+  vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, opts)
+end
+
+require('lspconfig').gopls.setup {
+        cmd = {'gopls', '-remote=auto'},
+        on_attach = on_attach,
+        flags = {
+            -- Don't spam LSP with changes. Wait a second between each.
+            debounce_text_changes = 1000,
+        },
+        init_options = {
+          staticcheck = true,
+        },
+}
+
 M.capabilities = vim.lsp.protocol.make_client_capabilities()
 
 M.capabilities.textDocument.completion.completionItem = {
