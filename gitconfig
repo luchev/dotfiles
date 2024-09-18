@@ -40,6 +40,7 @@
     b = branch
     bd = branch --delete
     c = commit
+    cm = commit --message
     cv = commit --verbose
     ce = commit --allow-empty
     cl = clone

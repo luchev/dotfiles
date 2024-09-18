@@ -893,6 +893,9 @@ alias ac = arc cascade
 alias ad = arc diff
 alias as = arc sync
 alias at = arc tidy --prune-abandoned
+# Bazel
+alias bt = bazel test '...'
+alias bb = bazel build
 
 # Load the zoxide plugin
 source ~/.zoxide.nu

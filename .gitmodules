@@ -2,9 +2,6 @@
 	path = dotbot
 	url = https://github.com/anishathalye/dotbot
 	ignore = dirty
-[submodule "NvChad"]
-	path = NvChad
-	url = https://github.com/NvChad/NvChad
 [submodule "nu_scripts"]
 	path = nu_scripts
 	url = https://github.com/nushell/nu_scripts
