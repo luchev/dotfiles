@@ -242,9 +242,17 @@ local default_plugins = {
       require("which-key").setup(opts)
     end,
   },
-
   {
     "github/copilot.vim",
+  },
+  {
+    "tpope/vim-fugitive",
+    cmd = {
+      "G", "Git", "Gdiffsplit", "Gvdiffsplit", "Gedit", "Gsplit",
+      "Gread", "Gwrite", "Ggrep", "Glgrep", "Gmove",
+      "Gdelete", "Gremove", "Gbrowse",
+    },
+
   }
 }
 
