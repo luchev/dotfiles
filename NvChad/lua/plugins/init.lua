@@ -244,6 +244,7 @@ local default_plugins = {
   },
   {
     "github/copilot.vim",
+    event = "InsertEnter", -- load on input
   },
   {
     "tpope/vim-fugitive",
@@ -252,7 +253,50 @@ local default_plugins = {
       "Gread", "Gwrite", "Ggrep", "Glgrep", "Gmove",
       "Gdelete", "Gremove", "Gbrowse",
     },
+  },
+  {
+    "ray-x/go.nvim",
+    dependencies = {  -- optional packages
+      "ray-x/guihua.lua",
+      "neovim/nvim-lspconfig",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+      require("go").setup()
+    end,
+    event = {"CmdlineEnter"},
+    ft = {"go", 'gomod'},
+    build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
+  },
+  {
+    "rcarriga/nvim-dap-ui",
+    event = "LspAttach",
+    dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
+    opts = {},
+    config = function()
+      local map = vim.keymap.set
+      local dap = require "dap"
+      local dapui = require "dapui"
+      local widgets = require "dap.ui.widgets"
+      local sidebar = widgets.sidebar(widgets.scopes)
 
+      dapui.setup()
+
+      dap.listeners.after.event_initialized["dapui_config"] = function()
+        dapui.open()
+      end
+      dap.listeners.before.event_terminated["dapui_config"] = function()
+        dapui.close()
+      end
+      dap.listeners.before.event_exited["dapui_config"] = function()
+        dapui.close()
+      end
+
+      map("n", "<leader>db", "<cmd>DapToggleBreakpoint<CR>", { desc = "DAP Toggle breakpoint" })
+      map("n", "<leader>dt", function()
+        sidebar.toggle()
+      end, { desc = "DAP Toggle sidebar" })
+    end,
   }
 }
 
