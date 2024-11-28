@@ -20,8 +20,6 @@ end
 
 local on_attach = function(client, bufnr)
   local opts = { noremap=true, silent=true, buffer=bufnr }
-  -- Enable completion triggered by <c-x><c-o>
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
   -- Mappings.
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
@@ -44,6 +42,22 @@ require('lspconfig').gopls.setup {
           staticcheck = true,
         },
 }
+
+require('lspconfig').ts_ls.setup({
+  on_attach = function(client, bufnr)
+    -- Key mappings for LSP
+    local bufopts = { noremap = true, silent = true, buffer = bufnr }
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
+    vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, bufopts)
+
+    -- Disable tsserver formatting if using an external formatter like prettier
+    client.resolved_capabilities.document_formatting = false
+  end,
+  capabilities = require("cmp_nvim_lsp").default_capabilities(), -- Optional: for autocomplete
+})
+
 
 M.capabilities = vim.lsp.protocol.make_client_capabilities()
 

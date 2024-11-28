@@ -241,6 +241,13 @@ M.lspconfig = {
       end,
       "List workspace folders",
     },
+
+    ["<leader>."] = {
+      function()
+        vim.lsp.buf.code_action()
+      end,
+      "",
+    },
   },
 
   v = {

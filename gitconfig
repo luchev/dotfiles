@@ -53,7 +53,8 @@
     f = fetch
     # Pretty log of commits. Supports options of git log
     # The 8-char abbreviation works well with the default pretty format below
-    l = log --abbrev-commit --abbrev=8
+    # l = log --abbrev-commit --abbrev=8
+    l = log --date=format:'%Y-%m-%d %H:%M:%S' --pretty=format:"- %h [%ad]: %s (@%al)"
     lg = log --abbrev-commit --abbrev=8 --graph
     m = merge
     mt = mergetool
