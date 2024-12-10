@@ -23,6 +23,9 @@ local default_plugins = {
     init = function()
       require("core.utils").load_mappings "nvterm"
     end,
+    opts = function()
+      return require("plugins.configs.nvterm")
+    end,
     config = function(_, opts)
       require "base46.term"
       require("nvterm").setup(opts)
@@ -236,6 +239,15 @@ local default_plugins = {
         telescope.load_extension(ext)
       end
     end,
+  },
+  {
+    "ibhagwan/fzf-lua",
+    -- optional for icon support
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      -- calling `setup` is optional for customization
+      require("fzf-lua").setup({ })
+    end
   },
 
   -- Only load whichkey after all the gui

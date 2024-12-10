@@ -102,4 +102,18 @@ require("lspconfig").lua_ls.setup {
   },
 }
 
+
+local handle = io.popen("which python3")
+local python_path = handle:read("*a"):gsub("%s+", "") -- Remove trailing newline
+handle:close()
+
+require("lspconfig").pyright.setup {
+  settings = {
+    python = {
+      pythonPath = python_path
+    }
+  }
+}
+
+
 return M

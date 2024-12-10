@@ -277,7 +277,7 @@ M.telescope = {
 
   n = {
     -- find
-    ["<leader>ff"] = { "<cmd> Telescope find_files <CR>", "Find files" },
+    ["<leader>ft"] = { "<cmd> Telescope find_files <CR>", "Find files" },
     ["<leader>fa"] = { "<cmd> Telescope find_files follow=true no_ignore=true hidden=true <CR>", "Find all" },
     ["<leader>fw"] = { "<cmd> Telescope live_grep <CR>", "Live grep" },
     ["<leader>fb"] = { "<cmd> Telescope buffers <CR>", "Find buffers" },
@@ -296,6 +296,23 @@ M.telescope = {
     ["<leader>th"] = { "<cmd> Telescope themes <CR>", "Nvchad themes" },
 
     ["<leader>ma"] = { "<cmd> Telescope marks <CR>", "telescope bookmarks" },
+  },
+}
+
+M.fzf = {
+  plugin = true,
+
+  n = {
+    -- find
+    ["<leader>ff"] = {
+      function()
+        require("fzf-lua").files()
+      end,
+      "Fuzzy find files",
+    },
+
+    ["<c-P>"] = { "<cmd> lua require('fzf-lua').files() <CR>", "Fuzzy find files" },
+
   },
 }
 
