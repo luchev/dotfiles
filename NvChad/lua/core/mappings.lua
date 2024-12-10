@@ -277,25 +277,25 @@ M.telescope = {
 
   n = {
     -- find
-    ["<leader>ft"] = { "<cmd> Telescope find_files <CR>", "Find files" },
-    ["<leader>fa"] = { "<cmd> Telescope find_files follow=true no_ignore=true hidden=true <CR>", "Find all" },
-    ["<leader>fw"] = { "<cmd> Telescope live_grep <CR>", "Live grep" },
-    ["<leader>fb"] = { "<cmd> Telescope buffers <CR>", "Find buffers" },
-    ["<leader>fh"] = { "<cmd> Telescope help_tags <CR>", "Help page" },
+    ["<leader>tf"] = { "<cmd> Telescope find_files <CR>", "Find files" },
+    ["<leader>ta"] = { "<cmd> Telescope find_files follow=true no_ignore=true hidden=true <CR>", "Find all" },
+    ["<leader>tg"] = { "<cmd> Telescope live_grep <CR>", "Live grep" },
+    ["<leader>tb"] = { "<cmd> Telescope buffers <CR>", "Find buffers" },
+    ["<leader>th"] = { "<cmd> Telescope help_tags <CR>", "Help page" },
     ["<leader>fo"] = { "<cmd> Telescope oldfiles <CR>", "Find oldfiles" },
     ["<leader>fz"] = { "<cmd> Telescope current_buffer_fuzzy_find <CR>", "Find in current buffer" },
 
     -- git
-    ["<leader>cm"] = { "<cmd> Telescope git_commits <CR>", "Git commits" },
-    ["<leader>gt"] = { "<cmd> Telescope git_status <CR>", "Git status" },
+    ["<leader>tc"] = { "<cmd> Telescope git_commits <CR>", "Git commits" },
+    ["<leader>ts"] = { "<cmd> Telescope git_status <CR>", "Git status" },
 
     -- pick a hidden term
-    ["<leader>pt"] = { "<cmd> Telescope terms <CR>", "Pick hidden term" },
+    ["<leader>tt"] = { "<cmd> Telescope terms <CR>", "Pick hidden term" },
 
     -- theme switcher
-    ["<leader>th"] = { "<cmd> Telescope themes <CR>", "Nvchad themes" },
+    ["<leader>tth"] = { "<cmd> Telescope themes <CR>", "Nvchad themes" },
 
-    ["<leader>ma"] = { "<cmd> Telescope marks <CR>", "telescope bookmarks" },
+    ["<leader>tm"] = { "<cmd> Telescope marks <CR>", "telescope bookmarks" },
   },
 }
 
@@ -303,15 +303,18 @@ M.fzf = {
   plugin = true,
 
   n = {
-    -- find
-    ["<leader>ff"] = {
-      function()
-        require("fzf-lua").files()
-      end,
-      "Fuzzy find files",
-    },
+    -- buffers and files
+    ["<c-P>"] = { "<cmd> FzfLua files <CR>", "Find files" },
+    ["<leader>ff"] = { "<cmd> FzfLua files <CR>", "Find files" },
+    ["<leader>ft"] = { "<cmd> FzfLua treesitter <CR>", "Current buffer treesitter symbols" },
 
-    ["<c-P>"] = { "<cmd> lua require('fzf-lua').files() <CR>", "Fuzzy find files" },
+    -- search
+    ["<leader>rg"] = { "<cmd> FzfLua grep <CR>", "Grep" },
+    ["<leader>gg"] = { "<cmd> FzfLua grep_cword <CR>", "Grep word under cursor" },
+    ["<leader>gv"] = { "<cmd> FzfLua grep_visual <CR>", "Grep visual selection" },
+
+    -- git
+    ["<leader>gc"] = { "<cmd> FzfLua git_commits <CR>", "Git commit log" },
 
   },
 }

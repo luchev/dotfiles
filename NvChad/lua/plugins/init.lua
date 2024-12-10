@@ -242,8 +242,10 @@ local default_plugins = {
   },
   {
     "ibhagwan/fzf-lua",
-    -- optional for icon support
     dependencies = { "nvim-tree/nvim-web-devicons" },
+    init = function()
+      require("core.utils").load_mappings "fzf"
+    end,
     config = function()
       -- calling `setup` is optional for customization
       require("fzf-lua").setup({ })
