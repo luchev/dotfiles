@@ -295,6 +295,9 @@ M.telescope = {
     -- theme switcher
     ["<leader>tth"] = { "<cmd> Telescope themes <CR>", "Nvchad themes" },
 
+    -- file browser
+    ["<leader>fb"] = { "<cmd> Telescope file_browser path=%:p:h select_buffer=true <CR>", "File Browser" },
+
     ["<leader>tm"] = { "<cmd> Telescope marks <CR>", "telescope bookmarks" },
   },
 }

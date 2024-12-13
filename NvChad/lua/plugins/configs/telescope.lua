@@ -48,7 +48,7 @@ local options = {
     },
   },
 
-  extensions_list = { "themes", "terms" },
+  extensions_list = { "themes", "terms", "file_browser" },
 }
 
 return options

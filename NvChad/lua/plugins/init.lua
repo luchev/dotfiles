@@ -71,6 +71,11 @@ local default_plugins = {
   },
 
   {
+    "mhinz/vim-startify",
+    lazy = false,
+  },
+
+  {
     "nvim-treesitter/nvim-treesitter",
     event = { "BufReadPost", "BufNewFile" },
     tag = "v0.9.2",
@@ -107,6 +112,24 @@ local default_plugins = {
     end,
   },
 
+  {
+    "tpope/vim-fugitive",
+    cmd = {
+      "G", "Git", "Gdiffsplit", "Gvdiffsplit", "Gedit", "Gsplit",
+      "Gread", "Gwrite", "Ggrep", "Glgrep", "Gmove",
+      "Gdelete", "Gremove", "Gbrowse",
+    },
+  },
+
+  {
+    "rbong/vim-flog",
+    lazy = true,
+    cmd = { "Flog", "Flogsplit", "Floggit" },
+    dependencies = {
+      "tpope/vim-fugitive",
+    },
+  },
+
   -- lsp stuff
   {
     "williamboman/mason.nvim",
@@ -134,6 +157,52 @@ local default_plugins = {
     event = "User FilePost",
     config = function()
       require "plugins.configs.lspconfig"
+    end,
+  },
+
+  {
+    "ray-x/go.nvim",
+    dependencies = {  -- optional packages
+      "ray-x/guihua.lua",
+      "neovim/nvim-lspconfig",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+      require("go").setup()
+    end,
+    event = {"CmdlineEnter"},
+    ft = {"go", 'gomod'},
+    build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
+  },
+
+  {
+    "rcarriga/nvim-dap-ui",
+    event = "LspAttach",
+    dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
+    opts = {},
+    config = function()
+      local map = vim.keymap.set
+      local dap = require "dap"
+      local dapui = require "dapui"
+      local widgets = require "dap.ui.widgets"
+      local sidebar = widgets.sidebar(widgets.scopes)
+
+      dapui.setup()
+
+      dap.listeners.after.event_initialized["dapui_config"] = function()
+        dapui.open()
+      end
+      dap.listeners.before.event_terminated["dapui_config"] = function()
+        dapui.close()
+      end
+      dap.listeners.before.event_exited["dapui_config"] = function()
+        dapui.close()
+      end
+
+      map("n", "<leader>db", "<cmd>DapToggleBreakpoint<CR>", { desc = "DAP Toggle breakpoint" })
+      map("n", "<leader>dt", function()
+        sidebar.toggle()
+      end, { desc = "DAP Toggle sidebar" })
     end,
   },
 
@@ -240,6 +309,12 @@ local default_plugins = {
       end
     end,
   },
+
+  {
+    "nvim-telescope/telescope-file-browser.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
+  },
+
   {
     "ibhagwan/fzf-lua",
     dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -265,18 +340,13 @@ local default_plugins = {
       require("which-key").setup(opts)
     end,
   },
+
+  -- code stuff
   {
     "github/copilot.vim",
     event = "InsertEnter", -- load on input
   },
-  {
-    "tpope/vim-fugitive",
-    cmd = {
-      "G", "Git", "Gdiffsplit", "Gvdiffsplit", "Gedit", "Gsplit",
-      "Gread", "Gwrite", "Ggrep", "Glgrep", "Gmove",
-      "Gdelete", "Gremove", "Gbrowse",
-    },
-  },
+
   {
     "kylechui/nvim-surround",
     version = "*", -- Use for stability; omit to use `main` branch for the latest features
@@ -287,50 +357,11 @@ local default_plugins = {
       })
     end
   },
+
   {
-    "ray-x/go.nvim",
-    dependencies = {  -- optional packages
-      "ray-x/guihua.lua",
-      "neovim/nvim-lspconfig",
-      "nvim-treesitter/nvim-treesitter",
-    },
-    config = function()
-      require("go").setup()
-    end,
-    event = {"CmdlineEnter"},
-    ft = {"go", 'gomod'},
-    build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
+    "mbbill/undotree",
+    cmd = "UndotreeToggle",
   },
-  {
-    "rcarriga/nvim-dap-ui",
-    event = "LspAttach",
-    dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
-    opts = {},
-    config = function()
-      local map = vim.keymap.set
-      local dap = require "dap"
-      local dapui = require "dapui"
-      local widgets = require "dap.ui.widgets"
-      local sidebar = widgets.sidebar(widgets.scopes)
-
-      dapui.setup()
-
-      dap.listeners.after.event_initialized["dapui_config"] = function()
-        dapui.open()
-      end
-      dap.listeners.before.event_terminated["dapui_config"] = function()
-        dapui.close()
-      end
-      dap.listeners.before.event_exited["dapui_config"] = function()
-        dapui.close()
-      end
-
-      map("n", "<leader>db", "<cmd>DapToggleBreakpoint<CR>", { desc = "DAP Toggle breakpoint" })
-      map("n", "<leader>dt", function()
-        sidebar.toggle()
-      end, { desc = "DAP Toggle sidebar" })
-    end,
-  }
 }
 
 local config = require("core.utils").load_config()
