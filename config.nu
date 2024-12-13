@@ -874,9 +874,9 @@ $env.config = {
 # Aliases
 alias v = nvim
 alias g = git
-alias e = eza --color=auto
+alias e = eza --color=auto --icons=auto
 alias h = hstr
-alias f = fd
+alias f = fdfind
 alias b = bat
 alias zj = zellij
 alias rg = rg --color=auto

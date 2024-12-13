@@ -149,3 +149,5 @@ do --env {
     load-env $ssh_agent_env
     $ssh_agent_env | save --force $ssh_agent_file
 }
+
+$env.HISTFILE = $nu.history-path
