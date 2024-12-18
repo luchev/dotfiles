@@ -335,12 +335,11 @@ M.fzf = {
   },
 }
 
-M.formatter = {
+M.conform = {
   plugin = true,
 
   n = {
-    ["<leader>fw"] = { "<cmd> FormatWrite <CR>", "Format and save" },
-    ["<leader>fnw"] = { "<cmd> Format <CR>", "Format without saving" },
+    ["<leader>fm"] = { "<cmd> Format <CR>", "Format" },
   },
 }
 

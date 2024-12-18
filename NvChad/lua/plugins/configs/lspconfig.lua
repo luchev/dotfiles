@@ -43,20 +43,20 @@ require('lspconfig').gopls.setup {
         },
 }
 
-require('lspconfig').ts_ls.setup({
-  on_attach = function(client, bufnr)
-    -- Key mappings for LSP
-    local bufopts = { noremap = true, silent = true, buffer = bufnr }
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
-    vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, bufopts)
-
-    -- Disable tsserver formatting if using an external formatter like prettier
-    client.resolved_capabilities.document_formatting = false
-  end,
-  capabilities = require("cmp_nvim_lsp").default_capabilities(), -- Optional: for autocomplete
-})
+-- require('lspconfig').ts_ls.setup({
+--   on_attach = function(client, bufnr)
+--     -- Key mappings for LSP
+--     local bufopts = { noremap = true, silent = true, buffer = bufnr }
+--     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+--     vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+--     vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
+--     vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, bufopts)
+-- 
+--     -- Disable tsserver formatting if using an external formatter like prettier
+--     client.resolved_capabilities.document_formatting = false
+--   end,
+--   capabilities = require("cmp_nvim_lsp").default_capabilities(), -- Optional: for autocomplete
+-- })
 
 
 M.capabilities = vim.lsp.protocol.make_client_capabilities()

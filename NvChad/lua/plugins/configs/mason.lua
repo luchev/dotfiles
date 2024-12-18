@@ -3,6 +3,9 @@ local options = {
     "lua-language-server",
     "luacheck",
     "stylua",
+    "gofumpt",
+    "golines",
+    "goimports-reviser"
   },
 
   PATH = "skip",
