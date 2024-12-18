@@ -293,6 +293,13 @@ local default_plugins = {
         end,
       },
 
+      {
+        "zbirenbaum/copilot-cmp",
+        config = function()
+          require("copilot_cmp").setup()
+        end,
+      },
+
       -- cmp sources plugins
       {
         "saadparwaiz1/cmp_luasnip",
@@ -395,15 +402,21 @@ local default_plugins = {
     cmd = "WhichKey",
     config = function(_, opts)
       dofile(vim.g.base46_cache .. "whichkey")
-      require("which-key").setup(opts)
+      -- require("which-key").setup(opts)
     end,
   },
 
   -- code stuff
   {
-    "github/copilot.vim",
+    "zbirenbaum/copilot.lua",
     cmd = "Copilot",
-    event = "InsertEnter", -- load on input
+    event = "InsertEnter",
+    opts = function()
+      return require "plugins.configs.copilot"
+    end,
+    config = function(_, opts)
+      require("copilot").setup(opts)
+    end,
   },
 
   {
@@ -411,9 +424,7 @@ local default_plugins = {
     version = "*", -- Use for stability; omit to use `main` branch for the latest features
     event = "VeryLazy",
     config = function()
-      require("nvim-surround").setup {
-        -- Configuration here, or leave empty to use defaults
-      }
+      require("nvim-surround").setup {}
     end,
   },
 
