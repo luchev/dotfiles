@@ -24,7 +24,7 @@ local default_plugins = {
       require("core.utils").load_mappings "nvterm"
     end,
     opts = function()
-      return require("plugins.configs.nvterm")
+      return require "plugins.configs.nvterm"
     end,
     config = function(_, opts)
       require "base46.term"
@@ -82,16 +82,16 @@ local default_plugins = {
     cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
     build = ":TSUpdate",
     opts = {
-			highlight = {
-				enable = true,
-			},
-			ensure_installed = {
-				"vimdoc",
-				"luadoc",
-				"vim",
-				"lua",
-				"markdown"
-			},
+      highlight = {
+        enable = true,
+      },
+      ensure_installed = {
+        "vimdoc",
+        "luadoc",
+        "vim",
+        "lua",
+        "markdown",
+      },
     },
     config = function(_, opts)
       dofile(vim.g.base46_cache .. "syntax")
@@ -115,9 +115,20 @@ local default_plugins = {
   {
     "tpope/vim-fugitive",
     cmd = {
-      "G", "Git", "Gdiffsplit", "Gvdiffsplit", "Gedit", "Gsplit",
-      "Gread", "Gwrite", "Ggrep", "Glgrep", "Gmove",
-      "Gdelete", "Gremove", "Gbrowse",
+      "G",
+      "Git",
+      "Gdiffsplit",
+      "Gvdiffsplit",
+      "Gedit",
+      "Gsplit",
+      "Gread",
+      "Gwrite",
+      "Ggrep",
+      "Glgrep",
+      "Gmove",
+      "Gdelete",
+      "Gremove",
+      "Gbrowse",
     },
   },
 
@@ -162,11 +173,18 @@ local default_plugins = {
   {
     "williamboman/mason-lspconfig.nvim",
   },
-  
+
   {
     "mfussenegger/nvim-lint",
+    init = function()
+      vim.api.nvim_create_autocmd("BufWritePost", {
+        callback = function()
+          require("lint").try_lint()
+        end,
+      })
+    end,
     opts = function()
-      return require("plugins.configs.nvimlint")
+      return require "plugins.configs.nvimlint"
     end,
     config = function(_, opts)
       require("lint").linters_by_ft = opts
@@ -179,9 +197,12 @@ local default_plugins = {
 
   {
     "/mhartington/formatter.nvim",
-    cmd = { "Format" },
+    cmd = { "Format", "FormatWrite" },
+    init = function()
+      require("core.utils").load_mappings "formatter"
+    end,
     opts = function()
-      return require("plugins.configs.formatter")
+      return require "plugins.configs.formatter"
     end,
     config = function(_, opts)
       require("formatter").setup(opts)
@@ -194,7 +215,7 @@ local default_plugins = {
 
   {
     "ray-x/go.nvim",
-    dependencies = {  -- optional packages
+    dependencies = { -- optional packages
       "ray-x/guihua.lua",
       "neovim/nvim-lspconfig",
       "nvim-treesitter/nvim-treesitter",
@@ -202,9 +223,9 @@ local default_plugins = {
     config = function()
       require("go").setup()
     end,
-    event = {"CmdlineEnter"},
-    ft = {"go", 'gomod'},
-    build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
+    event = { "CmdlineEnter" },
+    ft = { "go", "gomod" },
+    build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
   },
 
   {
@@ -347,7 +368,7 @@ local default_plugins = {
 
   {
     "nvim-telescope/telescope-file-browser.nvim",
-    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
+    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
   },
 
   {
@@ -360,8 +381,8 @@ local default_plugins = {
     end,
     config = function()
       -- calling `setup` is optional for customization
-      require("fzf-lua").setup({ })
-    end
+      require("fzf-lua").setup {}
+    end,
   },
 
   -- Only load whichkey after all the gui
@@ -390,10 +411,10 @@ local default_plugins = {
     version = "*", -- Use for stability; omit to use `main` branch for the latest features
     event = "VeryLazy",
     config = function()
-      require("nvim-surround").setup({
+      require("nvim-surround").setup {
         -- Configuration here, or leave empty to use defaults
-      })
-    end
+      }
+    end,
   },
 
   {

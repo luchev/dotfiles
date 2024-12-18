@@ -1,7 +1,8 @@
 local options = {
   ensure_installed = {
     "lua-language-server",
-    "luacheck"
+    "luacheck",
+    "stylua",
   },
 
   PATH = "skip",

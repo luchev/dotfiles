@@ -322,6 +322,15 @@ M.fzf = {
   },
 }
 
+M.formatter = {
+  plugin = true,
+
+  n = {
+    ["<leader>fw"] = { "<cmd> FormatWrite <CR>", "Format and save" },
+    ["<leader>fnw"] = { "<cmd> Format <CR>", "Format without saving" },
+  },
+}
+
 M.nvterm = {
   plugin = true,
 

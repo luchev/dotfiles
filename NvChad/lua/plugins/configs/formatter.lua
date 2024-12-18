@@ -1,3 +1,5 @@
+local util = require "formatter.util"
+
 local options = {
   filetype = {
     lua = {
@@ -15,13 +17,13 @@ local options = {
           },
           stdin = true,
         }
-      end
+      end,
     },
 
     ["*"] = {
       require("formatter.filetypes.any").remove_trailing_whitespace,
     },
-  }
+  },
 }
 
 return options
