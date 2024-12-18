@@ -318,6 +318,8 @@ local default_plugins = {
   {
     "ibhagwan/fzf-lua",
     dependencies = { "nvim-tree/nvim-web-devicons" },
+    cmd = "FzfLua",
+    keys = { "<c-P>" },
     init = function()
       require("core.utils").load_mappings "fzf"
     end,
