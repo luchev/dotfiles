@@ -123,7 +123,6 @@ local default_plugins = {
 
   {
     "rbong/vim-flog",
-    lazy = true,
     cmd = { "Flog", "Flogsplit", "Floggit" },
     dependencies = {
       "tpope/vim-fugitive",
@@ -131,6 +130,14 @@ local default_plugins = {
   },
 
   -- lsp stuff
+  {
+    "neovim/nvim-lspconfig",
+    event = "User FilePost",
+    config = function()
+      require "plugins.configs.lspconfig"
+    end,
+  },
+
   {
     "williamboman/mason.nvim",
     cmd = { "Mason", "MasonInstall", "MasonInstallAll", "MasonUpdate" },
@@ -153,11 +160,36 @@ local default_plugins = {
   },
 
   {
-    "neovim/nvim-lspconfig",
-    event = "User FilePost",
-    config = function()
-      require "plugins.configs.lspconfig"
+    "williamboman/mason-lspconfig.nvim",
+  },
+  
+  {
+    "mfussenegger/nvim-lint",
+    opts = function()
+      return require("plugins.configs.nvimlint")
     end,
+    config = function(_, opts)
+      require("lint").linters_by_ft = opts
+    end,
+    event = {
+      "BufWritePost", -- on save
+      -- "InsertLeave" -- on leaving insert mode
+    },
+  },
+
+  {
+    "/mhartington/formatter.nvim",
+    cmd = { "Format" },
+    opts = function()
+      return require("plugins.configs.formatter")
+    end,
+    config = function(_, opts)
+      require("formatter").setup(opts)
+    end,
+    event = {
+      "BufWritePost", -- on save
+      -- "InsertLeave" -- on leaving insert mode
+    },
   },
 
   {
@@ -175,6 +207,9 @@ local default_plugins = {
     build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
   },
 
+  {
+    "mfussenegger/nvim-dap",
+  },
   {
     "rcarriga/nvim-dap-ui",
     event = "LspAttach",
@@ -346,6 +381,7 @@ local default_plugins = {
   -- code stuff
   {
     "github/copilot.vim",
+    cmd = "Copilot",
     event = "InsertEnter", -- load on input
   },
 

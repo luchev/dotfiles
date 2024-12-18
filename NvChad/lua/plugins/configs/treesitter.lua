@@ -1,5 +1,8 @@
 local options = {
-    ensure_installed = { "lua", "vim", "vimdoc", "python", "go", "markdown", "markdown_inline", "bash", "nu", "yaml", "typescript", "javascript", "rust", "proto", "git_config" },
+    ensure_installed = {
+				"luadoc",
+				"lua",
+ "vim", "vimdoc", "python", "go", "markdown", "markdown_inline", "bash", "nu", "yaml", "typescript", "javascript", "rust", "proto", "git_config" },
 
   highlight = {
     enable = true,
