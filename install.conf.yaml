@@ -24,10 +24,6 @@
       path: alacritty.toml
       force: true
     ~/.zsh_plugins.txt: zsh_plugins.txt
-    # NvChad custom configs should come from the dotfiles
-    ~/.config/nvim/lua/custom:
-      path: nvim/lua/custom
-      force: true
     ~/.wezterm.lua: wezterm.lua
     # ~/.config/zellij/config.kdl: zellij.kdl
     ~/Library/Application Support/nushell/config.nu:
@@ -44,6 +40,9 @@
       force: true
     ~/.config/zellij:
       path: zellij
+      force: true
+    ~/.termux/termux.properties:
+      path: termux.properties
       force: true
 
 
