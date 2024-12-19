@@ -260,19 +260,6 @@ M.lspconfig = {
   },
 }
 
-M.copilot = {
-  plugin = true,
-
-  i = {
-    ["<C-J>"] = {
-      function()
-        require("copilot.vim").Accept()
-      end,
-      "Accept copilot suggestion",
-    },
-  },
-}
-
 M.nvimtree = {
   plugin = true,
 

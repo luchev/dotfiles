@@ -483,7 +483,6 @@ local default_plugins = {
     "tadaa/vimade",
     event = "VeryLazy",
   },
-
 }
 
 local config = require("core.utils").load_config()
