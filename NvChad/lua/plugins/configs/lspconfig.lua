@@ -38,7 +38,6 @@ require("lspconfig").gopls.setup {
   },
   init_options = {
     staticcheck = true,
-    memoryMode = "DegradeClosed",
   },
   single_file_support = true,
   settings = {
