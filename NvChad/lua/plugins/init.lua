@@ -175,6 +175,19 @@ local default_plugins = {
   },
 
   {
+    "nvimdev/lspsaga.nvim",
+    lazy = true,
+    event = "User FilePost",
+    config = function()
+      require("lspsaga").setup {}
+    end,
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+    },
+  },
+
+  {
     "mfussenegger/nvim-lint",
     init = function()
       vim.api.nvim_create_autocmd("BufWritePost", {
@@ -216,9 +229,8 @@ local default_plugins = {
             ["end"] = { args.line2, end_line:len() },
           }
         end
-        require("conform").format({ async = true, lsp_format = "fallback", range = range })
+        require("conform").format { async = true, lsp_format = "fallback", range = range }
       end, { range = true })
-
     end,
   },
 
@@ -415,6 +427,15 @@ local default_plugins = {
     end,
   },
 
+  {
+    "folke/trouble.nvim",
+    opts = {},
+    cmd = "Trouble",
+    init = function()
+      require("core.utils").load_mappings "trouble"
+    end,
+  },
+
   -- code stuff
   {
     "zbirenbaum/copilot.lua",
@@ -429,6 +450,10 @@ local default_plugins = {
   },
 
   {
+    "lewis6991/gitsigns.nvim",
+  },
+
+  {
     "kylechui/nvim-surround",
     version = "*", -- Use for stability; omit to use `main` branch for the latest features
     event = "VeryLazy",
@@ -438,9 +463,27 @@ local default_plugins = {
   },
 
   {
+    "mg979/vim-visual-multi",
+  },
+
+  {
     "mbbill/undotree",
     cmd = "UndotreeToggle",
   },
+
+  {
+    "chrisbra/NrrwRgn",
+    keys = {
+      { "<leader>nr", mode = "v", desc = "Narrow Region from selection" },
+    },
+  },
+
+  {
+    -- Dim inactive windows
+    "tadaa/vimade",
+    event = "VeryLazy",
+  },
+
 }
 
 local config = require("core.utils").load_config()
