@@ -70,3 +70,4 @@
     st = stash
     t = tag
     upstream = reset --soft @{u}
+    unstage = restore --staged
