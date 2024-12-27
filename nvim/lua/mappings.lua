@@ -95,3 +95,22 @@ map("n", "<leader>cs", "<cmd> TroubleToggle lsp_workspace_symbols<CR>", { desc =
 map("n", "<leader>cl", "<cmd> TroubleToggle lsp_references<CR>", { desc = "trouble toggle lsp references" })
 map("n", "<leader>xL", "<cmd> TroubleToggle loclist<CR>", { desc = "trouble toggle loclist" })
 map("n", "<leader>xQ", "<cmd> TroubleToggle quickfix<CR>", { desc = "trouble toggle quickfix" })
+
+map("n", "<leader>ccb", function()
+  local input = vim.fn.input "Quick Chat: "
+  if input ~= "" then
+    require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
+  end
+end, { desc = "Copilot chat with buffer" })
+
+map("v", "<leader>cc", function()
+  local input = vim.fn.input "Quick Chat: "
+  if input ~= "" then
+    require("CopilotChat").ask(input, { selection = require("CopilotChat.select").visual })
+  end
+end, { desc = "Copilot chat with visual selection" })
+
+map("n", "<leader>ccp", function()
+  local actions = require "CopilotChat.actions"
+  require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
+end, { desc = "Copilot prompt actions" })

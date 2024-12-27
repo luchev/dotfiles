@@ -95,6 +95,10 @@ return {
   },
 
   {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+  },
+
+  {
     "williamboman/mason-lspconfig.nvim",
   },
 
@@ -137,9 +141,6 @@ return {
   {
     "stevearc/conform.nvim",
     cmd = { "Format" },
-    -- init = function()
-    --   require("core.utils").load_mappings "conform"
-    -- end,
     opts = function()
       return require "configs.conform"
     end,
@@ -230,6 +231,24 @@ return {
   },
 
   {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    dependencies = {
+      { "github/copilot.vim" }, -- or zbirenbaum/copilot.lua
+      { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions
+    },
+    build = "make tiktoken", -- Only on MacOS or Linux
+    opts = {
+      highlight_headers = false,
+      separator = "---",
+      error_header = "> [!ERROR] Error",
+    },
+    cmd = { "CopilotChat" },
+    config = function(_, opts)
+      require("CopilotChat").setup(opts)
+    end,
+  },
+
+  {
     "numToStr/Comment.nvim",
     keys = {
       { "gcc", mode = "n", desc = "Comment toggle current line" },
@@ -239,9 +258,6 @@ return {
       { "gb", mode = { "n", "o" }, desc = "Comment toggle blockwise" },
       { "gb", mode = "x", desc = "Comment toggle blockwise (visual)" },
     },
-    -- init = function()
-    --   require("core.utils").load_mappings "comment"
-    -- end,
     config = function(_, opts)
       require("Comment").setup(opts)
     end,
@@ -251,9 +267,6 @@ return {
   {
     "nvim-tree/nvim-tree.lua",
     cmd = { "NvimTreeToggle", "NvimTreeFocus" },
-    -- init = function()
-    --   require("core.utils").load_mappings "nvimtree"
-    -- end,
     opts = function()
       return require "configs.nvimtree"
     end,
@@ -273,11 +286,7 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     cmd = "FzfLua",
     keys = { "<c-P>" },
-    -- init = function()
-    --   require("core.utils").load_mappings "fzf"
-    -- end,
     config = function()
-      -- calling `setup` is optional for customization
       require("fzf-lua").setup {}
     end,
   },
@@ -286,9 +295,6 @@ return {
   {
     "folke/which-key.nvim",
     keys = { "<leader>", "<c-r>", "<c-w>", '"', "'", "`", "c", "v", "g" },
-    -- init = function()
-    --   require("core.utils").load_mappings "whichkey"
-    -- end,
     cmd = "WhichKey",
     config = function(_, opts)
       dofile(vim.g.base46_cache .. "whichkey")
@@ -300,9 +306,6 @@ return {
     "folke/trouble.nvim",
     opts = {},
     cmd = "Trouble",
-    -- init = function()
-    --   require("core.utils").load_mappings "trouble"
-    -- end,
   },
 
   -- code stuff
@@ -351,5 +354,49 @@ return {
     -- Dim inactive windows
     "tadaa/vimade",
     event = "VeryLazy",
+  },
+
+  {
+    --
+    "MeanderingProgrammer/render-markdown.nvim",
+    ft = { "markdown", "copilot-chat" },
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
+    ---@module 'render-markdown'
+    opts = {
+      file_types = { "markdown", "copilot-chat" },
+    },
+    config = function(_, opts)
+      require("render-markdown").setup(opts)
+    end,
+  },
+
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    opts = {
+      lsp = {
+        -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+        override = {
+          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+          ["vim.lsp.util.stylize_markdown"] = true,
+          ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
+        },
+      },
+      -- you can enable a preset for easier configuration
+      presets = {
+        bottom_search = true, -- use a classic bottom cmdline for search
+        command_palette = true, -- position the cmdline and popupmenu together
+        long_message_to_split = true, -- long messages will be sent to a split
+        inc_rename = false, -- enables an input dialog for inc-rename.nvim
+        lsp_doc_border = false, -- add a border to hover docs and signature help
+      },
+    },
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "rcarriga/nvim-notify",
+    },
+    config = function(_, opts)
+      require("noice").setup(opts)
+    end,
   },
 }
