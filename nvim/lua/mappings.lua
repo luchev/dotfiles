@@ -97,14 +97,14 @@ map("n", "<leader>xL", "<cmd> TroubleToggle loclist<CR>", { desc = "trouble togg
 map("n", "<leader>xQ", "<cmd> TroubleToggle quickfix<CR>", { desc = "trouble toggle quickfix" })
 
 map("n", "<leader>ccb", function()
-  local input = vim.fn.input "Quick Chat: "
+  local input = vim.fn.input "Chat with buffer: "
   if input ~= "" then
     require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
   end
 end, { desc = "Copilot chat with buffer" })
 
 map("v", "<leader>cc", function()
-  local input = vim.fn.input "Quick Chat: "
+  local input = vim.fn.input "Chat with selection: "
   if input ~= "" then
     require("CopilotChat").ask(input, { selection = require("CopilotChat.select").visual })
   end
@@ -114,3 +114,10 @@ map("n", "<leader>ccp", function()
   local actions = require "CopilotChat.actions"
   require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
 end, { desc = "Copilot prompt actions" })
+
+map("n", "<leader>cca", function()
+  local input = vim.fn.input "Chat with all files: "
+  if input ~= "" then
+    require("CopilotChat").ask(input, {context = { 'buffers', 'files:full', 'register:+' }})
+  end
+end, { desc = "Copilot ask about all files" })
