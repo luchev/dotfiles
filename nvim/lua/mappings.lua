@@ -72,6 +72,7 @@ map("n", "<leader>tz", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { desc = 
 map("n", "<leader>tc", "<cmd>Telescope git_commits<CR>", { desc = "telescope git commits" })
 map("n", "<leader>ts", "<cmd>Telescope git_status<CR>", { desc = "telescope git status" })
 map("n", "<leader>tt", "<cmd>Telescope terms<CR>", { desc = "telescope pick hidden term" })
+map("n", "<leader>ty", "<cmd>Telescope neoclip<CR>", { desc = "telescope neoclip yank history" })
 map(
   "n",
   "<leader>tb",

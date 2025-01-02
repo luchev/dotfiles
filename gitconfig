@@ -48,6 +48,7 @@
     cng = config --global
     cp = cherry-pick -x
     d = diff
+    ds = diff --staged
     # Remove branches that have already been merged with main
     dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
     f = fetch

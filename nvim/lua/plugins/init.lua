@@ -57,6 +57,25 @@ return {
     },
   },
 
+  {
+    "tanvirtin/vgit.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    cmd = { "VGit" },
+    config = function()
+      require("vgit").setup()
+    end,
+  },
+
+  {
+    "sindrets/diffview.nvim",
+    cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles", "DiffviewFocusFiles", "DiffViewFileHistory" },
+    config = function()
+      require("diffview").setup()
+    end,
+  },
+
   -- lsp stuff
   {
     "neovim/nvim-lspconfig",
@@ -96,6 +115,16 @@ return {
 
   {
     "nvim-treesitter/nvim-treesitter-textobjects",
+  },
+
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+    cmd = { "TSContextEnable", "TSContextToggle" },
+
+  },
+
+  {
+    "nvim-treesitter/nvim-treesitter-refactor",
   },
 
   {
@@ -389,5 +418,56 @@ return {
     -- Notifications in the lower right corner
     "j-hui/fidget.nvim",
     opts = {},
+  },
+
+  {
+    "chentoast/marks.nvim",
+    event = "VeryLazy",
+    opts = {},
+  },
+
+  {
+    "tversteeg/registers.nvim",
+    cmd = "Registers",
+    config = true,
+    keys = {
+      { '"', mode = { "n", "v" } },
+      { "<C-R>", mode = "i" },
+    },
+    name = "registers",
+  },
+
+  {
+    "epwalsh/obsidian.nvim",
+    version = "*", -- recommended, use latest release instead of latest commit
+    ft = "markdown",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "hrsh7th/nvim-cmp",
+      "nvim-telescope/telescope.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    opts = {
+      workspaces = {
+        {
+          name = "personal",
+          path = "~/vaults/personal",
+        },
+        {
+          name = "work",
+          path = "~/vaults/work",
+        },
+      },
+    },
+  },
+
+  {
+    "AckslD/nvim-neoclip.lua",
+    dependencies = {
+      { "nvim-telescope/telescope.nvim" },
+    },
+    config = function()
+      require("neoclip").setup()
+    end,
   },
 }
