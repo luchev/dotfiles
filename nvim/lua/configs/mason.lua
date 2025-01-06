@@ -6,6 +6,7 @@ local options = {
     "gofumpt",
     "golines",
     "goimports-reviser",
+    "codespell",
   },
 
   PATH = "skip",

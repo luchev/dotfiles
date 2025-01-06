@@ -11,7 +11,7 @@ local options = {
       "--smart-case",
     },
   },
-  extensions_list = { "themes", "terms", "file_browser" },
+  extensions_list = { "themes", "terms", "file_browser", "dap", "frecency", "luasnip", "gpt" },
 }
 
 return options

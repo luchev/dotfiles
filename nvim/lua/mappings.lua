@@ -62,7 +62,7 @@ map("n", "<leader>.", function()
   vim.lsp.buf.code_action()
 end, { desc = "" })
 
-map("n", "<leader>tf", "<cmd>Telescope find_files<CR>", { desc = "telescope find files" })
+map("n", "<leader>tf", "<cmd>Telescope frecency<CR>", { desc = "telescope find files" })
 map("n", "<leader>tw", "<cmd>Telescope live_grep<CR>", { desc = "telescope live grep" })
 map("n", "<leader>tu", "<cmd>Telescope buffers<CR>", { desc = "telescope find buffers" })
 map("n", "<leader>th", "<cmd>Telescope help_tags<CR>", { desc = "telescope help page" })
@@ -70,7 +70,8 @@ map("n", "<leader>tm", "<cmd>Telescope marks<CR>", { desc = "telescope find mark
 map("n", "<leader>to", "<cmd>Telescope oldfiles<CR>", { desc = "telescope find oldfiles" })
 map("n", "<leader>tz", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { desc = "telescope find in current buffer" })
 map("n", "<leader>tc", "<cmd>Telescope git_commits<CR>", { desc = "telescope git commits" })
-map("n", "<leader>ts", "<cmd>Telescope git_status<CR>", { desc = "telescope git status" })
+map("n", "<leader>tg", "<cmd>Telescope git_status<CR>", { desc = "telescope git status" })
+map("n", "<leader>ts", "<cmd>Telescope luasnip<CR>", { desc = "telescope luasnip" })
 map("n", "<leader>tt", "<cmd>Telescope terms<CR>", { desc = "telescope pick hidden term" })
 map("n", "<leader>ty", "<cmd>Telescope neoclip<CR>", { desc = "telescope neoclip yank history" })
 map(
@@ -119,6 +120,27 @@ end, { desc = "Copilot prompt actions" })
 map("n", "<leader>cca", function()
   local input = vim.fn.input "Chat with all files: "
   if input ~= "" then
-    require("CopilotChat").ask(input, {context = { 'buffers', 'files:full', 'register:+' }})
+    require("CopilotChat").ask(input, { context = { "buffers", "files:full", "register:+" } })
   end
 end, { desc = "Copilot ask about all files" })
+
+map("n", "s", function()
+  require("flash").jump {
+    pattern = ".", -- initialize pattern with any char
+    search = {
+      mode = function(pattern)
+        -- remove leading dot
+        if pattern:sub(1, 1) == "." then
+          pattern = pattern:sub(2)
+        end
+        -- return word pattern and proper skip pattern
+        return ([[\<%s\w*\>]]):format(pattern), ([[\<%s]]):format(pattern)
+      end,
+    },
+    -- select the range
+    jump = { pos = "range" },
+  }
+end, { desc = "Flash search" })
+map("n", "S", function()
+  require("flash").treesitter()
+end, { desc = "Flash Treesitter" })
