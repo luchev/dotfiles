@@ -50,6 +50,7 @@ return {
   },
 
   {
+    -- git branch viewer
     "rbong/vim-flog",
     cmd = { "Flog", "Flogsplit", "Floggit" },
     dependencies = {
@@ -417,10 +418,6 @@ return {
       "folke/trouble.nvim", -- optional
       "nvim-telescope/telescope.nvim",
     },
-  },
-
-  {
-    "lewis6991/gitsigns.nvim",
   },
 
   {

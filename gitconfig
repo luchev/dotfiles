@@ -8,6 +8,7 @@
 [core]
 	editor = nvim
 	pager = diff-so-fancy | less --tabs=4 -RFX
+  fsmonitor = true
 [diff]
 	tool = vimdiff
 [merge]
@@ -15,8 +16,14 @@
 	conflictstyle = diff3
 [mergetool]
 	prompt = false
+[maintenance]
+  auto = false
+  strategy = incremental
 [interactive]
 	diffFilter = diff-so-fancy --patch
+[branch]
+  # Sort git branch by latest commit
+  sort = -committerdate
 [color]
 	ui = true
 [color "diff-highlight"]
@@ -32,6 +39,12 @@
 	old = red bold
 	new = green bold
 	whitespace = red reverse
+[column]
+  # Git branch output multiple columns
+  ui = "auto"
+[rerere]
+  # Remember how a conflict was resolved and if seen again reuse that resolution
+  enabled = true
 [alias]
     a = add
     aa = add --all
@@ -39,16 +52,20 @@
     amend = commit --amend --reuse-message=HEAD
     b = branch
     bd = branch --delete
+    # blame but ignore code moves in any commit, ignore white-space
+    bl = blame -C -C -C -w
     c = commit
     cm = commit --message
     cv = commit --verbose
     ce = commit --allow-empty
-    cl = clone
+    cl = clone --filter=tree:0 --filter=blob:none
     cn = config
     cng = config --global
     cp = cherry-pick -x
     d = diff
     ds = diff --staged
+    # Word-based diff instead of line-based
+    dw = diff --word-diff
     # Remove branches that have already been merged with main
     dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
     f = fetch
@@ -57,9 +74,13 @@
     # l = log --abbrev-commit --abbrev=8
     l = log --date=format:'%Y-%m-%d %H:%M:%S' --pretty=format:"- %h [%ad]: %s (@%al)"
     lg = log --abbrev-commit --abbrev=8 --graph
+    # look in the log given a regular expression
+    lgS = log -S
     m = merge
     mt = mergetool
     p = push
+    # Force push if nobody else has pushed to the branch
+    pf = push --force-with-lease
     pl = pull --ff-only --rebase
     r = remote
     rb = rebase
@@ -68,7 +89,7 @@
     sh = show
     sw = switch
     swc = switch --create
-    st = stash
+    st = stash --all
     t = tag
     upstream = reset --soft @{u}
     unstage = restore --staged
