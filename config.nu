@@ -138,11 +138,12 @@ let light_theme = {
 
 # External completer
 
-def _argc_completer [args: list<string>] {
-    ~/.dotfiles/argc-completions/bin/argc --argc-compgen nushell "" ...$args
+let argc_completer = {|spans|
+    argc --argc-compgen nushell "" ...$spans
         | split row "\n"
         | each { |line| $line | split column "\t" value description }
         | flatten 
+        | get value
 }
 
 let zoxide_completer = {|spans|
@@ -164,7 +165,7 @@ let external_completer = {|spans|
 
     match $spans.0 {
         __zoxide_z | __zoxide_zi => $zoxide_completer # zoxide has custom completer
-        _ => _argc_completer(spans)
+        _ => $argc_completer
     } | do $in $spans
 }
 

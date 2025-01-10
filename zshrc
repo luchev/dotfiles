@@ -86,4 +86,5 @@ eval "$(thefuck --alias &>/dev/null)"
 # Zoxide
 eval "$(zoxide init zsh)"
 
-source /Users/z/.docker/init-zsh.sh || true # Added by Docker Desktop
+test -f '~/.docker/init-zsh.sh' && source ~/.docker/init-zsh.sh || true # Added by Docker Desktop
+
