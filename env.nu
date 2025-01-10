@@ -97,11 +97,16 @@ $env.NU_PLUGIN_DIRS = [
     ($nu.default-config-dir | path join 'plugins') # add <nushell-config-dir>/plugins
 ]
 
+# argc-completions
+$env.ARGC_COMPLETIONS_ROOT = '~/.dotfiles/argc-completions'
+$env.ARGC_COMPLETIONS_PATH = ($env.ARGC_COMPLETIONS_ROOT + '/completions/macos:' + $env.ARGC_COMPLETIONS_ROOT + '/completions')
+
 # To add entries to PATH (on Windows you might use Path), you can use the following pattern:
 $env.PATH = ($env.PATH | split row (char esep)
   | prepend '/opt/homebrew/bin/'
   | prepend '/opt/uber/bin/'
-  | prepend '~/.cargo/bin/')
+  | prepend '~/.cargo/bin/'
+  | prepend '~/.dotfiles/argc-completions/bin')
 
 # Setup zoxide
 zoxide init nushell | save -f ~/.zoxide.nu

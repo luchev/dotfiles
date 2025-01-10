@@ -136,10 +136,37 @@ let light_theme = {
     shape_vardecl: purple
 }
 
-# External completer example
-# let carapace_completer = {|spans|
-#     carapace $spans.0 nushell ...$spans | from json
-# }
+# External completer
+
+def _argc_completer [args: list<string>] {
+    ~/.dotfiles/argc-completions/bin/argc --argc-compgen nushell "" ...$args
+        | split row "\n"
+        | each { |line| $line | split column "\t" value description }
+        | flatten 
+}
+
+let zoxide_completer = {|spans|
+    $spans | skip 1 | zoxide query -l ...$in | lines | where {|x| $x != $env.PWD}
+}
+
+let external_completer = {|spans|
+    let expanded_alias = scope aliases
+    | where name == $spans.0
+    | get -i 0.expansion
+
+    let spans = if $expanded_alias != null {
+        $spans
+        | skip 1
+        | prepend ($expanded_alias | split row ' ' | take 1)
+    } else {
+        $spans
+    }
+
+    match $spans.0 {
+        __zoxide_z | __zoxide_zi => $zoxide_completer # zoxide has custom completer
+        _ => _argc_completer(spans)
+    } | do $in $spans
+}
 
 # The default config record. This is where much of your global configuration is setup.
 $env.config = {
@@ -210,7 +237,7 @@ $env.config = {
         external: {
             enable: true # set to false to prevent nushell looking into $env.PATH to find more suggestions, `false` recommended for WSL users as this look up may be very slow
             max_results: 100 # setting it lower can improve completion performance at the cost of omitting some options
-            completer: null # check 'carapace_completer' above as an example
+            completer: $external_completer
         }
     }
 
@@ -883,39 +910,42 @@ alias rg = rg --color=auto
 alias rgc = rg --color=always
 alias diff = diff --color=auto
 alias zj = zellij
+
 # Tmux aliases
 alias ta = tmux a -t
 alias tn = tmux new -s
-# Arc
+
+# Arc aliases
 alias af = arc flow
 alias ac = arc cascade
 alias ad = arc diff
 alias as = arc sync
 alias at = arc tidy --prune-abandoned --force
-# Bazel
+
+# Bazel aliases
 alias bt = bazel test '...'
 alias bb = bazel build
 
+
 # Load the zoxide plugin
 source ~/.zoxide.nu
+
+# Load autin (better history)
+source ~/.local/share/atuin/init.nu
 
 # Load the starship prompt
 use ~/.cache/starship/init.nu
 
 # Completions
-source ~/.dotfiles/nu_scripts/custom-completions/bat/bat-completions.nu
-source ~/.dotfiles/nu_scripts/custom-completions/just/just-completions.nu
-source ~/.dotfiles/nu_scripts/custom-completions/cargo/cargo-completions.nu
-source ~/.dotfiles/nu_scripts/custom-completions/git/git-completions.nu
-source ~/.dotfiles/nu_scripts/custom-completions/man/man-completions.nu
-source ~/.dotfiles/nu_scripts/custom-completions/npm/npm-completions.nu
-source ~/.dotfiles/nu_scripts/custom-completions/rg/rg-completions.nu
-source ~/.dotfiles/nu_scripts/custom-completions/rustup/rustup-completions.nu
-source ~/.dotfiles/nu_scripts/custom-completions/vscode/vscode-completions.nu
-source ~/.dotfiles/nu_scripts/custom-completions/zellij/zellij-completions.nu
-source ~/.dotfiles/nu_scripts/custom-completions/rg/rg-completions.nu
-
-# Plugins
-# register ~/.cargo/bin/nu_plugin_qr_maker
-# register ~/.cargo/bin/nu_plugin_semver
+# source ~/.dotfiles/nu_scripts/custom-completions/bat/bat-completions.nu
+# source ~/.dotfiles/nu_scripts/custom-completions/just/just-completions.nu
+# source ~/.dotfiles/nu_scripts/custom-completions/cargo/cargo-completions.nu
+# source ~/.dotfiles/nu_scripts/custom-completions/git/git-completions.nu
+# source ~/.dotfiles/nu_scripts/custom-completions/man/man-completions.nu
+# source ~/.dotfiles/nu_scripts/custom-completions/npm/npm-completions.nu
+# source ~/.dotfiles/nu_scripts/custom-completions/rg/rg-completions.nu
+# source ~/.dotfiles/nu_scripts/custom-completions/rustup/rustup-completions.nu
+# source ~/.dotfiles/nu_scripts/custom-completions/vscode/vscode-completions.nu
+# source ~/.dotfiles/nu_scripts/custom-completions/zellij/zellij-completions.nu
+# source ~/.dotfiles/nu_scripts/custom-completions/rg/rg-completions.nu
 

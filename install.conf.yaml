@@ -25,7 +25,6 @@
       force: true
     ~/.zsh_plugins.txt: zsh_plugins.txt
     ~/.wezterm.lua: wezterm.lua
-    # ~/.config/zellij/config.kdl: zellij.kdl
     ~/Library/Application Support/nushell/config.nu:
       path: config.nu
       force: true
@@ -52,12 +51,6 @@
   #     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   #   description: Install Oh-My-ZSH
   #   quiet: true
-  # - command:
-  #     test -d "${HOME}/.local/share/nvim/site/pack/packer/start/packer.nvim" ||
-  #     git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim && 
-  #     nvim -c ':PackerSync' -c ':qa!'
-  #   description: Install packer.nvim
-  #   quiet: true
     - command:
         test -d "${HOME}/.local/bin/diff-so-fancy" ||
         git clone https://github.com/so-fancy/diff-so-fancy ~/.local/bin/diff-so-fancy
@@ -79,3 +72,15 @@
         true
       description: Include custom gitconfig into global gitconfig
       quiet: true
+    - command:
+        cd ~/.dotfiles/argc-completions &&
+        ./scripts/download-tools.sh --force
+      description: Init argc-completion
+      quiet: true
+    - command:
+        test -d "${HOME}/.local/share/atuin" ||
+        mkdir ~/.local/share/atuin/ &&
+        atuin init --disable-up-arrow nu > ~/.local/share/atuin/init.nu
+      description: Setup atuin
+      quiet: true
+
