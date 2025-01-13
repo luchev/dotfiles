@@ -107,7 +107,8 @@ $env.PATH = ($env.PATH | split row (char esep)
 
 # argc-completions
 $env.ARGC_COMPLETIONS_ROOT = ($env.HOME + '/.dotfiles/argc-completions')
-$env.ARGC_COMPLETIONS_PATH = ($env.ARGC_COMPLETIONS_ROOT + '/completions/macos:' + $env.ARGC_COMPLETIONS_ROOT + '/completions')
+$env.ARGC_COMPLETIONS_PATH = ($env.ARGC_COMPLETIONS_ROOT + '/completions/macos' + ':' + $env.ARGC_COMPLETIONS_ROOT + '/completions')
+# default is bash so we switch it to nu
 $env.ARGC_SHELL_PATH = (which nu | get path | to text | str trim)
 
 # Setup zoxide

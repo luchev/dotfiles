@@ -927,12 +927,16 @@ alias at = arc tidy --prune-abandoned --force
 alias bt = bazel test '...'
 alias bb = bazel build
 
-
 # Load the zoxide plugin
 source ~/.zoxide.nu
 
 # Load autin (better history)
 source ~/.local/share/atuin/init.nu
+
+# Generate a new argc-completions file for a new command
+def argc-generate [cmd] {
+  bash ($env.HOME + /.dotfiles/argc-completions/scripts/generate.sh) $cmd | save -f ($env.HOME + "/.dotfiles/argc-custom-completions/" + $cmd + ".sh")
+}
 
 # Load the starship prompt
 use ~/.cache/starship/init.nu
