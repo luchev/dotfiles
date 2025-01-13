@@ -107,6 +107,9 @@ $env.PATH = ($env.PATH | split row (char esep)
 
 # argc-completions
 $env.ARGC_COMPLETIONS_ROOT = ($env.HOME + '/.dotfiles/argc-completions')
+# default is bash so we switch it to nu
+$env.ARGC_SHELL_PATH = (which nu | get path | to text | str trim)
+
 if ((uname | get kernel-name) == 'Darwin') {
   $env.ARGC_COMPLETIONS_PATH = ($env.ARGC_COMPLETIONS_ROOT + '/completions/macos' + ':' + $env.ARGC_COMPLETIONS_ROOT + '/completions')
 } else if ((uname | get kernel-name) == 'Linux') {
@@ -114,8 +117,6 @@ if ((uname | get kernel-name) == 'Darwin') {
 } else {
   $env.ARGC_COMPLETIONS_PATH = ($env.ARGC_COMPLETIONS_ROOT + '/completions/macos' + ':' + $env.ARGC_COMPLETIONS_ROOT + '/completions/linux' + ':' + $env.ARGC_COMPLETIONS_ROOT + '/completions')
 }
-# default is bash so we switch it to nu
-$env.ARGC_SHELL_PATH = (which nu | get path | to text | str trim)
 
 # Setup zoxide
 zoxide init nushell | save -f ~/.zoxide.nu

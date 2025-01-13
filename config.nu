@@ -941,6 +941,8 @@ def argc-generate [cmd] {
 # Load the starship prompt
 use ~/.cache/starship/init.nu
 
+use ~/.dotfiles/nu_scripts/modules/jc/
+
 # Completions
 # source ~/.dotfiles/nu_scripts/custom-completions/bat/bat-completions.nu
 # source ~/.dotfiles/nu_scripts/custom-completions/just/just-completions.nu
