@@ -253,7 +253,7 @@ $env.config = {
         vi_normal: underscore # block, underscore, line, blink_block, blink_underscore, blink_line, inherit to skip setting cursor shape (underscore is the default)
     }
 
-    color_config: $dark_theme # if you want a more interesting theme, you can replace the empty record with `$dark_theme`, `$light_theme` or another custom record
+    color_config: $dark_theme # overwritten by modules
     footer_mode: "auto" # always, never, number_of_rows, auto
     float_precision: 2 # the precision for displaying floats in tables
     buffer_editor: "" # command that will be used to edit the current line buffer with ctrl+o, if unset fallback to $env.EDITOR and $env.VISUAL
@@ -933,6 +933,16 @@ source ~/.zoxide.nu
 # Load autin (better history)
 source ~/.local/share/atuin/init.nu
 
+# Theme
+source ~/.dotfiles/nu_scripts/themes/nu-themes/monokai-soda.nu
+#source ~/.dotfiles/nu_scripts/themes/nu-themes/cobalt-neon.nu
+#source ~/.dotfiles/nu_scripts/themes/nu-themes/darkside.nu
+#source ~/.dotfiles/nu_scripts/themes/nu-themes/helios.nu
+#source ~/.dotfiles/nu_scripts/themes/nu-themes/monokai-dark.nu
+#source ~/.dotfiles/nu_scripts/themes/nu-themes/dimmed-monokai.nu
+#source ~/.dotfiles/nu_scripts/themes/nu-themes/monokai.nu
+#source ~/.dotfiles/nu_scripts/themes/nu-themes/molokai.nu
+
 # Generate a new argc-completions file for a new command
 def argc-generate [cmd] {
   bash ($env.HOME + /.dotfiles/argc-completions/scripts/generate.sh) $cmd | save -f ($env.HOME + "/.dotfiles/argc-custom-completions/" + $cmd + ".sh")
@@ -941,6 +951,7 @@ def argc-generate [cmd] {
 # Load the starship prompt
 use ~/.cache/starship/init.nu
 
+# Automatically format jc's output in nushell format
 use ~/.dotfiles/nu_scripts/modules/jc/
 
 # Completions
