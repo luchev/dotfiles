@@ -15,8 +15,6 @@ for _, lsp in ipairs(servers) do
   }
 end
 
--- configuring single server, example: typescript
-
 require("lspconfig").gopls.setup {
   on_attach = nvlsp.on_attach,
   cmd = { "gopls", "-remote=auto" },

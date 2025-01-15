@@ -134,9 +134,14 @@ return {
   {
     "nvimdev/lspsaga.nvim",
     lazy = true,
-    event = "User FilePost",
+    event = "LspAttach",
     config = function()
-      require("lspsaga").setup {}
+      require("lspsaga").setup {
+        lightbulb = {
+         -- turn off code action light bulb around the line
+          enabled = false,
+        },
+      }
     end,
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
@@ -551,5 +556,11 @@ return {
     config = function()
       vim.g["grammarous#jar_url"] = "https://www.languagetool.org/download/archive/LanguageTool-5.9.zip"
     end,
+  },
+
+  {
+    -- Better Quickfix window
+    "kevinhwang91/nvim-bqf",
+    event = { "BufRead", "BufNew" },
   },
 }
