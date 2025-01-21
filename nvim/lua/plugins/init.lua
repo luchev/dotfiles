@@ -84,6 +84,9 @@ return {
     config = function()
       require "configs.lspconfig"
     end,
+    dependencies = {
+      "williamboman/mason-lspconfig.nvim",
+    },
   },
 
   {
@@ -129,6 +132,9 @@ return {
 
   {
     "williamboman/mason-lspconfig.nvim",
+    dependencies = {
+      "williamboman/mason.nvim",
+    },
   },
 
   {
@@ -138,7 +144,7 @@ return {
     config = function()
       require("lspsaga").setup {
         lightbulb = {
-         -- turn off code action light bulb around the line
+          -- turn off code action light bulb around the line
           enabled = false,
         },
       }
@@ -294,6 +300,11 @@ return {
 
   {
     "nvim-telescope/telescope.nvim",
+    dependencies = {
+      {
+        "nvim-telescope/telescope-live-grep-args.nvim",
+      },
+    },
     opts = function(_, opts)
       local function flash(prompt_bufnr)
         require("flash").jump {
@@ -353,7 +364,12 @@ return {
     cmd = "FzfLua",
     keys = { "<c-P>" },
     config = function()
-      require("fzf-lua").setup {}
+      require("fzf-lua").setup {
+        defaults = {
+          -- Do not run git status for fzf commands
+          git_icons = false,
+        },
+      }
     end,
   },
 

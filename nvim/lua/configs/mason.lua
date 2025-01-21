@@ -7,6 +7,7 @@ local options = {
     "golines",
     "goimports-reviser",
     "codespell",
+    "vale",
   },
 
   PATH = "skip",
