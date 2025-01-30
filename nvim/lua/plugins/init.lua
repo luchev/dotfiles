@@ -575,8 +575,24 @@ return {
   },
 
   {
-    -- Better Quickfix window
+    -- Better quickfix window
     "kevinhwang91/nvim-bqf",
     event = { "BufRead", "BufNew" },
+  },
+  {
+    "javiorfo/nvim-soil",
+    ft = "plantuml",
+    opts = {
+      actions = {
+        redraw = false,
+      },
+      image = {
+        darkmode = false,
+        format = "png", -- Choose between png or svg
+        execute_to_open = function(img)
+          return "nsxiv -b " .. img
+        end,
+      },
+    },
   },
 }
