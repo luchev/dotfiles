@@ -167,3 +167,5 @@ do --env {
 }
 
 $env.HISTFILE = $nu.history-path
+
+$env.ZELLIJ_CONFIG_DIR = $env.HOME + '/.config/zellij'

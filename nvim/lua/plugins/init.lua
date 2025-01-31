@@ -590,7 +590,7 @@ return {
         darkmode = false,
         format = "png", -- Choose between png or svg
         execute_to_open = function(img)
-          return "nsxiv -b " .. img
+          return "open" .. img
         end,
       },
     },

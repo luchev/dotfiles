@@ -8,6 +8,7 @@ local options = {
     "goimports-reviser",
     "codespell",
     "vale",
+    "kdlfmt",
   },
 
   PATH = "skip",

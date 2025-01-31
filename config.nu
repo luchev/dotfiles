@@ -910,7 +910,6 @@ alias zj = zellij
 alias rg = rg --color=auto
 alias rgc = rg --color=always
 alias diff = diff --color=auto
-alias zj = zellij
 
 # Tmux aliases
 alias ta = tmux a -t
