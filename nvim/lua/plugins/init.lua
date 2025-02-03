@@ -115,6 +115,36 @@ return {
     opts = function()
       return require "configs.treesitter"
     end,
+    dependencies = {
+      {
+        "nvim-treesitter/nvim-treesitter-refactor",
+        config = function()
+          require("nvim-treesitter-refactor").setup {
+            refactor = {
+              highlight_definitions = { enable = true },
+              highlight_current_scope = { enable = true },
+              smart_rename = {
+                enable = true,
+                keymaps = {
+                  smart_rename = "grr",
+                },
+              },
+              navigation = {
+                enable = true,
+                -- Assign keymaps to false to disable them, e.g. `goto_definition = false`.
+                keymaps = {
+                  goto_definition = "gnd",
+                  list_definitions = "gnD",
+                  list_definitions_toc = "gO",
+                  goto_next_usage = "<a-*>",
+                  goto_previous_usage = "<a-#>",
+                },
+              },
+            },
+          }
+        end,
+      },
+    },
   },
 
   {
@@ -124,10 +154,6 @@ return {
   {
     "nvim-treesitter/nvim-treesitter-context",
     cmd = { "TSContextEnable", "TSContextToggle" },
-  },
-
-  {
-    "nvim-treesitter/nvim-treesitter-refactor",
   },
 
   {
@@ -579,20 +605,15 @@ return {
     "kevinhwang91/nvim-bqf",
     event = { "BufRead", "BufNew" },
   },
+
   {
-    "javiorfo/nvim-soil",
-    ft = "plantuml",
-    opts = {
-      actions = {
-        redraw = false,
-      },
-      image = {
-        darkmode = false,
-        format = "png", -- Choose between png or svg
-        execute_to_open = function(img)
-          return "open" .. img
-        end,
-      },
-    },
+    -- Funny snow effect
+    "marcussimonsen/let-it-snow.nvim",
+    cmd = "LetItSnow",
+    config = function()
+      require("let-it-snow").setup {
+        delay = 500,
+      }
+    end,
   },
 }
