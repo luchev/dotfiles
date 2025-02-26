@@ -920,6 +920,7 @@ alias af = arc flow
 alias ac = arc cascade
 alias ad = arc diff
 alias as = arc sync
+alias ast = arc stack --disable-rebase-check --nounit
 alias at = arc tidy --prune-abandoned --force
 
 # Bazel aliases
