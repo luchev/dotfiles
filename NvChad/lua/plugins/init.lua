@@ -78,24 +78,18 @@ local default_plugins = {
   {
     "nvim-treesitter/nvim-treesitter",
     event = { "BufReadPost", "BufNewFile" },
-    tag = "v0.9.2",
     cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
     build = ":TSUpdate",
-    opts = {
-      highlight = {
-        enable = true,
-      },
-      ensure_installed = {
-        "vimdoc",
-        "luadoc",
-        "vim",
-        "lua",
-        "markdown",
-      },
+    dependencies = {
+      { "nushell/tree-sitter-nu" },
+      { "IndianBoy42/tree-sitter-just" },
     },
+    opts = function()
+      return require "plugins.configs.treesitter"
+    end,
     config = function(_, opts)
       dofile(vim.g.base46_cache .. "syntax")
-      require("nvim-treesitter.configs").setup(opts)
+      require("nvim-treesitter.configs").setup(opts.options)
     end,
   },
 
