@@ -477,6 +477,11 @@ local default_plugins = {
     "tadaa/vimade",
     event = "VeryLazy",
   },
+
+  {
+    "nanotee/zoxide.vim",
+    cmd = "Z",
+  }
 }
 
 local config = require("core.utils").load_config()
