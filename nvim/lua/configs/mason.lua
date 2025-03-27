@@ -5,7 +5,10 @@ local options = {
     "stylua",
     "gofumpt",
     "golines",
-    "goimports-reviser"
+    "goimports-reviser",
+    "codespell",
+    "vale",
+    "kdlfmt",
   },
 
   PATH = "skip",

@@ -13,8 +13,10 @@
     ~/.zshrc:
         path: zshrc
         force: true
+    ~/.config/nvim:
+      path: nvim
+      force: true
     ~/.config/starship.toml: starship 
-    ~/.config/nvim: NvChad
     ~/.tmux.conf:
         path: tmux
         force: true
@@ -44,6 +46,11 @@
 
 
 - shell:
+  # - command:
+  #     test -d "${HOME}/.oh-my-zsh" ||
+  #     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  #   description: Install Oh-My-ZSH
+  #   quiet: true
     - command:
         test -d "${HOME}/.local/bin/diff-so-fancy" ||
         git clone https://github.com/so-fancy/diff-so-fancy ~/.local/bin/diff-so-fancy
@@ -60,7 +67,6 @@
       quiet: true
     - command:
         test -f ~/.gitconfig &&
-        ! test -L ~/.gitconfig &&
         ! grep -q '~/.dotfiles/gitconfig' ~/.gitconfig &&
         echo -e '[include]\n  path = "~/.dotfiles/gitconfig"' >> ~/.gitconfig ||
         true
