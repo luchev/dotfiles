@@ -591,4 +591,10 @@ return {
       }
     end,
   },
+
+  {
+    "nanotee/zoxide.vim",
+    cmd = "Z",
+  },
+
 }
