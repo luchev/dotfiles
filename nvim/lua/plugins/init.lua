@@ -345,9 +345,17 @@ return {
   },
 
   {
+    -- Search files by recently opened
     "nvim-telescope/telescope-frecency.nvim",
     version = "*",
     dependencies = { "nvim-telescope/telescope.nvim" },
+    config= function()
+      require("telescope-frecency").setup{
+        db_safe_mode =false,
+        matcher = "fuzzy",
+
+      }
+    end,
   },
 
   {
@@ -488,6 +496,7 @@ return {
   },
 
   {
+    -- Notifications in the top-right corner
     "folke/noice.nvim",
     event = "VeryLazy",
     opts = function()
