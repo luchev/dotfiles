@@ -922,6 +922,9 @@ alias at = arc tidy --prune-abandoned --force
 alias bt = bazel test '...'
 alias bb = bazel build
 
+# Uber aliasses
+alias oc = object-config-client
+
 # Load the zoxide plugin
 source ~/.zoxide.nu
 

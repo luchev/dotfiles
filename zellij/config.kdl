@@ -3,13 +3,38 @@ keybinds {
     normal {
         // uncomment this and adjust key if using copy_on_select=false
         // bind "Alt c" { Copy; }
-        bind "Alt j" {
+        bind "Ctrl a" {
             SwitchToMode "Locked"
         }
     }
     locked {
-        bind "Alt j" {
+        bind "Ctrl a" {
             SwitchToMode "Normal"
+        }
+        bind "Alt h" "Alt Left" {
+            MoveFocus "Left"
+        }
+        bind "Alt l" "Alt Right" {
+            MoveFocus "Right"
+        }
+        bind "Alt j" "Alt Down" {
+            MoveFocus "Down"
+        }
+        bind "Alt k" "Alt Up" {
+            MoveFocus "Up"
+        }
+        bind "Alt m" {
+            ToggleFocusFullscreen
+        }
+        bind "Alt n" {
+            NewPane
+        }
+        bind "Alt Tab" {
+            SwitchToMode "Normal"
+        }
+        bind "Ctrl s" {
+            SwitchToMode "EnterSearch"
+            SearchInput 0
         }
     }
     resize {
@@ -270,7 +295,7 @@ keybinds {
         bind "n" {
             Search "down"
         }
-        bind "p" {
+        bind "Shift n" {
             Search "up"
         }
         bind "c" {
@@ -423,7 +448,7 @@ keybinds {
         }
     }
     shared_except "locked" {
-        bind "Alt j" {
+        bind "Ctrl a" {
             SwitchToMode "Locked"
         }
         bind "Ctrl q" {
@@ -609,7 +634,7 @@ pane_frames false
 // Choose the theme that is specified in the themes section.
 // Default: default
 //
-// theme "default"
+theme "catppuccin-frappe"
 // The name of the default layout to load on startup
 // Default: "default"
 // (Requires restart)
