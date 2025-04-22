@@ -423,6 +423,7 @@ return {
       highlight_headers = false,
       separator = "---",
       error_header = "> [!ERROR] Error",
+      model = "copilot:gpt-4.1",
     },
     cmd = { "CopilotChat" },
     config = function(_, opts)
