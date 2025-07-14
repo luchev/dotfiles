@@ -9,6 +9,8 @@ local options = {
     "codespell",
     "vale",
     "kdlfmt",
+    "bzl",
+    "starpls",
   },
 
   PATH = "skip",

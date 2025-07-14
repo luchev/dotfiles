@@ -16,6 +16,7 @@ local options = {
     "rust",
     "proto",
     "git_config",
+    "starlark",
   },
 
   highlight = {

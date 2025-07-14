@@ -141,6 +141,10 @@ if ('USERNAME' not-in $env) {
     $env.USERNAME = 'z'
 }
 
+if ('EDITOR' not-in $env) {
+    $env.EDITOR = 'nvim'
+}
+
 do --env {
     let ssh_agent_file = (
         $nu.temp-path | path join $"ssh-agent-($env.USER? | default $env.USERNAME).nuon"
