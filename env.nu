@@ -120,7 +120,9 @@ if ((uname | get kernel-name) == 'Darwin') {
 }
 
 # Setup zoxide
-zoxide init nushell | save -f ~/.zoxide.nu
+if not ("~/.zoxide.nu" | path exists) {
+  zoxide init nushell | save -f ~/.zoxide.nu
+}
 
 # Setup starship
 mkdir ~/.cache/starship
