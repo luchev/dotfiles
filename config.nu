@@ -894,9 +894,6 @@ $env.config = {
     ]
 }
 
-# Enable nushell's commands enter, dexit, shells
-use std/dirs shells-aliases *
-
 # Aliases
 alias v = nvim
 alias g = git
