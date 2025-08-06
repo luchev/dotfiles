@@ -952,6 +952,9 @@ use ~/.cache/starship/init.nu
 # Automatically format jc's output in nushell format
 use ~/.dotfiles/nu_scripts/modules/jc/
 
+# Enable nushell's commands enter, dexit, shells
+use std/dirs shells-aliases *
+
 # Completions
 # source ~/.dotfiles/nu_scripts/custom-completions/bat/bat-completions.nu
 # source ~/.dotfiles/nu_scripts/custom-completions/just/just-completions.nu

@@ -281,7 +281,7 @@ return {
         shell = {
           separator = ';',        -- Command separator used in shell commands
           pushd_cmd = 'enter',     -- Command to push directory onto stack (e.g., 'pushd' for bash/zsh, 'enter' for nushell)
-          popd_cmd = 'exit',       -- Command to pop directory from stack (e.g., 'popd' for bash/zsh, 'exit' for nushell)
+          popd_cmd = 'dexit',       -- Command to pop directory from stack (e.g., 'popd' for bash/zsh, 'exit' for nushell)
         },
       })
     end,
