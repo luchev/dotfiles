@@ -894,6 +894,9 @@ $env.config = {
     ]
 }
 
+# Enable nushell's commands enter, dexit, shells
+use std/dirs shells-aliases *
+
 # Aliases
 alias v = nvim
 alias g = git
@@ -951,9 +954,6 @@ use ~/.cache/starship/init.nu
 
 # Automatically format jc's output in nushell format
 use ~/.dotfiles/nu_scripts/modules/jc/
-
-# Enable nushell's commands enter, dexit, shells
-use std/dirs shells-aliases *
 
 # Completions
 # source ~/.dotfiles/nu_scripts/custom-completions/bat/bat-completions.nu
