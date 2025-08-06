@@ -278,7 +278,8 @@ return {
   },
   config = function()
     require("claude-code").setup()
-  end
+  end,
+    cmd = { "ClaudeCode" },
   },
 
   {
