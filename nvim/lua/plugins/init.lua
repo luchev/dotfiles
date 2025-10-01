@@ -115,6 +115,30 @@ return {
     opts = function()
       return require "configs.treesitter"
     end,
+    config = function(_, opts)
+      require("nvim-treesitter").setup(opts)
+
+      local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
+      parser_config.asciidoc = {
+          install_info = {
+              url = 'https://github.com/cathaysia/tree-sitter-asciidoc.git',
+              files = { 'tree-sitter-asciidoc/src/parser.c', 'tree-sitter-asciidoc/src/scanner.c' },
+              branch = 'master',
+              generate_requires_npm = false,
+              requires_generate_from_grammar = false,
+          },
+      }
+      parser_config.asciidoc_inline = {
+          install_info = {
+              url = 'https://github.com/cathaysia/tree-sitter-asciidoc.git',
+              files = { 'tree-sitter-asciidoc_inline/src/parser.c', 'tree-sitter-asciidoc_inline/src/scanner.c' },
+              branch = 'master',
+              generate_requires_npm = false,
+              requires_generate_from_grammar = false,
+          },
+      }
+
+    end,
     dependencies = {
       {
         "nvim-treesitter/nvim-treesitter-refactor",
@@ -129,6 +153,10 @@ return {
   {
     "nvim-treesitter/nvim-treesitter-context",
     cmd = { "TSContextEnable", "TSContextToggle" },
+  },
+
+  {
+    "cathaysia/tree-sitter-asciidoc"
   },
 
   {
@@ -566,30 +594,6 @@ return {
       { "<C-R>", mode = "i" },
     },
     name = "registers",
-  },
-
-  {
-    "epwalsh/obsidian.nvim",
-    version = "*", -- recommended, use latest release instead of latest commit
-    ft = "markdown",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "hrsh7th/nvim-cmp",
-      "nvim-telescope/telescope.nvim",
-      "nvim-treesitter/nvim-treesitter",
-    },
-    opts = {
-      workspaces = {
-        {
-          name = "personal",
-          path = "~/vaults/personal",
-        },
-        {
-          name = "work",
-          path = "~/vaults/work",
-        },
-      },
-    },
   },
 
   {

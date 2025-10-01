@@ -17,6 +17,8 @@ local options = {
     "proto",
     "git_config",
     "starlark",
+    "asciidoc",
+    "asciidoc_inline",
   },
 
   highlight = {

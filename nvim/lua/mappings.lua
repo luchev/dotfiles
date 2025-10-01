@@ -63,7 +63,6 @@ map("n", "<leader>.", function()
 end, { desc = "" })
 
 map("n", "<leader>tf", "<cmd>Telescope frecency<CR>", { desc = "telescope find files" })
--- map("n", "<leader>tw", "<cmd>Telescope live_grep<CR>", { desc = "telescope live grep" })
 map("n", "<leader>tw", "<cmd>Telescope live_grep_args<CR>", { desc = "telescope live grep (args)" })
 map("n", "<leader>tu", "<cmd>Telescope buffers<CR>", { desc = "telescope find buffers" })
 map("n", "<leader>th", "<cmd>Telescope help_tags<CR>", { desc = "telescope help page" })
