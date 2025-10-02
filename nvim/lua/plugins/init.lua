@@ -288,6 +288,28 @@ return {
     end,
     config = function(_, opts)
       require("cmp").setup(opts)
+
+      local cmp = require "cmp"
+      cmp.setup.cmdline(':', {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = cmp.config.sources({
+          { name = 'path' }
+        }, {
+          {
+            name = 'cmdline',
+            option = {
+              ignore_cmds = { 'Man', '!' }
+            }
+          }
+        })
+      })
+
+      cmp.setup.cmdline('/', {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = {
+          { name = 'buffer' }
+        }
+      })
     end,
     dependencies = {
       {
@@ -295,8 +317,14 @@ return {
         config = function()
           require("copilot_cmp").setup()
         end,
-      },
+      }
     },
+  },
+
+	{
+    -- Autocompletion in command mode. Configured as a part of nvim-cmp
+    "hrsh7th/cmp-cmdline",
+    lazy = false,
   },
 
   {
