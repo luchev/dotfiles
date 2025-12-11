@@ -518,7 +518,7 @@ return {
     config = function()
       local home = vim.fn.expand "$HOME"
       require("chatgpt").setup {
-        api_key_cmd = "sh " .. home .. "/.gpt-key.sh",
+        api_key_cmd = "sh " .. home .. "/.gpt_key.sh",
         keymaps = {
           submit = "<C-s>",
         },

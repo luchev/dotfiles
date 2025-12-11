@@ -93,3 +93,5 @@
     t = tag
     upstream = reset --soft @{u}
     unstage = restore --staged
+# [include]
+#   path = "~/.dotfiles/gitconfig"
