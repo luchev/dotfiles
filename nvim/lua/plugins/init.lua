@@ -664,4 +664,9 @@ return {
     cmd = "Z",
   },
 
+  {
+    "mjakl/vim-asciidoc",
+    event = "BufRead */adoc/*.adoc",
+  }
+
 }
