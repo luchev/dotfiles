@@ -1,0 +1,141 @@
+# Dotfiles .gitignore
+
+# Local machine-specific configurations (add .local suffix to any config)
+*.local
+.env.local
+*-local.*
+
+# Secrets and credentials
+secrets/
+*.secret
+*secret*
+*password*
+*credentials*
+*.pem
+*.key
+*.p12
+*.pfx
+.env
+api_keys
+tokens/
+
+# OS-specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Editor and IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.*.sw[a-z]
+.netrwhist
+tags
+.tags
+Session.vim
+
+# Backup files
+*.backup
+*.bak
+*.old
+*.orig
+*~
+\#*\#
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+tmp/
+
+# Logs
+*.log
+logs/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+*.so
+.pytest_cache/
+.coverage
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Rust
+target/
+Cargo.lock
+*.rs.bk
+
+# Build artifacts
+dist/
+build/
+*.o
+*.a
+*.exe
+*.out
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Archives
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+
+# SSH keys (if accidentally placed here)
+id_rsa
+id_ed25519
+*.ppk
+
+# GPG keys
+*.gpg
+*.asc
+secring.*
+
+# Testing
+.tox/
+.coverage.*
+
+# Shell history files that might leak info
+.bash_history
+.zsh_history
+.nu_history
+
+# Nushell cache
+.config/nushell/history.txt
+
+# Atuin local database (contains command history)
+.local/share/atuin/history.db
+
+# Machine-specific cache directories
+.cache
+.cargo/registry/
+.cargo/git/
+.rustup/downloads/
+
+# Backup directory
+.dotfiles-backup/
+
+# README local notes
+README.local.md
+NOTES.md
+TODO.local.md

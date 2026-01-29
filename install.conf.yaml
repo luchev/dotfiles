@@ -46,18 +46,23 @@
 
 
 - shell:
-  # - command:
-  #     test -d "${HOME}/.oh-my-zsh" ||
-  #     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-  #   description: Install Oh-My-ZSH
-  #   quiet: true
+    # Install Rust if not present
     - command:
-        cargo install fd bat ripgrep starship atuin zoxide eza bottom dust fd just trippy pueue gitui bandwhich procs intelli-shell yazi navi tlrc
+        command -v rustup >/dev/null 2>&1 ||
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
+      description: Install Rust toolchain
+      quiet: true
+    - command:
+        rustup update stable
+      description: Update Rust to latest stable version
+      quiet: true
+    - command:
+        cargo install fd-find bat ripgrep starship atuin zoxide eza bottom du-dust just trippy pueue gitui bandwhich procs intelli-shell yazi-build navi tlrc
       description: Install cargo packages
       quiet: true
     - command:
-        mkdir "$(nu -c '$nu.data-dir | path join vendor/autoload')" ;
-        nu -c 'intelli-shell init nushell | save -f ($nu.data-dir | path join "vendor/autoload/intelli-shell.nu")'
+        mkdir -p ~/.local/share/nushell/vendor/autoload &&
+        intelli-shell init nushell > ~/.local/share/nushell/vendor/autoload/intelli-shell.nu
       description: Setup intelli-shell
       quiet: true
     - command:
@@ -91,5 +96,28 @@
         mkdir ~/.local/share/atuin/ &&
         atuin init --disable-up-arrow nu > ~/.local/share/atuin/init.nu
       description: Setup atuin
+      quiet: true
+    # Install git-secrets
+    - command:
+        command -v git-secrets >/dev/null 2>&1 ||
+        (git clone https://github.com/awslabs/git-secrets /tmp/git-secrets &&
+        cd /tmp/git-secrets && make install PREFIX=~/.local &&
+        rm -rf /tmp/git-secrets)
+      description: Install git-secrets
+      quiet: true
+    # Setup git-secrets globally for all repos
+    - command:
+        git secrets --register-aws --global 2>/dev/null || true &&
+        mkdir -p ~/.git-templates/git-secrets &&
+        git secrets --install ~/.git-templates/git-secrets 2>/dev/null || true &&
+        git config --global init.templateDir ~/.git-templates/git-secrets
+      description: Configure git-secrets globally
+      quiet: true
+    # Install git-secrets hooks in dotfiles repo
+    - command:
+        cd ~/.dotfiles &&
+        git secrets --install 2>/dev/null || true &&
+        git secrets --register-aws 2>/dev/null || true
+      description: Install git-secrets in dotfiles repo
       quiet: true
 
