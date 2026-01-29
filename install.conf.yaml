@@ -55,18 +55,34 @@
         rustup update stable
       description: Update Rust to latest stable version
       quiet: true
-    - command:
-        cargo install fd-find bat ripgrep starship atuin zoxide eza bottom du-dust just trippy pueue gitui bandwhich procs intelli-shell yazi-fm navi tlrc git-delta
+    # Install cargo packages only if missing
+    - command: |
+        PACKAGES="fd-find bat ripgrep starship atuin zoxide eza bottom du-dust just trippy pueue gitui bandwhich procs yazi-fm navi tlrc git-delta"
+        MISSING=""
+        for pkg in $PACKAGES; do
+          CMD=$(echo $pkg | sed 's/-fm$//' | sed 's/^fd-find$/fd/' | sed 's/^du-dust$/dust/' | sed 's/^git-delta$/delta/')
+          if ! command -v $CMD >/dev/null 2>&1; then
+            MISSING="$MISSING $pkg"
+          fi
+        done
+        if [ -n "$MISSING" ]; then
+          echo "Installing missing cargo packages:$MISSING"
+          cargo install $MISSING
+        else
+          echo "All cargo packages already installed"
+        fi
       description: Install cargo packages
-      quiet: true
+      quiet: false
     - command:
-        mkdir -p ~/.local/share/nushell/vendor/autoload &&
-        intelli-shell init nushell > ~/.local/share/nushell/vendor/autoload/intelli-shell.nu
-      description: Setup intelli-shell
-      quiet: true
-    - command:
+        test -f ~/.zoxide.nu ||
         zoxide init nushell > ~/.zoxide.nu
       description: Setup zoxide integration
+      quiet: true
+    # Install intelli-shell
+    - command:
+        command -v intelli-shell >/dev/null 2>&1 ||
+        curl -sSf https://raw.githubusercontent.com/lasantosr/intelli-shell/main/install.sh | INTELLI_SKIP_PROFILE=1 sh
+      description: Install intelli-shell
       quiet: true
     - command:
         test -f ~/.gitconfig &&
@@ -81,9 +97,9 @@
       description: Init argc-completion
       quiet: true
     - command:
-        test -d "${HOME}/.local/share/atuin" ||
-        mkdir ~/.local/share/atuin/ &&
-        atuin init --disable-up-arrow nu > ~/.local/share/atuin/init.nu
+        test -f ~/.local/share/atuin/init.nu ||
+        (mkdir -p ~/.local/share/atuin &&
+        atuin init --disable-up-arrow nu > ~/.local/share/atuin/init.nu)
       description: Setup atuin
       quiet: true
     # Install git-secrets
@@ -96,10 +112,11 @@
       quiet: true
     # Setup git-secrets globally for all repos
     - command:
-        git secrets --register-aws --global 2>/dev/null || true &&
+        test -d ~/.git-templates/git-secrets ||
+        (git secrets --register-aws --global 2>/dev/null || true &&
         mkdir -p ~/.git-templates/git-secrets &&
         git secrets --install ~/.git-templates/git-secrets 2>/dev/null || true &&
-        git config --global init.templateDir ~/.git-templates/git-secrets
+        git config --global init.templateDir ~/.git-templates/git-secrets)
       description: Configure git-secrets globally
       quiet: true
     # Install git-secrets hooks in dotfiles repo
@@ -108,5 +125,33 @@
         git secrets --install 2>/dev/null || true &&
         git secrets --register-aws 2>/dev/null || true
       description: Install git-secrets in dotfiles repo
+      quiet: true
+    # Install git-extras via package manager
+    - command:
+        command -v git-summary >/dev/null 2>&1 ||
+        if command -v apt-get >/dev/null 2>&1; then
+          sudo apt-get update && sudo apt-get install -y git-extras
+        elif command -v pacman >/dev/null 2>&1; then
+          sudo pacman -S --noconfirm git-extras
+        elif command -v brew >/dev/null 2>&1; then
+          brew install git-extras
+        else
+          echo "Skipping git-extras (no supported package manager)"
+        fi
+      description: Install git-extras
+      quiet: true
+    # Install git-stats (requires Node.js/npm)
+    - command:
+        command -v npm >/dev/null 2>&1 &&
+        (npm list -g git-stats >/dev/null 2>&1 || npm install -g git-stats) ||
+        echo "Skipping git-stats (npm not found)"
+      description: Install git-stats
+      quiet: true
+    # Install commitizen (requires Node.js/npm)
+    - command:
+        command -v npm >/dev/null 2>&1 &&
+        (npm list -g commitizen >/dev/null 2>&1 || npm install -g commitizen cz-conventional-changelog) ||
+        echo "Skipping commitizen (npm not found)"
+      description: Install commitizen
       quiet: true
 

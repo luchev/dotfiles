@@ -33,7 +33,9 @@ The install script will:
 - Install Rust toolchain (if needed)
 - Symlink all configuration files
 - Install cargo packages (fd, bat, ripgrep, starship, atuin, zoxide, eza, delta, gitui, etc.)
-- Setup shell integrations (zoxide, atuin, intelli-shell)
+- Install git addons (git-secrets, git-extras, git-stats, commitizen)
+- Install intelli-shell (AI-powered command suggestions)
+- Setup shell integrations (zoxide, atuin)
 - Configure git-secrets globally to prevent committing secrets
 
 ## Updating
