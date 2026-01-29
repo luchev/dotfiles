@@ -1,97 +1,144 @@
 # This is Git's per-user configuration file.
 [user]
-	email = luchevz@gmail.com
+	email = luchevz@gmail.com  # Your identity for commits
 	name = Ivan Luchev
-# Please adapt and uncomment the following lines:
-#	name = z
-#	email = z@arch.localdomain
+[init]
+	defaultBranch = main  # Default branch name for new repositories
 [core]
-	editor = nvim
-	pager = diff-so-fancy | less --tabs=4 -RFX
-  fsmonitor = true
+	editor = nvim  # Default text editor for commit messages
+	pager = diff-so-fancy | less --tabs=4 -RFX  # Fancy diff output with color highlighting
+	fsmonitor = true  # Use filesystem monitor for faster git status in large repos
 [diff]
-	tool = vimdiff
+	tool = vimdiff  # Use vimdiff for visual diffs
+	algorithm = histogram  # Histogram algorithm produces better diffs than default myers
+	colorMoved = default  # Highlight code that was moved between files
+	colorMovedWS = allow-indentation-change  # Ignore indentation changes when detecting moved code
 [merge]
-	tool = vimdiff
-	conflictstyle = diff3
+	tool = vimdiff  # Use vimdiff for resolving merge conflicts
+	conflictstyle = diff3  # Show common ancestor in conflict markers (3-way diff)
+[commit]
+	verbose = true  # Show diff in commit message editor
+[push]
+	default = simple  # Only push current branch to its upstream
+	autoSetupRemote = true  # Automatically create remote branch on first push
+	followTags = true  # Push annotated tags along with commits
+[pull]
+	rebase = true  # Use rebase instead of merge when pulling
+[fetch]
+	prune = true  # Auto-delete local refs to deleted remote branches
+	pruneTags = true  # Also auto-delete tags removed from remote
+[rebase]
+	autoStash = true  # Automatically stash/unstash changes when rebasing
+	autoSquash = true  # Auto-squash commits marked with fixup!/squash!
+	updateRefs = true  # Update branch pointers during rebase (Git 2.38+)
+[feature]
+	manyFiles = true  # Optimize performance for repositories with many files
+[transfer]
+	fsckobjects = true  # Verify objects on transfer for security
+[receive]
+	fsckObjects = true  # Verify integrity of received objects on fetch/pull
+[help]
+	autocorrect = 10  # Auto-run corrected command after 1 second (10 deciseconds)
+[status]
+	showUntrackedFiles = all  # Show all untracked files in directories
+	submoduleSummary = true  # Show summary of submodule changes
+[log]
+	abbrevCommit = true  # Use abbreviated commit hashes
+	follow = true  # Continue listing file history beyond renames
+[blame]
+	ignoreRevsFile = .git-blame-ignore-revs  # Ignore formatting commits specified in this file
+	markIgnoredLines = true  # Mark lines ignored by ignoreRevsFile
+	markUnblamableLines = true  # Mark lines that can't be blamed
 [mergetool]
-	prompt = false
+	prompt = false  # Don't prompt before launching merge tool
 [maintenance]
-  auto = false
-  strategy = incremental
+	auto = false  # Don't run automatic background maintenance
+	strategy = incremental  # Use incremental maintenance strategy when run manually
 [interactive]
-	diffFilter = diff-so-fancy --patch
+	diffFilter = diff-so-fancy --patch  # Use diff-so-fancy for interactive commands (add -p, etc.)
 [branch]
-  # Sort git branch by latest commit
-  sort = -committerdate
+	sort = -committerdate  # Sort git branch by latest commit
 [color]
-	ui = true
+	ui = true  # Enable colored output in Git commands
 [color "diff-highlight"]
-	oldNormal = red bold
+	oldNormal = red bold  # Colors for removed lines
 	oldHighlight = red bold 52
-	newNormal = green bold
+	newNormal = green bold  # Colors for added lines
 	newHighlight = green bold 22
 [color "diff"]
-	meta = 11
-	frag = magenta bold
-	func = 146 bold
-	commit = yellow bold
-	old = red bold
-	new = green bold
-	whitespace = red reverse
+	meta = 11  # File metadata color
+	frag = magenta bold  # Hunk header color
+	func = 146 bold  # Function name in hunk header
+	commit = yellow bold  # Commit hash color
+	old = red bold  # Removed lines color
+	new = green bold  # Added lines color
+	whitespace = red reverse  # Whitespace errors
 [column]
-  # Git branch output multiple columns
-  ui = "auto"
+	ui = "auto"  # Git branch output multiple columns
 [rerere]
-  # Remember how a conflict was resolved and if seen again reuse that resolution
-  enabled = true
+	enabled = true  # Remember how conflicts were resolved and reuse solutions
 [alias]
-    a = add
-    aa = add --all
-    au = add --update
-    amend = commit --amend --reuse-message=HEAD
-    b = branch
-    bd = branch --delete
-    # blame but ignore code moves in any commit, ignore white-space
-    bl = blame -C -C -C -w
-    c = commit
-    cm = commit --message
-    cv = commit --verbose
-    ce = commit --allow-empty
-    cl = clone --filter=tree:0 --filter=blob:none
-    cn = config
-    cng = config --global
-    cp = cherry-pick -x
-    d = diff
-    ds = diff --staged
-    # Word-based diff instead of line-based
-    dw = diff --word-diff
-    # Remove branches that have already been merged with main
-    dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
-    f = fetch
-    # Pretty log of commits. Supports options of git log
-    # The 8-char abbreviation works well with the default pretty format below
-    # l = log --abbrev-commit --abbrev=8
-    l = log --date=format:'%Y-%m-%d %H:%M:%S' --pretty=format:"- %h [%ad]: %s (@%al)"
-    lg = log --abbrev-commit --abbrev=8 --graph
-    # look in the log given a regular expression
-    lgS = log -S
-    m = merge
-    mt = mergetool
-    p = push
-    # Force push if nobody else has pushed to the branch
-    pf = push --force-with-lease
-    pl = pull --ff-only --rebase
-    r = remote
-    rb = rebase
-    rs = reset
-    s = status --short --branch
-    sh = show
-    sw = switch
-    swc = switch --create
-    st = stash --all
-    t = tag
-    upstream = reset --soft @{u}
-    unstage = restore --staged
-# [include]
-#   path = "~/.dotfiles/gitconfig"
+    a = add  # Add files to staging area
+    aa = add --all  # Add all files (tracked and untracked)
+    au = add --update  # Add only modified tracked files
+    amend = commit --amend --reuse-message=HEAD  # Amend last commit without changing message
+    b = branch  # Branch shorthand
+    bd = branch --delete  # Delete branch
+    bl = blame -C -C -C -w  # Blame but ignore code moves and whitespace
+    c = commit  # Commit shorthand
+    cm = commit --message  # Commit with inline message
+    cv = commit --verbose  # Commit with verbose diff
+    ce = commit --allow-empty  # Create empty commit
+    cl = clone --filter=tree:0 --filter=blob:none  # Partial clone (faster for large repos)
+    cn = config  # Config shorthand
+    cng = config --global  # Global config shorthand
+    cp = cherry-pick -x  # Cherry-pick with commit reference
+    d = diff  # Diff shorthand
+    ds = diff --staged  # Diff staged changes
+    dw = diff --word-diff  # Word-based diff instead of line-based
+    dm = "!git branch --merged | grep -v '\\*\\|main\\|master\\|develop' | xargs -n 1 git branch -d"  # Remove merged branches
+    f = fetch  # Fetch shorthand
+    l = log --date=format:'%Y-%m-%d %H:%M:%S' --pretty=format:"- %h [%ad]: %s (@%al)" # Pretty log of commits. Supports options of git log
+    lg = log --abbrev-commit --abbrev=8 --graph  # Log with graph
+    lgS = log -S  # Look in the log given a regular expression
+    m = merge  # Merge shorthand
+    mt = mergetool  # Launch merge tool
+    p = push  # Push shorthand
+    pf = push --force-with-lease  # Force push if nobody else has pushed to the branch
+    pl = pull --ff-only --rebase  # Pull with fast-forward only and rebase
+    r = remote  # Remote shorthand
+    rb = rebase  # Rebase shorthand
+    rs = reset  # Reset shorthand
+    s = status --short --branch  # Compact status output
+    sh = show  # Show shorthand
+    sw = switch  # Switch branch
+    swc = switch --create  # Create and switch to new branch
+    st = stash --all  # Stash all files (including untracked)
+    t = tag  # Tag shorthand
+    upstream = reset --soft @{u}  # Reset to upstream branch (keep commits as uncommitted changes)
+    unstage = restore --staged  # Unstage files
+    sw- = switch -  # Switch to previous branch
+    co- = checkout -  # Checkout previous branch
+    graph = log --graph --oneline --decorate --all  # Beautiful graph log
+    tree = log --graph --oneline --decorate --all --abbrev-commit  # Tree view of all branches
+    find = log --all --oneline --grep  # Find commits by message
+    files = diff-tree --no-commit-id --name-only -r  # Show files changed in a commit
+    aliases = config --get-regexp '^alias\\.'  # List all aliases
+    br = branch -vv  # List branches with last commit info
+    unmerged = branch --no-merged main  # List branches not merged into main
+    gone = ! git fetch -p && git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -D  # Prune local branches whose remotes are gone
+    recent = branch --sort=-committerdate --format='%(committerdate:relative)%09%(refname:short)'  # Recent branches
+    undo-commit = reset HEAD~1 --mixed  # Undo last commit but keep changes
+    undo-last = reset --hard @{1}  # Undo last operation using reflog (WARNING: destroys uncommitted work)
+    discard = checkout -- .  # Discard all local changes
+    hardreset = !git fetch origin && git reset --hard origin/$(git rev-parse --abbrev-ref HEAD)  # Reset to remote branch
+    stashes = stash list --pretty=format:'%C(yellow)%gd%Creset %>(14)%Cgreen%cr%Creset %s'  # List stashes with details
+    stm = stash push -m  # Stash with message
+    pop = stash pop  # Apply last stash and drop it
+    findfile = !git log --all --full-history --pretty=format: --name-only | grep -i  # Find file in history
+    contributors = shortlog --summary --numbered --email  # Show contributors
+    ignored = !git ls-files -v | grep "^[[:lower:]]"  # Show ignored files
+    count = shortlog -sn  # Count commits by author
+    today = log --since=midnight --oneline --author=$(git config user.email)  # Show today's work
+    optimize = !git repack -ad && git prune && git gc --aggressive  # Optimize repository
+    prune-all = !git remote | xargs -n 1 git remote prune  # Remove gone remote branches
