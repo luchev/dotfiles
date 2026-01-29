@@ -52,6 +52,15 @@
   #   description: Install Oh-My-ZSH
   #   quiet: true
     - command:
+        cargo install fd bat ripgrep starship atuin zoxide eza bottom dust fd just trippy pueue gitui bandwhich procs intelli-shell yazi navi tlrc
+      description: Install cargo packages
+      quiet: true
+    - command:
+        mkdir "$(nu -c '$nu.data-dir | path join vendor/autoload')" ;
+        nu -c 'intelli-shell init nushell | save -f ($nu.data-dir | path join "vendor/autoload/intelli-shell.nu")'
+      description: Setup intelli-shell
+      quiet: true
+    - command:
         test -d "${HOME}/.local/bin/diff-so-fancy" ||
         git clone https://github.com/so-fancy/diff-so-fancy ~/.local/bin/diff-so-fancy
       description: Install diff-so-fancy
