@@ -6,8 +6,13 @@
 	defaultBranch = main  # Default branch name for new repositories
 [core]
 	editor = nvim  # Default text editor for commit messages
-	pager = diff-so-fancy | less --tabs=4 -RFX  # Fancy diff output with color highlighting
+	pager = delta  # Use delta for better diffs
 	fsmonitor = true  # Use filesystem monitor for faster git status in large repos
+[delta]
+	navigate = true  # Use n/N to navigate between diff sections
+	side-by-side = true  # Show diffs side-by-side
+	line-numbers = true  # Show line numbers
+	dark = true  # Use dark theme (set to false for light terminals)
 [diff]
 	tool = vimdiff  # Use vimdiff for visual diffs
 	algorithm = histogram  # Histogram algorithm produces better diffs than default myers
@@ -15,7 +20,7 @@
 	colorMovedWS = allow-indentation-change  # Ignore indentation changes when detecting moved code
 [merge]
 	tool = vimdiff  # Use vimdiff for resolving merge conflicts
-	conflictstyle = diff3  # Show common ancestor in conflict markers (3-way diff)
+	conflictstyle = zdiff3  # Show common ancestor in conflict markers (enhanced 3-way diff)
 [commit]
 	verbose = true  # Show diff in commit message editor
 [push]
@@ -55,7 +60,7 @@
 	auto = false  # Don't run automatic background maintenance
 	strategy = incremental  # Use incremental maintenance strategy when run manually
 [interactive]
-	diffFilter = diff-so-fancy --patch  # Use diff-so-fancy for interactive commands (add -p, etc.)
+	diffFilter = delta --color-only  # Use delta for interactive commands (add -p, etc.)
 [branch]
 	sort = -committerdate  # Sort git branch by latest commit
 [color]

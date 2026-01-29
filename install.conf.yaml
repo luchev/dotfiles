@@ -46,7 +46,6 @@
 
 
 - shell:
-    # Install Rust if not present
     - command:
         command -v rustup >/dev/null 2>&1 ||
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
@@ -57,7 +56,7 @@
       description: Update Rust to latest stable version
       quiet: true
     - command:
-        cargo install fd-find bat ripgrep starship atuin zoxide eza bottom du-dust just trippy pueue gitui bandwhich procs intelli-shell yazi-build navi tlrc
+        cargo install fd-find bat ripgrep starship atuin zoxide eza bottom du-dust just trippy pueue gitui bandwhich procs intelli-shell yazi-fm navi tlrc git-delta
       description: Install cargo packages
       quiet: true
     - command:
@@ -66,18 +65,8 @@
       description: Setup intelli-shell
       quiet: true
     - command:
-        test -d "${HOME}/.local/bin/diff-so-fancy" ||
-        git clone https://github.com/so-fancy/diff-so-fancy ~/.local/bin/diff-so-fancy
-      description: Install diff-so-fancy
-      quiet: true
-    - command:
-        which starship || sh -c "$(curl -fsSL https://starship.rs/install.sh)" -s '-f' >/dev/null 2>&1
-      description: Install starship
-      quiet: true
-    - command:
-        test -d "${HOME}/.zoxide.nu" ||
         zoxide init nushell > ~/.zoxide.nu
-      description: Setup zoxide
+      description: Setup zoxide integration
       quiet: true
     - command:
         test -f ~/.gitconfig &&

@@ -9,10 +9,10 @@ Personal configuration files for a productive development environment across Lin
 - **Terminal**: Alacritty, WezTerm, and Termux support
 - **Multiplexer**: Tmux and Zellij configurations
 - **Prompt**: Starship cross-shell prompt
-- **Git**: Enhanced configuration with powerful aliases
-- **Tools**: fd, bat, ripgrep, eza, zoxide, atuin, and more
+- **Git**: Enhanced configuration with delta diff viewer and 60+ aliases
+- **Tools**: fd, bat, ripgrep, eza, zoxide, atuin, delta, and more
 
-## Quick Start
+## Installation
 
 ### Prerequisites
 
@@ -20,16 +20,39 @@ Personal configuration files for a productive development environment across Lin
 - Curl
 - Build tools (build-essential on Debian/Ubuntu, base-devel on Arch)
 - Python 3
-- Rust/Cargo (optional, will be installed automatically)
 
-### Installation
+### Install
 
 ```bash
-# Clone repository
 git clone --recurse-submodules https://github.com/yourusername/dotfiles ~/.dotfiles
-
-# Install
 cd ~/.dotfiles
 ./install
 ```
+
+The install script will:
+- Install Rust toolchain (if needed)
+- Symlink all configuration files
+- Install cargo packages (fd, bat, ripgrep, starship, atuin, zoxide, eza, delta, gitui, etc.)
+- Setup shell integrations (zoxide, atuin, intelli-shell)
+- Configure git-secrets globally to prevent committing secrets
+
+## Updating
+
+```bash
+cd ~/.dotfiles
+git pull --rebase --recurse-submodules
+git submodule update --init --recursive
+./install
+```
+
+## Customization
+
+Create local overrides that won't be committed:
+- `~/.gitconfig.local` - Git local config
+- `~/.config/nushell/config.local.nu` - Nushell local config
+- `~/.zshrc.local` - Zsh local config
+
+## License
+
+MIT License
 
