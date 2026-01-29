@@ -368,17 +368,39 @@ return {
     end,
   },
 
-  -- file managing , picker etc
   {
-    "nvim-tree/nvim-tree.lua",
-    cmd = { "NvimTreeToggle", "NvimTreeFocus" },
-    opts = function()
-      return require "configs.nvimtree"
-    end,
-    config = function(_, opts)
-      dofile(vim.g.base46_cache .. "nvimtree")
-      require("nvim-tree").setup(opts)
-    end,
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v3.x",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons",
+      "MunifTanjim/nui.nvim",
+    },
+    cmd = { "Neotree" },
+    keys = {
+      { "<C-n>", "<cmd>Neotree toggle<cr>", desc = "NeoTree toggle" },
+      { "<leader>e", "<cmd>Neotree focus<cr>", desc = "NeoTree focus" },
+    },
+    opts = {
+      close_if_last_window = true,
+      popup_border_style = "rounded",
+      enable_git_status = true,
+      enable_diagnostics = true,
+      filesystem = {
+        filtered_items = {
+          hide_dotfiles = false,
+          hide_gitignored = false,
+        },
+        follow_current_file = {
+          enabled = true,
+        },
+        use_libuv_file_watcher = true,
+      },
+      window = {
+        position = "left",
+        width = 40,
+      },
+    },
   },
 
   {
@@ -533,11 +555,19 @@ return {
   },
 
   {
-    "kylechui/nvim-surround",
-    version = "*", -- Use for stability; omit to use `main` branch for the latest features
+    "echasnovski/mini.nvim",
+    version = "*",
     event = "VeryLazy",
     config = function()
-      require("nvim-surround").setup {}
+      require("mini.surround").setup()
+      require("mini.ai").setup()
+      require("mini.pairs").setup()
+      require("mini.bufremove").setup()
+      require("mini.indentscope").setup({
+        symbol = "│",
+        options = { try_as_border = true },
+      })
+      require("mini.move").setup()
     end,
   },
 
@@ -599,6 +629,72 @@ return {
     opts = function()
       return require "configs.flash"
     end,
+  },
+
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
+    event = "BufReadPre",
+    opts = {
+      indent = {
+        char = "│",
+      },
+      scope = {
+        enabled = false,
+      },
+    },
+  },
+
+  {
+    "folke/todo-comments.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    event = "BufReadPre",
+    opts = {},
+    keys = {
+      { "<leader>xt", "<cmd>TodoTrouble<cr>", desc = "Todo (Trouble)" },
+      { "<leader>xT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme (Trouble)" },
+      { "<leader>st", "<cmd>TodoTelescope<cr>", desc = "Todo" },
+      { "<leader>sT", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme" },
+    },
+  },
+
+  {
+    "RRethy/vim-illuminate",
+    event = "BufReadPost",
+    opts = {
+      delay = 200,
+      large_file_cutoff = 2000,
+      large_file_overrides = {
+        providers = { "lsp" },
+      },
+    },
+    config = function(_, opts)
+      require("illuminate").configure(opts)
+    end,
+  },
+
+  {
+    "stevearc/aerial.nvim",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+    },
+    cmd = { "AerialToggle", "AerialOpen", "AerialClose" },
+    keys = {
+      { "<leader>o", "<cmd>AerialToggle<cr>", desc = "Aerial toggle (outline)" },
+    },
+    opts = {
+      backends = { "lsp", "treesitter", "markdown", "asciidoc", "man" },
+      layout = {
+        max_width = { 40, 0.2 },
+        width = nil,
+        min_width = 30,
+        default_direction = "prefer_right",
+      },
+      attach_mode = "global",
+      close_on_select = true,
+      show_guides = true,
+    },
   },
 
   {

@@ -128,6 +128,11 @@ if not ("~/.zoxide.nu" | path exists) {
 mkdir ~/.cache/starship
 starship init nu | save -f ~/.cache/starship/init.nu
 
+# Setup intelli-shell
+if not ("~/.intelli-shell.nu" | path exists) {
+  intelli-shell init nu | save -f ~/.intelli-shell.nu
+}
+
 # Make repository status check for large repositories faster
 $env.DISABLE_UNTRACKED_FILES_DIRTY = true
 # History timestamp
@@ -149,7 +154,7 @@ if ('EDITOR' not-in $env) {
 
 do --env {
     let ssh_agent_file = (
-        $nu.temp-path | path join $"ssh-agent-($env.USER? | default $env.USERNAME).nuon"
+        $nu.temp-dir | path join $"ssh-agent-($env.USER? | default $env.USERNAME).nuon"
     )
 
     if ($ssh_agent_file | path exists) {
@@ -175,3 +180,6 @@ do --env {
 $env.HISTFILE = $nu.history-path
 
 $env.ZELLIJ_CONFIG_DIR = $env.HOME + '/.config/zellij'
+
+# Intelli-shell keybind configuration
+$env.INTELLI_SEARCH_HOTKEY = "control char_k"

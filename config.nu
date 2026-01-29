@@ -153,7 +153,7 @@ let zoxide_completer = {|spans|
 let external_completer = {|spans|
     let expanded_alias = scope aliases
     | where name == $spans.0
-    | get -i 0.expansion
+    | get -o 0.expansion
 
     let spans = if $expanded_alias != null {
         $spans
@@ -931,6 +931,16 @@ source ~/.zoxide.nu
 # Load autin (better history)
 source ~/.local/share/atuin/init.nu
 
+# Thefuck integration for Nushell
+def fk [] {
+    with-env {TF_ALIAS: "fk", PYTHONIOENCODING: "utf-8"}  {
+        let cmd = thefuck (history | last 1 | get command.0)
+        if ( $cmd | is-not-empty ) {
+            nu -c $cmd
+        }
+    }
+}
+
 # Theme
 source ~/.dotfiles/nu_scripts/themes/nu-themes/monokai-soda.nu
 #source ~/.dotfiles/nu_scripts/themes/nu-themes/cobalt-neon.nu
@@ -945,6 +955,9 @@ source ~/.dotfiles/nu_scripts/themes/nu-themes/monokai-soda.nu
 def argc-generate [cmd] {
   bash ($env.HOME + /.dotfiles/argc-completions/scripts/generate.sh) $cmd | save -f ($env.HOME + "/.dotfiles/argc-custom-completions/" + $cmd + ".sh")
 }
+
+# Load intelli-shell
+source ~/.intelli-shell.nu
 
 # Load the starship prompt
 use ~/.cache/starship/init.nu
