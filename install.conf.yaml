@@ -16,7 +16,7 @@
     ~/.config/nvim:
       path: nvim
       force: true
-    ~/.config/starship.toml: starship 
+    ~/.config/starship.toml: starship.toml 
     ~/.tmux.conf:
         path: tmux
         force: true
@@ -59,6 +59,7 @@
       quiet: false
     # Install essential CLI tools via package manager
     - command: |
+        bash -c '
         PACKAGES="fzf jq yq direnv htop"
         MISSING=""
         for pkg in $PACKAGES; do
@@ -81,6 +82,7 @@
         else
           echo "All essential packages already installed"
         fi
+        '
       description: Install essential CLI tools
       quiet: false
     # Install thefuck
