@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+set -e
+
+BACKUP_DIR="${HOME}/.dotfiles/backups"
+BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Remove old backup if it exists
+if [ -d "${BACKUP_DIR}" ]; then
+    echo "Removing old backup..."
+    rm -rf "${BACKUP_DIR}"
+fi
+
+mkdir -p "${BACKUP_DIR}"
+
+echo "Creating backup in ${BACKUP_DIR}..."
+
+# Backup intelli-shell user commands and completions
+if command -v intelli-shell >/dev/null 2>&1; then
+    echo "Backing up intelli-shell data..."
+    intelli-shell export --file "${BACKUP_DIR}/intelli-shell-user-commands.txt" 2>/dev/null || echo "Warning: intelli-shell export failed"
+fi
+
+echo ""
+echo "Backup completed successfully!"
+echo "Location: ${BACKUP_DIR}"
+echo ""
+echo "To restore intelli-shell data:"
+echo "  intelli-shell import --file ${BACKUP_DIR}/intelli-shell-user-commands.txt"
+echo ""
