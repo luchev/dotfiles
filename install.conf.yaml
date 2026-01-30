@@ -20,9 +20,6 @@
     ~/.tmux.conf:
         path: tmux
         force: true
-    ~/.config/alacritty/alacritty.toml:
-      path: alacritty.toml
-      force: true
     ~/.zsh_plugins.txt: zsh_plugins.txt
     ~/.wezterm.lua: wezterm.lua
     ~/Library/Application Support/nushell/config.nu:
