@@ -26,16 +26,16 @@
     ~/.zsh_plugins.txt: zsh_plugins.txt
     ~/.wezterm.lua: wezterm.lua
     ~/Library/Application Support/nushell/config.nu:
-      path: config.nu
+      path: nushell/config.nu
       force: true
     ~/Library/Application Support/nushell/env.nu:
-      path: env.nu
+      path: nushell/env.nu
       force: true
     ~/.config/nushell/config.nu:
-      path: config.nu
+      path: nushell/config.nu
       force: true
     ~/.config/nushell/env.nu:
-      path: env.nu
+      path: nushell/env.nu
       force: true
     ~/.config/zellij:
       path: zellij
@@ -69,8 +69,9 @@
             MISSING="$MISSING $pkg"
           fi
         done
+        MISSING=$(echo $MISSING | xargs)
         if [ -n "$MISSING" ]; then
-          echo "Installing missing packages:$MISSING"
+          echo "Installing missing packages: $MISSING"
           if command -v apt-get >/dev/null 2>&1; then
             sudo apt-get update && sudo apt-get install -y $MISSING
           elif command -v pacman >/dev/null 2>&1; then
