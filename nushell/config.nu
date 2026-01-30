@@ -139,11 +139,15 @@ let light_theme = {
 # External completer
 
 let argc_completer = {|spans|
-    argc --argc-compgen nushell "" ...$spans
+    let argc_completions = (argc --argc-compgen nushell "" ...$spans
         | split row "\n"
         | each { |line| $line | split column "\t" value description }
-        | flatten 
-        | get value
+        | flatten
+        | get value)
+
+    let file_completions = (ls | get name)
+
+    ($argc_completions | append $file_completions | uniq)
 }
 
 let zoxide_completer = {|spans|
@@ -164,7 +168,7 @@ let external_completer = {|spans|
     }
 
     match $spans.0 {
-        __zoxide_z | __zoxide_zi => $zoxide_completer # zoxide has custom completer
+        __zoxide_z | __zoxide_zi => $zoxide_completer
         _ => $argc_completer
     } | do $in $spans
 }
@@ -898,9 +902,13 @@ $env.config = {
 alias v = nvim
 alias g = git
 alias e = eza --color=auto --icons=auto
-alias h = hstr
+alias h = atuin
 alias f = fdfind
+alias s = fd-find
 alias b = bat
+alias y = yazi
+alias t = tldr
+alias n = navi
 alias zj = zellij
 alias rg = rg --color=auto
 alias rgc = rg --color=always

@@ -52,12 +52,10 @@
         rustup update stable
       description: Update Rust to latest stable version
       quiet: false
-    # Install cargo packages
     - command: |
           cargo install fd-find bat ripgrep starship atuin zoxide eza bottom du-dust just trippy pueue gitui bandwhich procs yazi-fm navi tlrc git-delta
       description: Install cargo packages
       quiet: false
-    # Install essential CLI tools via package manager
     - command: |
         bash -c '
         PACKAGES="fzf jq yq direnv htop"
@@ -85,7 +83,6 @@
         '
       description: Install essential CLI tools
       quiet: false
-    # Install thefuck
     - command:
         command -v thefuck >/dev/null 2>&1 ||
         (command -v pipx >/dev/null 2>&1 && pipx install thefuck) ||
@@ -99,26 +96,30 @@
         zoxide init nushell > ~/.zoxide.nu
       description: Setup zoxide integration
       quiet: false
-    # Install intelli-shell
+    - command:
+        command -v pueued >/dev/null 2>&1 &&
+        command -v systemctl >/dev/null 2>&1 &&
+        systemctl --user enable pueued 2>/dev/null &&
+        systemctl --user start pueued 2>/dev/null ||
+        echo "Skipping pueue daemon setup (systemctl or pueued not available)"
+      description: Setup and start pueue daemon
+      quiet: false
     - command:
         command -v intelli-shell >/dev/null 2>&1 ||
         curl -sSf https://raw.githubusercontent.com/lasantosr/intelli-shell/main/install.sh | INTELLI_SKIP_PROFILE=1 sh
       description: Install intelli-shell
       quiet: false
-    # Fetch tldr data for intelli-shell
     - command:
         command -v intelli-shell >/dev/null 2>&1 &&
         intelli-shell tldr fetch 2>/dev/null || echo "Skipping tldr fetch"
       description: Fetch tldr data for intelli-shell
       quiet: false
-    # Restore intelli-shell backup if it exists
     - command:
         test -f ~/.dotfiles/backups/intelli-shell-user-commands.txt &&
         intelli-shell import --file ~/.dotfiles/backups/intelli-shell-user-commands.txt 2>/dev/null ||
         echo "No intelli-shell backup to restore"
       description: Restore intelli-shell backup
       quiet: false
-    # Fix intelli-shell Nushell compatibility
     - command: |
         INTELLI_FILE=~/.local/share/nushell/vendor/autoload/intelli-shell.nu
         if [ -f "$INTELLI_FILE" ]; then
@@ -135,9 +136,17 @@
       quiet: false
     - command:
         cd ~/.dotfiles/argc-completions &&
-        (./scripts/download-tools.sh --force 2>/dev/null || echo "argc download failed, skipping") &&
-        (./scripts/setup-shell.sh nushell 2>/dev/null || echo "argc setup failed, skipping")
-      description: Init argc-completion
+        ./scripts/download-tools.sh --force 2>/dev/null || echo "argc tools download failed, skipping"
+      description: Download argc and yq tools
+      quiet: false
+    - command:
+        bash -c '
+        if command -v ~/.dotfiles/argc-completions/bin/argc >/dev/null 2>&1; then
+          mkdir -p ~/.dotfiles/argc-completions/tmp
+          ~/.dotfiles/argc-completions/bin/argc --argc-completions nushell > ~/.dotfiles/argc-completions/tmp/argc-completions.nu 2>/dev/null || echo "Warning: argc completions generation failed"
+        fi
+        '
+      description: Generate argc completions for nushell
       quiet: false
     - command:
         test -f ~/.local/share/atuin/init.nu ||
@@ -145,7 +154,6 @@
         atuin init --disable-up-arrow nu > ~/.local/share/atuin/init.nu)
       description: Setup atuin
       quiet: false
-    # Install git-secrets
     - command:
         command -v git-secrets >/dev/null 2>&1 ||
         (git clone https://github.com/awslabs/git-secrets /tmp/git-secrets &&
@@ -153,7 +161,6 @@
         rm -rf /tmp/git-secrets)
       description: Install git-secrets
       quiet: false
-    # Setup git-secrets globally for all repos
     - command:
         test -d ~/.git-templates/git-secrets ||
         (git secrets --register-aws --global 2>/dev/null || true &&
@@ -162,14 +169,12 @@
         git config --global init.templateDir ~/.git-templates/git-secrets)
       description: Configure git-secrets globally
       quiet: false
-    # Install git-secrets hooks in dotfiles repo
     - command:
         cd ~/.dotfiles &&
         git secrets --install 2>/dev/null || true &&
         git secrets --register-aws 2>/dev/null || true
       description: Install git-secrets in dotfiles repo
       quiet: false
-    # Install git-extras via package manager
     - command: >
         command -v git-summary >/dev/null 2>&1 ||
         (if command -v apt-get >/dev/null 2>&1; then
@@ -183,14 +188,12 @@
         fi)
       description: Install git-extras
       quiet: false
-    # Install git-stats (requires Node.js/npm)
     - command:
         command -v npm >/dev/null 2>&1 &&
         (npm list -g git-stats >/dev/null 2>&1 || npm install -g git-stats) ||
         echo "Skipping git-stats (npm not found)"
       description: Install git-stats
       quiet: false
-    # Install commitizen (requires Node.js/npm)
     - command:
         command -v npm >/dev/null 2>&1 &&
         (npm list -g commitizen >/dev/null 2>&1 || npm install -g commitizen cz-conventional-changelog) ||
