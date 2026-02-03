@@ -144,3 +144,7 @@ end, { desc = "Flash search" })
 map("n", "S", function()
   require("flash").treesitter()
 end, { desc = "Flash Treesitter" })
+
+map("n", "<C-n>", "<cmd>Neotree toggle<CR>", { desc = "NeoTree toggle" })
+map("n", "<leader>e", "<cmd>Neotree toggle<CR>", { desc = "NeoTree toggle" })
+

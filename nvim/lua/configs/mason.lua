@@ -1,11 +1,12 @@
 local options = {
   ensure_installed = {
     "lua-language-server",
-    "luacheck",
+    "selene",
     "stylua",
     "gofumpt",
     "golines",
     "goimports-reviser",
+    "golangci-lint",
     "codespell",
     "vale",
     "kdlfmt",

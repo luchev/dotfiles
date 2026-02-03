@@ -5,24 +5,24 @@ M.linters_by_ft = {
   typescript = { "eslint_d" },
   python = { "flake8" },
   markdown = { "vale" },
-  lua = { "luacheck" },
+  lua = { "selene" },
+  go = { "golangcilint" },
+  rust = { "clippy" },
 }
 
 M.linters = {
-  luacheck = {
-    cmd = "luacheck",
+  selene = {
+    cmd = vim.fn.stdpath("data") .. "/mason/bin/selene",
     stdin = true,
-    args = {
-      "--globals",
-      "vim",
-      "lvim",
-      "reload",
-      "--",
-    },
+    args = { "--display-style", "quiet", "-" },
     stream = "stdout",
     ignore_exitcode = true,
-    parser = require("lint.parser").from_errorformat("%f:%l:%c: %m", {
-      source = "luacheck",
+    parser = require("lint.parser").from_errorformat("%f:%l:%c: %t%*[^:]: %m", {
+      source = "selene",
+      severity = {
+        E = vim.diagnostic.severity.ERROR,
+        W = vim.diagnostic.severity.WARN,
+      },
     }),
   },
 }

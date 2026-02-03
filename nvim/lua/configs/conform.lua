@@ -15,10 +15,6 @@ local options = {
       prepend_args = { "-format", "-rm-unused", "-set-alias" },
     },
   },
-  -- format_on_save = {
-  --   timeout_ms = 2000,
-  --   lsp_format = "fallback",
-  -- },
 }
 
 return options
