@@ -302,6 +302,10 @@ return {
       local has_aifx = vim.fn.executable "aifx" == 1
       return {
         terminal_cmd = has_aifx and "aifx agent run claude" or nil,
+        terminal = {
+          split_side = "right",
+          split_width_percentage = 0.5,
+        },
       }
     end,
     keys = {
