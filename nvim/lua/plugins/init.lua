@@ -536,6 +536,12 @@ return {
     -- Dim inactive windows for better focus
     "tadaa/vimade",
     event = "VeryLazy",
+    opts = {
+      recipe = {"minimalist", {animate = false}
+    },
+    fadelevel = 0.3,
+  }
+
   },
 
   {
