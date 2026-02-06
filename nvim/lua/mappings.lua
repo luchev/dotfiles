@@ -38,20 +38,53 @@ map("n", "<leader>rn", function()
   vim.lsp.buf.rename()
 end, { desc = "LSP rename" })
 map("n", "<leader>lf", function()
-  vim.diagnostic.open_float { border = "rounded" }
+  vim.diagnostic.open_float({ border = "rounded" })
 end, { desc = "Floating diagnostic" })
 map("n", "[d", function()
-  vim.diagnostic.goto_prev { float = { border = "rounded" } }
+  vim.diagnostic.jump({ count = -1, float = { border = "rounded" } })
 end, { desc = "Goto prev" })
 map("n", "]d", function()
-  vim.diagnostic.goto_next { float = { border = "rounded" } }
+  vim.diagnostic.jump({ count = 1, float = { border = "rounded" } })
 end, { desc = "Goto next" })
 map("n", "[q", function()
-  vim.diagnostic.goto_prev { severity = { min = vim.diagnostic.severity.WARN }, float = { border = "rounded" } }
+  vim.diagnostic.jump({ count = -1, severity = { min = vim.diagnostic.severity.WARN }, float = { border = "rounded" } })
 end, { desc = "Goto prev issue (error/warning)" })
 map("n", "]q", function()
-  vim.diagnostic.goto_next { severity = { min = vim.diagnostic.severity.WARN }, float = { border = "rounded" } }
+  vim.diagnostic.jump({ count = 1, severity = { min = vim.diagnostic.severity.WARN }, float = { border = "rounded" } })
 end, { desc = "Goto next issue (error/warning)" })
+map("n", "[j", "<C-o>", { desc = "Jump back" })
+map("n", "]j", "<C-i>", { desc = "Jump forward" })
+
+-- Buffer navigation
+map("n", "[b", "<cmd>bprevious<CR>", { desc = "Prev buffer" })
+map("n", "]b", "<cmd>bnext<CR>", { desc = "Next buffer" })
+
+-- Quickfix and location list
+map("n", "[c", "<cmd>cprevious<CR>", { desc = "Prev quickfix" })
+map("n", "]c", "<cmd>cnext<CR>", { desc = "Next quickfix" })
+map("n", "[l", "<cmd>lprevious<CR>", { desc = "Prev loclist" })
+map("n", "]l", "<cmd>lnext<CR>", { desc = "Next loclist" })
+
+-- Git hunks (gitsigns)
+map("n", "[h", function()
+  require("gitsigns").prev_hunk()
+end, { desc = "Prev git hunk" })
+map("n", "]h", function()
+  require("gitsigns").next_hunk()
+end, { desc = "Next git hunk" })
+
+-- Changes in changelist
+map("n", "[g", "g;", { desc = "Prev change" })
+map("n", "]g", "g,", { desc = "Next change" })
+
+-- TODO comments
+map("n", "[t", function()
+  require("todo-comments").jump_prev()
+end, { desc = "Prev todo comment" })
+map("n", "]t", function()
+  require("todo-comments").jump_next()
+end, { desc = "Next todo comment" })
+
 map("n", "<leader>q", function()
   vim.diagnostic.setloclist()
 end, { desc = "Diagnostic setloclist" })
