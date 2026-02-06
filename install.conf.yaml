@@ -139,13 +139,11 @@
         ./scripts/download-tools.sh --force 2>/dev/null || echo "argc tools download failed, skipping"
       description: Download argc and yq tools
       quiet: false
-    - command:
-        bash -c '
+    - command: |
         if command -v ~/.dotfiles/argc-completions/bin/argc >/dev/null 2>&1; then
           mkdir -p ~/.dotfiles/argc-completions/tmp
           ~/.dotfiles/argc-completions/bin/argc --argc-completions nushell > ~/.dotfiles/argc-completions/tmp/argc-completions.nu 2>/dev/null || echo "Warning: argc completions generation failed"
         fi
-        '
       description: Generate argc completions for nushell
       quiet: false
     - command:

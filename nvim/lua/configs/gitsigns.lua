@@ -11,7 +11,7 @@ local options = {
     -- Add alias for :Gitsigns
     vim.cmd [[ cnoreabbrev GS Gitsigns ]]
 
-    local gitsigns = require "gitsigns"
+    local gitsigns = require("gitsigns")
 
     local function map(mode, l, r, opts)
       opts = opts or {}

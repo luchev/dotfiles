@@ -1,4 +1,4 @@
-require "nvchad.options"
+require("nvchad.options")
 
 local env = vim.env
 local opt = vim.opt

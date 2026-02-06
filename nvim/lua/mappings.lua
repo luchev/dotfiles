@@ -1,4 +1,4 @@
-require "nvchad.mappings"
+require("nvchad.mappings")
 
 local map = vim.keymap.set
 
@@ -46,6 +46,12 @@ end, { desc = "Goto prev" })
 map("n", "]d", function()
   vim.diagnostic.goto_next { float = { border = "rounded" } }
 end, { desc = "Goto next" })
+map("n", "[q", function()
+  vim.diagnostic.goto_prev { severity = { min = vim.diagnostic.severity.WARN }, float = { border = "rounded" } }
+end, { desc = "Goto prev issue (error/warning)" })
+map("n", "]q", function()
+  vim.diagnostic.goto_next { severity = { min = vim.diagnostic.severity.WARN }, float = { border = "rounded" } }
+end, { desc = "Goto next issue (error/warning)" })
 map("n", "<leader>q", function()
   vim.diagnostic.setloclist()
 end, { desc = "Diagnostic setloclist" })
@@ -113,7 +119,7 @@ map("v", "<leader>cc", function()
 end, { desc = "Copilot chat with visual selection" })
 
 map("n", "<leader>ccp", function()
-  local actions = require "CopilotChat.actions"
+  local actions = require("CopilotChat.actions")
   require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
 end, { desc = "Copilot prompt actions" })
 
@@ -147,4 +153,7 @@ end, { desc = "Flash Treesitter" })
 
 map("n", "<C-n>", "<cmd>Neotree toggle<CR>", { desc = "NeoTree toggle" })
 map("n", "<leader>e", "<cmd>Neotree toggle<CR>", { desc = "NeoTree toggle" })
+
+-- Toggle Claude Code with <C-g> in any mode
+map({"n", "v", "i", "c", "t", "o"}, "<C-g>", "<cmd>ClaudeCode<CR>", { desc = "Toggle Claude Code" })
 

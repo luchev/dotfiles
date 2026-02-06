@@ -4,10 +4,11 @@ return {
     "stevearc/conform.nvim",
     cmd = { "Format" },
     opts = function()
-      return require "configs.conform"
+      return require("configs.conform")
     end,
     config = function(_, opts)
-      require("conform").setup(opts)
+      local conform = require("conform")
+      conform.setup(opts)
       vim.api.nvim_create_user_command("Format", function(args)
         local range = nil
         if args.count ~= -1 then
@@ -17,7 +18,7 @@ return {
             ["end"] = { args.line2, end_line:len() },
           }
         end
-        require("conform").format { async = true, lsp_format = "fallback", range = range }
+        conform.format { async = true, lsp_format = "fallback", range = range }
       end, { range = true })
     end,
   },
@@ -28,7 +29,7 @@ return {
     event = "User FilePost",
     dependencies = { "williamboman/mason-lspconfig.nvim" },
     config = function()
-      require "configs.lspconfig"
+      require("configs.lspconfig")
     end,
   },
 
@@ -37,7 +38,7 @@ return {
     "williamboman/mason.nvim",
     cmd = { "Mason", "MasonInstall", "MasonInstallAll", "MasonUpdate" },
     opts = function()
-      return require "configs.mason"
+      return require("configs.mason")
     end,
     config = function(_, opts)
       dofile(vim.g.base46_cache .. "mason")
@@ -91,10 +92,10 @@ return {
     "mfussenegger/nvim-lint",
     event = { "BufWritePost" },
     opts = function()
-      return require "configs.nvimlint"
+      return require("configs.nvimlint")
     end,
     config = function(_, opts)
-      local lint = require "lint"
+      local lint = require("lint")
       lint.linters_by_ft = opts.linters_by_ft
       lint.linters = opts.linters
       vim.api.nvim_create_user_command("Lint", function()
@@ -118,7 +119,7 @@ return {
       "nvim-treesitter/nvim-treesitter-textobjects",
     },
     opts = function()
-      return require "configs.treesitter"
+      return require("configs.treesitter")
     end,
     config = function(_, opts)
       require("nvim-treesitter").setup(opts)
@@ -160,7 +161,7 @@ return {
     "lewis6991/gitsigns.nvim",
     event = "User FilePost",
     opts = function()
-      return require "configs.gitsigns"
+      return require("configs.gitsigns")
     end,
     config = function(_, opts)
       dofile(vim.g.base46_cache .. "git")
@@ -230,9 +231,9 @@ return {
       "nvim-neotest/nvim-nio",
     },
     config = function()
-      local dap = require "dap"
-      local dapui = require "dapui"
-      local widgets = require "dap.ui.widgets"
+      local dap = require("dap")
+      local dapui = require("dapui")
+      local widgets = require("dap.ui.widgets")
       local sidebar = widgets.sidebar(widgets.scopes)
 
       dapui.setup()
@@ -268,10 +269,10 @@ return {
       },
     },
     opts = function()
-      return require "configs.cmp"
+      return require("configs.cmp")
     end,
     config = function(_, opts)
-      local cmp = require "cmp"
+      local cmp = require("cmp")
       cmp.setup(opts)
       cmp.setup.cmdline(":", {
         mapping = cmp.mapping.preset.cmdline(),
@@ -329,7 +330,7 @@ return {
     cmd = "Copilot",
     event = "InsertEnter",
     opts = function()
-      return require "configs.copilot"
+      return require("configs.copilot")
     end,
     config = function(_, opts)
       require("copilot").setup(opts)
@@ -407,13 +408,13 @@ return {
         width = 40,
         mappings = {
           ["<leader>e"] = function()
-            vim.api.nvim_exec("Neotree focus filesystem left", true)
+            vim.cmd("Neotree focus filesystem left")
           end,
           ["<leader>b"] = function()
-            vim.api.nvim_exec("Neotree focus buffers left", true)
+            vim.cmd("Neotree focus buffers left")
           end,
           ["<leader>g"] = function()
-            vim.api.nvim_exec("Neotree focus git_status left", true)
+            vim.cmd("Neotree focus git_status left")
           end,
         },
       },
@@ -525,7 +526,7 @@ return {
       "rcarriga/nvim-notify",
     },
     opts = function()
-      return require "configs.noice"
+      return require("configs.noice")
     end,
     config = function(_, opts)
       require("noice").setup(opts)
@@ -543,7 +544,7 @@ return {
     "folke/flash.nvim",
     event = "VeryLazy",
     opts = function()
-      return require "configs.flash"
+      return require("configs.flash")
     end,
   },
 

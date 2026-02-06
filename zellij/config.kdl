@@ -1,14 +1,13 @@
 // If you'd like to override the default keybindings completely, be sure to change "keybinds" to "keybinds clear-defaults=true"
 keybinds {
+    unbind "Ctrl g"
     normal {
-        // uncomment this and adjust key if using copy_on_select=false
-        // bind "Alt c" { Copy; }
-        bind "Ctrl a" {
+        bind "Ctrl q" {
             SwitchToMode "Locked"
         }
     }
     locked {
-        bind "Ctrl a" {
+        bind "Ctrl q" {
             SwitchToMode "Normal"
         }
         bind "Alt h" "Alt Left" {
@@ -448,11 +447,8 @@ keybinds {
         }
     }
     shared_except "locked" {
-        bind "Ctrl a" {
-            SwitchToMode "Locked"
-        }
         bind "Ctrl q" {
-            Quit
+            SwitchToMode "Locked"
         }
         bind "Alt f" {
             ToggleFloatingPanes

@@ -1,10 +1,10 @@
 -- load defaults i.e lua_lsp
 require("nvchad.configs.lspconfig").defaults()
 
-local lspconfig = require "lspconfig"
+local lspconfig = require("lspconfig")
 
 local servers = { "html", "cssls", "gopls", "ulsp" }
-local nvlsp = require "nvchad.configs.lspconfig"
+local nvlsp = require("nvchad.configs.lspconfig")
 
 require("lspconfig.configs").ulsp = {
   default_config = {
