@@ -104,7 +104,8 @@ $env.PATH = ($env.PATH | split row (char esep)
   | prepend '/opt/homebrew/bin/'
   | prepend '/opt/uber/bin/'
   | prepend '~/.cargo/bin/'
-  | prepend '~/.dotfiles/argc-completions/bin')
+  | prepend '~/.dotfiles/argc-completions/bin'
+  | prepend '~/.bin/')
 
 # argc-completions
 $env.ARGC_COMPLETIONS_ROOT = ($env.HOME + '/.dotfiles/argc-completions')
