@@ -184,8 +184,8 @@ map("n", "S", function()
   require("flash").treesitter()
 end, { desc = "Flash Treesitter" })
 
-map("n", "<C-n>", "<cmd>Neotree toggle<CR>", { desc = "NeoTree toggle" })
-map("n", "<leader>e", "<cmd>Neotree toggle<CR>", { desc = "NeoTree toggle" })
+map("n", "<C-n>", "<cmd>NvimTreeToggle<CR>", { desc = "nvimtree toggle" })
+map("n", "<leader>e", "<cmd>NvimTreeFocus<CR>", { desc = "nvimtree focus" })
 
 -- Toggle Claude Code with <C-g> in any mode
 map({"n", "v", "i", "c", "t", "o"}, "<C-g>", "<cmd>ClaudeCode<CR>", { desc = "Toggle Claude Code" })

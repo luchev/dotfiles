@@ -317,7 +317,7 @@ return {
         "<leader>as",
         "<cmd>ClaudeCodeTreeAdd<cr>",
         desc = "Add file",
-        ft = { "Neotree", "neo-tree", "oil", "minifiles" },
+        ft = { "NvimTree", "oil", "minifiles" },
       },
       { "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
       { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
@@ -364,61 +364,16 @@ return {
   },
 
   {
-    -- Disable nvim-tree coming from NvChad
-    "nvim-tree/nvim-tree.lua",
-    enabled = false,
-  },
-
-  {
     -- File explorer tree with git integration
-    "nvim-neo-tree/neo-tree.nvim",
-    cmd = { "Neotree" },
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-tree/nvim-web-devicons",
-      "MunifTanjim/nui.nvim",
-    },
-    keys = {
-      { "<C-n>", "<cmd>Neotree toggle<cr>", desc = "NeoTree toggle" },
-      { "<leader>e", "<cmd>Neotree focus<cr>", desc = "NeoTree focus" },
-    },
-    opts = {
-      close_if_last_window = true,
-      popup_border_style = "rounded",
-      enable_git_status = true,
-      enable_diagnostics = true,
-      event_handlers = {
-        {
-          event = "file_open_requested",
-          handler = function()
-            vim.cmd "Neotree close"
-          end,
-        },
-      },
-      filesystem = {
-        filtered_items = {
-          hide_dotfiles = false,
-          hide_gitignored = false,
-        },
-        follow_current_file = { enabled = true },
-        use_libuv_file_watcher = true,
-      },
-      window = {
-        position = "left",
-        width = 40,
-        mappings = {
-          ["<leader>e"] = function()
-            vim.cmd("Neotree focus filesystem left")
-          end,
-          ["<leader>b"] = function()
-            vim.cmd("Neotree focus buffers left")
-          end,
-          ["<leader>g"] = function()
-            vim.cmd("Neotree focus git_status left")
-          end,
-        },
-      },
-    },
+    "nvim-tree/nvim-tree.lua",
+    cmd = { "NvimTreeToggle", "NvimTreeFocus" },
+    opts = function()
+      return require "configs.nvimtree"
+    end,
+    config = function(_, opts)
+      dofile(vim.g.base46_cache .. "nvimtree")
+      require("nvim-tree").setup(opts)
+    end,
   },
 
   {
