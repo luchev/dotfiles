@@ -1,5 +1,14 @@
 return {
   {
+    -- File type icons for nvim plugins
+    "nvim-tree/nvim-web-devicons",
+    lazy = true,
+    opts = {
+      default = true,
+    },
+  },
+
+  {
     -- Auto-formatting with support for multiple formatters
     "stevearc/conform.nvim",
     cmd = { "Format" },
@@ -229,6 +238,7 @@ return {
     dependencies = {
       "mfussenegger/nvim-dap",
       "nvim-neotest/nvim-nio",
+      "nvim-tree/nvim-web-devicons",
     },
     config = function()
       local dap = require("dap")
@@ -371,6 +381,7 @@ return {
     -- File explorer tree with git integration
     "nvim-tree/nvim-tree.lua",
     cmd = { "NvimTreeToggle", "NvimTreeFocus" },
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = function()
       return require "configs.nvimtree"
     end,
@@ -390,6 +401,7 @@ return {
     -- Fuzzy finder for files, buffers, LSP symbols, and more
     "nvim-telescope/telescope.nvim",
     dependencies = {
+      "nvim-tree/nvim-web-devicons",
       "nvim-telescope/telescope-live-grep-args.nvim",
       "nvim-telescope/telescope-file-browser.nvim",
       "nvim-telescope/telescope-dap.nvim",
@@ -463,6 +475,7 @@ return {
     -- Displays keybindings in a popup
     "folke/which-key.nvim",
     cmd = "WhichKey",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     keys = { "<leader>", "<c-r>", "<c-w>", '"', "'", "`", "c", "v", "g" },
     config = function(_, opts)
       dofile(vim.g.base46_cache .. "whichkey")
@@ -473,6 +486,7 @@ return {
     -- Pretty list for diagnostics, references, and quickfix
     "folke/trouble.nvim",
     cmd = "Trouble",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {},
   },
 
@@ -483,6 +497,7 @@ return {
     dependencies = {
       "MunifTanjim/nui.nvim",
       "rcarriga/nvim-notify",
+      "nvim-tree/nvim-web-devicons",
     },
     opts = function()
       return require("configs.noice")
@@ -749,7 +764,7 @@ return {
     -- Highlight and navigate TODO, FIXME, and other comments
     "folke/todo-comments.nvim",
     event = "BufReadPre",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons" },
     opts = {},
     keys = {
       { "<leader>xt", "<cmd>TodoTrouble<cr>", desc = "Todo (Trouble)" },
