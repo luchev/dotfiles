@@ -491,6 +491,17 @@ return {
   },
 
   {
+    -- Notification manager with nice UI
+    "rcarriga/nvim-notify",
+    lazy = true,
+    config = function()
+      require("notify").setup({
+        background_colour = "#000000",
+      })
+    end,
+  },
+
+  {
     -- Highly experimental UI for messages, cmdline, and popupmenu
     "folke/noice.nvim",
     event = "VeryLazy",
