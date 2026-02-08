@@ -28,9 +28,6 @@ keybinds {
         bind "Alt n" {
             NewPane
         }
-        bind "Alt Tab" {
-            SwitchToMode "Normal"
-        }
         bind "Ctrl s" {
             SwitchToMode "EnterSearch"
             SearchInput 0
@@ -550,11 +547,18 @@ plugins {
     }
     configuration location="zellij:configuration"
     plugin-manager location="zellij:plugin-manager"
+    zjstatus location="https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm"
+    zjstatus-hints location="https://github.com/b0o/zjstatus-hints/releases/latest/download/zjstatus-hints.wasm" {
+        max_length "0"
+        overflow_str "…"
+        pipe_name "zjstatus_hints"
+    }
 }
 // Plugins to load in the background when a new session starts
 load_plugins {
-    // "file:/path/to/my-plugin.wasm"
+    zjstatus-hints
 }
+
 // Choose what to do when zellij receives SIGTERM, SIGINT, SIGQUIT or SIGHUP
 // eg. when terminal window with an active zellij session is closed
 // (Requires restart)
@@ -582,6 +586,9 @@ default_shell "nu"
 //   - false
 //
 pane_frames false
+pane_padding false
+show_startup_tips false
+show_release_notes false
 // Toggle between having Zellij lay out panes according to a predefined set of layouts whenever possible
 // Options:
 //   - true (default)
@@ -611,26 +618,25 @@ pane_frames false
 // Define color themes for Zellij
 // For more examples, see: https://github.com/zellij-org/zellij/tree/main/example/themes
 // Once these themes are defined, one of them should to be selected in the "theme" section of this file
-//
-// themes {
-//     dracula {
-//         fg 248 248 242
-//         bg 40 42 54
-//         red 255 85 85
-//         green 80 250 123
-//         yellow 241 250 140
-//         blue 98 114 164
-//         magenta 255 121 198
-//         orange 255 184 108
-//         cyan 139 233 253
-//         black 0 0 0
-//         white 255 255 255
-//     }
-// }
+themes {
+    catppuccin-frappe-visible {
+        fg "#c6d0f5"
+        bg "#303446"
+        black "#51576d"
+        red "#e78284"
+        green "#50fa7b"  // Bright green for visible active pane frame
+        yellow "#e5c890"
+        blue "#8caaee"
+        magenta "#ca9ee6"
+        orange "#ef9f76"
+        cyan "#81c8be"
+        white "#b4befe"
+    }
+}
 // Choose the theme that is specified in the themes section.
 // Default: default
 //
-theme "catppuccin-frappe"
+theme "catppuccin-frappe-visible"
 // The name of the default layout to load on startup
 // Default: "default"
 // (Requires restart)
