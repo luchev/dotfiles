@@ -159,8 +159,8 @@ map(
 -- FzfLua Mappings
 -- ══════════════════════════════════════════════════════════════════════════════
 
-map("n", "<leader>ff", "<cmd>FzfLua files<CR>", { desc = "Fzf find files" })
 map("n", "<C-p>", "<cmd>FzfLua files<CR>", { desc = "Fzf find files" })
+map("n", "<leader>ff", "<cmd>FzfLua files<CR>", { desc = "Fzf find files" })
 map("n", "<leader>ft", "<cmd>FzfLua treesitter<CR>", { desc = "Fzf treesitter symbols" })
 map("n", "<leader>fg", "<cmd>FzfLua grep<CR>", { desc = "Fzf grep" })
 map("n", "<leader>fw", "<cmd>FzfLua grep_cword<CR>", { desc = "Fzf grep word under cursor" })

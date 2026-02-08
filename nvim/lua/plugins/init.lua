@@ -454,7 +454,6 @@ return {
     -- Fast fuzzy finder using fzf algorithm
     "ibhagwan/fzf-lua",
     cmd = { "FzfLua", "F" },
-    keys = { "<c-P>" },
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       require("fzf-lua").setup {
