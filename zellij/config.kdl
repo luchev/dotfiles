@@ -5,6 +5,9 @@ keybinds {
         bind "Ctrl q" {
             SwitchToMode "Locked"
         }
+        bind "d" {
+            Detach
+        }
     }
     locked {
         bind "Ctrl q" {
@@ -27,6 +30,9 @@ keybinds {
         }
         bind "Alt n" {
             NewPane
+        }
+        bind "Alt Tab" {
+            GoToNextTab
         }
         bind "Ctrl s" {
             SwitchToMode "EnterSearch"
@@ -470,6 +476,9 @@ keybinds {
         }
         bind "Alt k" "Alt Up" {
             MoveFocus "Up"
+        }
+        bind "Alt Tab" {
+            GoToNextTab
         }
         bind "Alt =" "Alt +" {
             Resize "Increase"
