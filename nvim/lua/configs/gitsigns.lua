@@ -19,21 +19,21 @@ local options = {
       vim.keymap.set(mode, l, r, opts)
     end
 
-    map("n", "]c", function()
-      if vim.wo.diff then
-        vim.cmd.normal { "]c", bang = true }
-      else
-        gitsigns.nav_hunk "next"
-      end
-    end, { desc = "gitsigns next hunk" })
-
-    map("n", "[c", function()
-      if vim.wo.diff then
-        vim.cmd.normal { "[c", bang = true }
-      else
-        gitsigns.nav_hunk "prev"
-      end
-    end, { desc = "gitsigns prev hunk" })
+    -- map("n", "]c", function()
+    --   if vim.wo.diff then
+    --     vim.cmd.normal { "]c", bang = true }
+    --   else
+    --     gitsigns.nav_hunk "next"
+    --   end
+    -- end, { desc = "gitsigns next hunk" })
+    --
+    -- map("n", "[c", function()
+    --   if vim.wo.diff then
+    --     vim.cmd.normal { "[c", bang = true }
+    --   else
+    --     gitsigns.nav_hunk "prev"
+    --   end
+    -- end, { desc = "gitsigns prev hunk" })
 
     map("n", "<leader>hr", gitsigns.reset_hunk, { desc = "gitsigns reset hunk" })
     map("n", "<leader>hp", gitsigns.preview_hunk, { desc = "gitsigns preview hunk" })

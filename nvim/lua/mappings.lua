@@ -1,57 +1,90 @@
-require("nvchad.mappings")
+require "nvchad.mappings"
 
 local map = vim.keymap.set
 
-map("n", ";", ":", { desc = "CMD enter command mode" })
+-- ══════════════════════════════════════════════════════════════════════════════
+-- General Mappings
+-- ══════════════════════════════════════════════════════════════════════════════
 
+map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>", { desc = "general exit insert mode " })
 map("i", "kj", "<ESC>", { desc = "general exit insert mode " })
 
+-- ══════════════════════════════════════════════════════════════════════════════
+-- LSP Mappings
+-- ══════════════════════════════════════════════════════════════════════════════
+
+-- Code actions
 map("v", "<leader>ca", function()
   vim.lsp.buf.code_action()
 end, { desc = "LSP code action" })
+map("n", "<leader>.", function()
+  vim.lsp.buf.code_action()
+end, { desc = "LSP code action" })
+
+-- Navigation
 map("n", "gD", function()
   vim.lsp.buf.declaration()
 end, { desc = "LSP declaration" })
 map("n", "gd", function()
   vim.lsp.buf.definition()
 end, { desc = "LSP definition" })
-map("n", "K", function()
-  vim.lsp.buf.hover()
-end, { desc = "LSP hover" })
 map("n", "gi", function()
   vim.lsp.buf.implementation()
 end, { desc = "LSP implementation" })
-map("n", "<leader>ls", function()
-  vim.lsp.buf.signature_help()
-end, { desc = "LSP signature help" })
 map("n", "<leader>D", function()
   vim.lsp.buf.type_definition()
 end, { desc = "LSP definition type" })
-map("n", "<leader>ra", function()
-  require("nvchad.renamer").open()
-end, { desc = "LSP rename" })
 map("n", "<leader>gr", function()
   vim.lsp.buf.references()
 end, { desc = "LSP references" })
+
+-- Hover & Help
+map("n", "K", function()
+  vim.lsp.buf.hover()
+end, { desc = "LSP hover" })
+map("n", "<leader>ls", function()
+  vim.lsp.buf.signature_help()
+end, { desc = "LSP signature help" })
+
+-- Rename
+map("n", "<leader>ra", function()
+  require("nvchad.renamer").open()
+end, { desc = "LSP rename" })
 map("n", "<leader>rn", function()
   vim.lsp.buf.rename()
 end, { desc = "LSP rename" })
+
+-- ══════════════════════════════════════════════════════════════════════════════
+-- Diagnostic Mappings
+-- ══════════════════════════════════════════════════════════════════════════════
+
 map("n", "<leader>lf", function()
-  vim.diagnostic.open_float({ border = "rounded" })
+  vim.diagnostic.open_float { border = "rounded" }
 end, { desc = "Floating diagnostic" })
+map("n", "<leader>q", function()
+  vim.diagnostic.setloclist()
+end, { desc = "Diagnostic setloclist" })
+
+-- ══════════════════════════════════════════════════════════════════════════════
+-- Navigation Mappings (Bracket keys)
+-- ══════════════════════════════════════════════════════════════════════════════
+
+-- Diagnostic navigation
 map("n", "[d", function()
-  vim.diagnostic.jump({ count = -1, float = { border = "rounded" } })
-end, { desc = "Goto prev" })
+  vim.diagnostic.jump { count = -1, float = { border = "rounded" } }
+end, { desc = "Goto prev diagnostic" })
 map("n", "]d", function()
-  vim.diagnostic.jump({ count = 1, float = { border = "rounded" } })
-end, { desc = "Goto next" })
+  vim.diagnostic.jump { count = 1, float = { border = "rounded" } }
+end, { desc = "Goto next diagnostic" })
 map("n", "[q", function()
-  vim.diagnostic.jump({ count = -1, severity = { min = vim.diagnostic.severity.WARN }, float = { border = "rounded" } })
+  vim.diagnostic.jump { count = -1, severity = { min = vim.diagnostic.severity.WARN }, float = { border = "rounded" } }
 end, { desc = "Goto prev issue (error/warning)" })
 map("n", "]q", function()
-  vim.diagnostic.jump({ count = 1, severity = { min = vim.diagnostic.severity.WARN }, float = { border = "rounded" } })
+  vim.diagnostic.jump { count = 1, severity = { min = vim.diagnostic.severity.WARN }, float = { border = "rounded" } }
 end, { desc = "Goto next issue (error/warning)" })
+
+-- Jump navigation
 map("n", "[j", "<C-o>", { desc = "Jump back" })
 map("n", "]j", "<C-i>", { desc = "Jump forward" })
 
@@ -85,9 +118,10 @@ map("n", "]t", function()
   require("todo-comments").jump_next()
 end, { desc = "Next todo comment" })
 
-map("n", "<leader>q", function()
-  vim.diagnostic.setloclist()
-end, { desc = "Diagnostic setloclist" })
+-- ══════════════════════════════════════════════════════════════════════════════
+-- Workspace Mappings
+-- ══════════════════════════════════════════════════════════════════════════════
+
 map("n", "<leader>wa", function()
   vim.lsp.buf.add_workspace_folder()
 end, { desc = "Add workspace folder" })
@@ -97,9 +131,10 @@ end, { desc = "Remove workspace folder" })
 map("n", "<leader>wl", function()
   print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 end, { desc = "List workspace folders" })
-map("n", "<leader>.", function()
-  vim.lsp.buf.code_action()
-end, { desc = "" })
+
+-- ══════════════════════════════════════════════════════════════════════════════
+-- Telescope Mappings
+-- ══════════════════════════════════════════════════════════════════════════════
 
 map("n", "<leader>tf", "<cmd>Telescope frecency<CR>", { desc = "telescope find files" })
 map("n", "<leader>tw", "<cmd>Telescope live_grep_args<CR>", { desc = "telescope live grep (args)" })
@@ -116,26 +151,42 @@ map("n", "<leader>ty", "<cmd>Telescope neoclip<CR>", { desc = "telescope neoclip
 map(
   "n",
   "<leader>tb",
-  "<cmd>Telescope file_browser path=%:p:h select_buffer=true <CR>",
+  "<cmd>Telescope file_browser path=%:p:h select_buffer=true<CR>",
   { desc = "telescope file browser" }
 )
 
-map("n", "<leader>ff", "<cmd> FzfLua files <CR>", { desc = "Fzf find files" })
-map("n", "<c-P>", "<cmd> FzfLua files <CR>", { desc = "Fzf find files" })
-map("n", "<leader>ft", "<cmd> FzfLua treesitter <CR>", { desc = "Fzf treesitter symbols" })
-map("n", "<leader>fg", "<cmd> FzfLua grep <CR>", { desc = "Fzf grep" })
-map("n", "<leader>fw", "<cmd> FzfLua grep_cword <CR>", { desc = "Fzf grep word under cursor" })
-map("n", "<leader>fl", "<cmd> FzfLua git_commits <CR>", { desc = "Fzf git log" })
-map("v", "<leader>fv", "<cmd> FzfLua grep_visual <CR>", { desc = "Fzf grep visual selection" })
+-- ══════════════════════════════════════════════════════════════════════════════
+-- FzfLua Mappings
+-- ══════════════════════════════════════════════════════════════════════════════
 
-map("n", "<leader>fm", "<cmd> Format <CR>", { desc = "conform Format" })
+map("n", "<leader>ff", "<cmd>FzfLua files<CR>", { desc = "Fzf find files" })
+map("n", "<C-p>", "<cmd>FzfLua files<CR>", { desc = "Fzf find files" })
+map("n", "<leader>ft", "<cmd>FzfLua treesitter<CR>", { desc = "Fzf treesitter symbols" })
+map("n", "<leader>fg", "<cmd>FzfLua grep<CR>", { desc = "Fzf grep" })
+map("n", "<leader>fw", "<cmd>FzfLua grep_cword<CR>", { desc = "Fzf grep word under cursor" })
+map("n", "<leader>fl", "<cmd>FzfLua git_commits<CR>", { desc = "Fzf git log" })
+map("v", "<leader>fv", "<cmd>FzfLua grep_visual<CR>", { desc = "Fzf grep visual selection" })
 
-map("n", "<leader>xx", "<cmd> TroubleToggle<CR>", { desc = "trouble toggle" })
-map("n", "<leader>xX", "<cmd> TroubleToggle lsp_document_diagnostics<CR>", { desc = "trouble toggle diagnostics" })
-map("n", "<leader>cs", "<cmd> TroubleToggle lsp_workspace_symbols<CR>", { desc = "trouble toggle symbols" })
-map("n", "<leader>cl", "<cmd> TroubleToggle lsp_references<CR>", { desc = "trouble toggle lsp references" })
-map("n", "<leader>xL", "<cmd> TroubleToggle loclist<CR>", { desc = "trouble toggle loclist" })
-map("n", "<leader>xQ", "<cmd> TroubleToggle quickfix<CR>", { desc = "trouble toggle quickfix" })
+-- ══════════════════════════════════════════════════════════════════════════════
+-- Formatting Mappings
+-- ══════════════════════════════════════════════════════════════════════════════
+
+map("n", "<leader>fm", "<cmd>Format<CR>", { desc = "conform Format" })
+
+-- ══════════════════════════════════════════════════════════════════════════════
+-- Trouble Mappings
+-- ══════════════════════════════════════════════════════════════════════════════
+
+map("n", "<leader>xx", "<cmd>TroubleToggle<CR>", { desc = "trouble toggle" })
+map("n", "<leader>xX", "<cmd>TroubleToggle lsp_document_diagnostics<CR>", { desc = "trouble toggle diagnostics" })
+map("n", "<leader>xL", "<cmd>TroubleToggle loclist<CR>", { desc = "trouble toggle loclist" })
+map("n", "<leader>xQ", "<cmd>TroubleToggle quickfix<CR>", { desc = "trouble toggle quickfix" })
+map("n", "<leader>cs", "<cmd>TroubleToggle lsp_workspace_symbols<CR>", { desc = "trouble toggle symbols" })
+map("n", "<leader>cl", "<cmd>TroubleToggle lsp_references<CR>", { desc = "trouble toggle lsp references" })
+
+-- ══════════════════════════════════════════════════════════════════════════════
+-- Copilot Chat Mappings
+-- ══════════════════════════════════════════════════════════════════════════════
 
 map("n", "<leader>ccb", function()
   local input = vim.fn.input "Chat with buffer: "
@@ -152,7 +203,7 @@ map("v", "<leader>cc", function()
 end, { desc = "Copilot chat with visual selection" })
 
 map("n", "<leader>ccp", function()
-  local actions = require("CopilotChat.actions")
+  local actions = require "CopilotChat.actions"
   require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
 end, { desc = "Copilot prompt actions" })
 
@@ -162,6 +213,10 @@ map("n", "<leader>cca", function()
     require("CopilotChat").ask(input, { context = { "buffers", "files:full", "register:+" } })
   end
 end, { desc = "Copilot ask about all files" })
+
+-- ══════════════════════════════════════════════════════════════════════════════
+-- Flash Mappings
+-- ══════════════════════════════════════════════════════════════════════════════
 
 map("n", "s", function()
   require("flash").jump {
@@ -184,9 +239,15 @@ map("n", "S", function()
   require("flash").treesitter()
 end, { desc = "Flash Treesitter" })
 
+-- ══════════════════════════════════════════════════════════════════════════════
+-- File Explorer Mappings
+-- ══════════════════════════════════════════════════════════════════════════════
+
 map("n", "<C-n>", "<cmd>NvimTreeToggle<CR>", { desc = "nvimtree toggle" })
-map("n", "<leader>e", "<cmd>NvimTreeFocus<CR>", { desc = "nvimtree focus" })
+map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "nvimtree toggle" })
 
--- Toggle Claude Code with <C-g> in any mode
-map({"n", "v", "i", "c", "t", "o"}, "<C-g>", "<cmd>ClaudeCode<CR>", { desc = "Toggle Claude Code" })
+-- ══════════════════════════════════════════════════════════════════════════════
+-- Claude Code Mappings
+-- ══════════════════════════════════════════════════════════════════════════════
 
+map({ "n", "v", "i", "c", "t", "o" }, "<C-g>", "<cmd>ClaudeCode<CR>", { desc = "Toggle Claude Code" })
