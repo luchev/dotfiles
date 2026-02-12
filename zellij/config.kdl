@@ -5,6 +5,9 @@ keybinds {
         bind "Ctrl q" {
             SwitchToMode "Locked"
         }
+        bind "o" {
+            SwitchToMode "Session"
+        }
         bind "d" {
             Detach
         }

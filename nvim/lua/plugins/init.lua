@@ -241,27 +241,7 @@ return {
       "nvim-tree/nvim-web-devicons",
     },
     config = function()
-      local dap = require("dap")
-      local dapui = require("dapui")
-      local widgets = require("dap.ui.widgets")
-      local sidebar = widgets.sidebar(widgets.scopes)
-
-      dapui.setup()
-
-      dap.listeners.after.event_initialized["dapui_config"] = function()
-        dapui.open()
-      end
-      dap.listeners.before.event_terminated["dapui_config"] = function()
-        dapui.close()
-      end
-      dap.listeners.before.event_exited["dapui_config"] = function()
-        dapui.close()
-      end
-
-      vim.keymap.set("n", "<leader>db", "<cmd>DapToggleBreakpoint<CR>", { desc = "DAP Toggle breakpoint" })
-      vim.keymap.set("n", "<leader>dt", function()
-        sidebar.toggle()
-      end, { desc = "DAP Toggle sidebar" })
+      require("configs.dapui")()
     end,
   },
 
@@ -410,30 +390,7 @@ return {
       "HPRIOR/telescope-gpt",
     },
     opts = function(_, opts)
-      local function flash(prompt_bufnr)
-        require("flash").jump {
-          pattern = "^",
-          label = { after = { 0, 0 } },
-          search = {
-            mode = "search",
-            exclude = {
-              function(win)
-                return vim.bo[vim.api.nvim_win_get_buf(win)].filetype ~= "TelescopeResults"
-              end,
-            },
-          },
-          action = function(match)
-            local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
-            picker:set_selection(match.pos[1] - 1)
-          end,
-        }
-      end
-      opts.defaults = vim.tbl_deep_extend("force", opts.defaults or {}, {
-        mappings = {
-          n = { s = flash },
-          i = { ["<c-s>"] = flash },
-        },
-      })
+      return require("configs.telescope")(_, opts)
     end,
   },
 
@@ -456,17 +413,7 @@ return {
     cmd = { "FzfLua", "F" },
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
-      require("fzf-lua").setup {
-        defaults = { git_icons = false },
-      }
-      vim.api.nvim_create_user_command("F", function(opts)
-        vim.cmd("FzfLua " .. opts.args)
-      end, {
-        nargs = "*",
-        complete = function(ArgLead, CmdLine, CursorPos)
-          return vim.fn.getcompletion("FzfLua " .. ArgLead, "cmdline")
-        end,
-      })
+      require("configs.fzflua")()
     end,
   },
 
@@ -596,66 +543,9 @@ return {
     keys = {
       { "<leader>o", "<cmd>AerialToggle<cr>", desc = "Aerial toggle (outline)" },
     },
-    opts = {
-      backends = { "lsp", "treesitter", "markdown", "asciidoc", "man" },
-      layout = {
-        max_width = { 40, 0.2 },
-        width = nil,
-        min_width = 30,
-        default_direction = "prefer_right",
-        resize_to_content = true,
-      },
-      attach_mode = "global",
-      close_on_select = true,
-      show_guides = true,
-      highlight_mode = "split_width",
-      highlight_on_hover = true,
-      highlight_on_jump = 300,
-      autojump = true,
-      post_jump_cmd = "normal! zz",
-      keymaps = {
-        ["?"] = "actions.show_help",
-        ["g?"] = "actions.show_help",
-        ["<CR>"] = "actions.jump",
-        ["<2-LeftMouse>"] = "actions.jump",
-        ["<C-v>"] = "actions.jump_vsplit",
-        ["<C-s>"] = "actions.jump_split",
-        ["p"] = "actions.scroll",
-        ["<C-j>"] = "actions.down_and_scroll",
-        ["<C-k>"] = "actions.up_and_scroll",
-        ["{"] = "actions.prev",
-        ["}"] = "actions.next",
-        ["[["] = "actions.prev_up",
-        ["]]"] = "actions.next_up",
-        ["q"] = "actions.close",
-        ["o"] = "actions.tree_toggle",
-        ["za"] = "actions.tree_toggle",
-        ["O"] = "actions.tree_toggle_recursive",
-        ["zA"] = "actions.tree_toggle_recursive",
-        ["l"] = "actions.tree_open",
-        ["zo"] = "actions.tree_open",
-        ["L"] = "actions.tree_open_recursive",
-        ["zO"] = "actions.tree_open_recursive",
-        ["h"] = "actions.tree_close",
-        ["zc"] = "actions.tree_close",
-        ["H"] = "actions.tree_close_recursive",
-        ["zC"] = "actions.tree_close_recursive",
-        ["zr"] = "actions.tree_increase_fold_level",
-        ["zR"] = "actions.tree_open_all",
-        ["zm"] = "actions.tree_decrease_fold_level",
-        ["zM"] = "actions.tree_close_all",
-        ["zx"] = "actions.tree_sync_folds",
-        ["zX"] = "actions.tree_sync_folds",
-      },
-      lsp = {
-        update_when_errors = true,
-        update_delay = 300,
-      },
-      treesitter = {
-        update_delay = 300,
-      },
-      nerd_font = "auto",
-    },
+    opts = function()
+      return require "configs.aerial"
+    end,
   },
 
   {
@@ -680,20 +570,7 @@ return {
     version = "*",
     event = "VeryLazy",
     config = function()
-      require("mini.surround").setup()
-      require("mini.ai").setup()
-      require("mini.pairs").setup()
-      require("mini.bufremove").setup()
-      require("mini.indentscope").setup {
-        symbol = "│",
-        options = { try_as_border = true },
-        draw = {
-          animation = function()
-            return 0
-          end,
-        },
-      }
-      require("mini.move").setup()
+      require("configs.mini")()
     end,
   },
 
@@ -706,63 +583,10 @@ return {
     -- Narrow region editing in a separate buffer
     "chrisbra/NrrwRgn",
     init = function()
-      -- Disable default mappings to avoid conflicts
-      vim.g.nrrw_rgn_nomap_nr = 1
-      vim.g.nrrw_rgn_nomap_Nr = 1
-      -- Use a prominent highlight for the selected region
-      vim.g.nrrw_rgn_hl = "IncSearch"
-      -- Don't disable highlighting
-      vim.g.nrrw_rgn_nohl = 0
-      -- Use relative sizing for better responsiveness
-      vim.g.nrrw_rgn_resize_window = "relative"
-      -- Open as vertical split on the right
-      vim.g.nrrw_rgn_vert = 1
-      vim.g.nrrw_topbot_leftright = "botright"
-      -- Set a good default width (percentage when relative)
-      vim.g.nrrw_rgn_wdth = 50
+      require("configs.nrrwrgn").init()
     end,
     config = function()
-      -- Create a floating window version of NrrwRgn
-      vim.api.nvim_create_user_command("NrrwRgnFloat", function()
-        -- Get the visual selection range
-        local start_line = vim.fn.line "'<"
-        local end_line = vim.fn.line "'>"
-
-        -- Execute the narrow region command
-        vim.cmd(start_line .. "," .. end_line .. "NR")
-
-        -- Convert the new window to a floating window
-        vim.schedule(function()
-          local buf = vim.api.nvim_get_current_buf()
-          local win = vim.api.nvim_get_current_win()
-
-          -- Close the split window
-          vim.api.nvim_win_close(win, false)
-
-          -- Calculate centered floating window dimensions
-          local width = math.floor(vim.o.columns * 0.7)
-          local height = math.floor(vim.o.lines * 0.7)
-          local row = math.floor((vim.o.lines - height) / 2)
-          local col = math.floor((vim.o.columns - width) / 2)
-
-          -- Create floating window
-          local float_win = vim.api.nvim_open_win(buf, true, {
-            relative = "editor",
-            width = width,
-            height = height,
-            row = row,
-            col = col,
-            style = "minimal",
-            border = "rounded",
-            title = " Narrow Region ",
-            title_pos = "center",
-          })
-
-          -- Set window options for better visibility
-          vim.api.nvim_set_option_value("winblend", 0, { win = float_win })
-          vim.api.nvim_set_option_value("cursorline", true, { win = float_win })
-        end)
-      end, { range = true })
+      require("configs.nrrwrgn").config()
     end,
     keys = {
       { "<leader>nr", ":'<,'>NrrwRgnFloat<CR>", mode = "v", desc = "Narrow Region (floating)", silent = true },
