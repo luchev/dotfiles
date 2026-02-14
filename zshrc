@@ -48,6 +48,7 @@ alias ..='cd ..'
 # Tmux aliases
 alias ta='tmux a -t'
 alias tn='tmux new -s'
+alias zj='zellij'
 
 # Custom format for the time function
 TIMEFMT='%J'$'\n'\
