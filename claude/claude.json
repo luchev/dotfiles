@@ -1,0 +1,14 @@
+{
+  "installMethod": "native",
+  "autoUpdates": true,
+  "hasCompletedOnboarding": true,
+  "hasAcknowledgedCostThreshold": true,
+  "hasUsedBackslashReturn": true,
+  "sonnet45MigrationComplete": true,
+  "opus45MigrationComplete": true,
+  "opusProMigrationComplete": true,
+  "thinkingMigrationComplete": true,
+  "mcpServers": {},
+  "projects": {},
+  "githubRepoPaths": {}
+}

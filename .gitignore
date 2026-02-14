@@ -40,7 +40,9 @@ Desktop.ini
 tags
 .tags
 Session.vim
-.claude
+.claude/
+!.claude/settings.json
+!.claude/output-styles/
 
 # Backup files
 *.backup

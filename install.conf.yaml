@@ -40,6 +40,24 @@
     ~/.termux/termux.properties:
       path: termux.properties
       force: true
+    ~/.claude.json:
+      path: claude/claude.json
+      force: false
+    ~/.claude/settings.json:
+      path: claude/settings.json
+      force: true
+    ~/.claude/settings.local.json:
+      path: claude/settings.local.json
+      force: true
+    ~/.claude/output-styles:
+      path: claude/output-styles
+      force: true
+    ~/.claude/commands:
+      path: claude/commands
+      force: true
+    ~/.claude/agents:
+      path: claude/agents
+      force: true
 
 
 - shell:
@@ -197,5 +215,9 @@
         (npm list -g commitizen >/dev/null 2>&1 || npm install -g commitizen cz-conventional-changelog) ||
         echo "Skipping commitizen (npm not found)"
       description: Install commitizen
+      quiet: false
+    - command:
+        ~/.dotfiles/install-claude-agents.sh
+      description: Install Claude Code agents
       quiet: false
 

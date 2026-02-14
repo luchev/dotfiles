@@ -23,6 +23,7 @@
 	conflictstyle = zdiff3  # Show common ancestor in conflict markers (enhanced 3-way diff)
 [commit]
 	verbose = true  # Show diff in commit message editor
+	template = ~/.dotfiles/gitmessage  # Use commit message template
 [push]
 	default = simple  # Only push current branch to its upstream
 	autoSetupRemote = true  # Automatically create remote branch on first push
@@ -147,3 +148,15 @@
     today = log --since=midnight --oneline --author=$(git config user.email)  # Show today's work
     optimize = !git repack -ad && git prune && git gc --aggressive  # Optimize repository
     prune-all = !git remote | xargs -n 1 git remote prune  # Remove gone remote branches
+    # Worktree aliases - manage multiple working directories
+    wt = worktree  # Worktree shorthand
+    wtl = worktree list  # List all worktrees
+    wta = worktree add  # Create new worktree (usage: git wta path/to/worktree branch-name)
+    wtr = worktree remove  # Remove worktree
+    wtm = worktree move  # Move worktree to new location
+    wtp = worktree prune  # Clean up stale worktree metadata
+    wtf = !git worktree add -b  # Create worktree with new branch (usage: git wtf new-branch path)
+    wtd = !git worktree remove --force  # Force remove worktree (even with uncommitted changes)
+    wtls = !git worktree list | awk '{print $1}'  # List worktree paths only
+    wtclean = !git worktree prune && git worktree list  # Prune and show remaining worktrees
+    wtbranch = !git worktree add -b $(basename $PWD)  # Create worktree from current dir name

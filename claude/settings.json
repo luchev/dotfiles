@@ -1,0 +1,7 @@
+{
+  "model": "opus",
+  "statusLine": {
+    "type": "command",
+    "command": "input=$(cat); model=$(echo \"$input\" | jq -r '.model.display_name'); style=$(echo \"$input\" | jq -r '.output_style.name'); dir=$(echo \"$input\" | jq -r '.workspace.current_dir'); remaining=$(echo \"$input\" | jq -r '.context_window.remaining_percentage // \"\"'); total_in=$(echo \"$input\" | jq -r '.context_window.total_input_tokens'); total_out=$(echo \"$input\" | jq -r '.context_window.total_output_tokens'); ctx_size=$(echo \"$input\" | jq -r '.context_window.context_window_size'); printf \"\\033[36m🤖 %s\\033[0m • \\033[35m✨ %s\\033[0m • \\033[34m📁 %s\\033[0m\" \"$model\" \"$style\" \"$dir\"; if [ -n \"$remaining\" ] && [ \"$remaining\" != \"null\" ]; then if [ \"$remaining\" -ge 70 ]; then printf \" • 💾 \\033[32m%s%% (%dk/%dk)\\033[0m\" \"$remaining\" \"$((($total_in + $total_out) / 1000))\" \"$(($ctx_size / 1000))\"; elif [ \"$remaining\" -ge 40 ]; then printf \" • 💾 \\033[33m%s%% (%dk/%dk)\\033[0m\" \"$remaining\" \"$((($total_in + $total_out) / 1000))\" \"$(($ctx_size / 1000))\"; else printf \" • 💾 \\033[31m%s%% (%dk/%dk)\\033[0m\" \"$remaining\" \"$((($total_in + $total_out) / 1000))\" \"$(($ctx_size / 1000))\"; fi; fi; printf \"\\n\""
+  }
+}
