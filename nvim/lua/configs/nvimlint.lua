@@ -6,7 +6,7 @@ M.linters_by_ft = {
   python = { "flake8" },
   markdown = { "vale" },
   lua = { "selene" },
-  go = { "golangci_lint" },
+  go = { "golangcilint" },
   rust = { "clippy" },
 }
 
