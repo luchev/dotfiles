@@ -54,3 +54,8 @@ vim.lsp.config("gopls", {
     },
   },
 })
+
+-- Enable all configured LSP servers
+for _, lsp in ipairs(servers) do
+  vim.lsp.enable(lsp)
+end

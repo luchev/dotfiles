@@ -5,7 +5,7 @@ local options = {
     keymap = {
       jump_prev = "[[",
       jump_next = "]]",
-      accept = "<C-J>",
+      accept = false,
       refresh = "gr",
       open = "<M-CR>"
     },
