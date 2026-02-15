@@ -1,6 +1,25 @@
 -- load defaults i.e lua_lsp
 require("nvchad.configs.lspconfig").defaults()
 
+-- Prevent signature help from auto-focusing; only focus on explicit <leader>ls
+local sig_help_forced = false
+vim.lsp.handlers["textDocument/signatureHelp"] = function(err, result, ctx, config)
+  config = config or {}
+  config.focus_id = "signature_help"
+  if sig_help_forced then
+    sig_help_forced = false
+  else
+    config.focusable = false
+    config.focus = false
+  end
+  return vim.lsp.handlers.signature_help(err, result, ctx, config)
+end
+
+vim.keymap.set({ "n", "i" }, "<leader>ls", function()
+  sig_help_forced = true
+  vim.lsp.buf.signature_help()
+end, { desc = "LSP signature help (focus)" })
+
 local servers = { "html", "cssls", "gopls", "ulsp" }
 local nvlsp = require("nvchad.configs.lspconfig")
 

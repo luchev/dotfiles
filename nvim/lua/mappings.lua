@@ -10,6 +10,12 @@ map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>", { desc = "general exit insert mode " })
 map("i", "kj", "<ESC>", { desc = "general exit insert mode " })
 
+-- Window navigation in terminal mode
+map("t", "<C-h>", "<C-\\><C-n><C-w>h", { desc = "switch window left" })
+map("t", "<C-j>", "<C-\\><C-n><C-w>j", { desc = "switch window down" })
+map("t", "<C-k>", "<C-\\><C-n><C-w>k", { desc = "switch window up" })
+map("t", "<C-l>", "<C-\\><C-n><C-w>l", { desc = "switch window right" })
+
 -- ══════════════════════════════════════════════════════════════════════════════
 -- LSP Mappings
 -- ══════════════════════════════════════════════════════════════════════════════
@@ -43,9 +49,7 @@ end, { desc = "LSP references" })
 map("n", "K", function()
   vim.lsp.buf.hover()
 end, { desc = "LSP hover" })
-map("n", "<leader>ls", function()
-  vim.lsp.buf.signature_help()
-end, { desc = "LSP signature help" })
+-- Signature help is mapped in configs/lspconfig.lua to control focus behavior
 
 -- Rename
 map("n", "<leader>ra", function()

@@ -106,7 +106,9 @@ return {
     config = function(_, opts)
       local lint = require("lint")
       lint.linters_by_ft = opts.linters_by_ft
-      lint.linters = opts.linters
+      for k, v in pairs(opts.linters) do
+        lint.linters[k] = v
+      end
       vim.api.nvim_create_user_command("Lint", function()
         lint.try_lint()
       end, {})
