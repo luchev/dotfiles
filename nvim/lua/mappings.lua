@@ -118,6 +118,14 @@ map("n", "]t", function()
   require("todo-comments").jump_next()
 end, { desc = "Next todo comment" })
 
+-- Mark navigation
+map("n", "[m", function()
+  require("marks").prev()
+end, { desc = "Prev mark" })
+map("n", "]m", function()
+  require("marks").next()
+end, { desc = "Next mark" })
+
 -- ══════════════════════════════════════════════════════════════════════════════
 -- Workspace Mappings
 -- ══════════════════════════════════════════════════════════════════════════════
@@ -251,3 +259,80 @@ map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "nvimtree toggle" })
 -- ══════════════════════════════════════════════════════════════════════════════
 
 map({ "n", "v", "i", "c", "t", "o" }, "<C-g>", "<cmd>ClaudeCode<CR>", { desc = "Toggle Claude Code" })
+
+-- ══════════════════════════════════════════════════════════════════════════════
+-- Marks Mappings
+-- ══════════════════════════════════════════════════════════════════════════════
+
+map("n", "<leader>mm", function()
+  require("marks").set_next()
+end, { desc = "Set next available mark" })
+map("n", "<leader>mt", function()
+  require("marks").toggle()
+end, { desc = "Toggle mark at cursor" })
+map("n", "<leader>mx", function()
+  require("marks").delete_line()
+end, { desc = "Delete mark at cursor line" })
+map("n", "<leader>mc", function()
+  require("marks").delete_buf()
+end, { desc = "Clear all marks in buffer" })
+
+-- ══════════════════════════════════════════════════════════════════════════════
+-- Markdown Rendering Mappings
+-- ══════════════════════════════════════════════════════════════════════════════
+
+map("n", "<leader>md", "<cmd>RenderMarkdown toggle<CR>", { desc = "Toggle markdown rendering" })
+
+-- ══════════════════════════════════════════════════════════════════════════════
+-- Visual Toggle Mappings
+-- ══════════════════════════════════════════════════════════════════════════════
+
+map("n", "<leader>vn", function()
+  if vim.wo.number then
+    -- Clean mode: disable all visual indicators
+    vim.wo.number = false
+    vim.wo.relativenumber = false
+    vim.wo.signcolumn = "no"
+
+    -- Disable indent-blankline
+    vim.cmd("IBLDisable")
+
+    -- Disable mini.indentscope
+    vim.b.miniindentscope_disable = true
+
+    -- Disable treesitter context
+    local ts_context_ok, ts_context = pcall(require, "treesitter-context")
+    if ts_context_ok then
+      ts_context.disable()
+    end
+
+    -- Disable illuminate
+    local illuminate_ok, illuminate = pcall(require, "illuminate")
+    if illuminate_ok then
+      illuminate.pause()
+    end
+  else
+    -- Normal mode: enable visual indicators
+    vim.wo.number = true
+    vim.wo.relativenumber = true
+    vim.wo.signcolumn = "yes"
+
+    -- Enable indent-blankline
+    vim.cmd("IBLEnable")
+
+    -- Enable mini.indentscope
+    vim.b.miniindentscope_disable = false
+
+    -- Enable treesitter context
+    local ts_context_ok, ts_context = pcall(require, "treesitter-context")
+    if ts_context_ok then
+      ts_context.enable()
+    end
+
+    -- Enable illuminate
+    local illuminate_ok, illuminate = pcall(require, "illuminate")
+    if illuminate_ok then
+      illuminate.resume()
+    end
+  end
+end, { desc = "Toggle numbers and signs (clean view)" })
