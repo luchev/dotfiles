@@ -7,6 +7,7 @@ local nvlsp = require("nvchad.configs.lspconfig")
 -- Define custom ulsp server config
 vim.lsp.config("ulsp", {
   cmd = { "socat", "-", "tcp:localhost:27883,ignoreeof" },
+  flags = { debounce_text_changes = 1000 },
   filetypes = { "go", "java" },
   root_dir = function(fname)
     local result = vim.system({ "git", "rev-parse", "--show-toplevel" }, { text = true }):wait()
@@ -16,6 +17,7 @@ vim.lsp.config("ulsp", {
     return vim.fs.root(fname, { ".git" })
   end,
   capabilities = vim.lsp.protocol.make_client_capabilities(),
+  single_file_support = false,
 })
 
 -- lsps with default config

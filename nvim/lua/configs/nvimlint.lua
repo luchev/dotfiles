@@ -11,6 +11,9 @@ M.linters_by_ft = {
 }
 
 M.linters = {
+  golangcilint = {
+    cmd = "golangci-lint",
+  },
   selene = {
     cmd = vim.fn.stdpath("data") .. "/mason/bin/selene",
     stdin = true,

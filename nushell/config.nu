@@ -964,6 +964,14 @@ def argc-generate [cmd] {
   bash ($env.HOME + /.dotfiles/argc-completions/scripts/generate.sh) $cmd | save -f ($env.HOME + "/.dotfiles/argc-custom-completions/" + $cmd + ".sh")
 }
 
+# A wrapper for the jira cli that gets the api token from usso and sets it in the environment for the command
+def --wrapped jira [...rest] {
+    let token = (usso -ussh t3 -print | complete | get stdout | str trim)
+    with-env {JIRA_API_TOKEN: $token} {
+        ^jira ...$rest
+    }
+}
+
 # Load intelli-shell
 source ~/.intelli-shell.nu
 
