@@ -184,3 +184,11 @@ $env.ZELLIJ_CONFIG_DIR = $env.HOME + '/.config/zellij'
 
 # Intelli-shell keybind configuration
 $env.INTELLI_SEARCH_HOTKEY = "control char_k"
+
+# Set JIRA_API_TOKEN if ussh and jira are available
+if (not (which ussh | is-empty)) and (not (which jira | is-empty)) {
+    let result = (usso -ussh t3 -print | complete)
+    if $result.exit_code == 0 {
+        $env.JIRA_API_TOKEN = ($result.stdout | str trim)
+    }
+}

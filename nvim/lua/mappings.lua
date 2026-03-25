@@ -153,9 +153,14 @@ map("n", "<leader>to", "<cmd>Telescope oldfiles<CR>", { desc = "telescope find o
 map("n", "<leader>tz", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { desc = "telescope find in current buffer" })
 map("n", "<leader>tc", "<cmd>Telescope git_commits<CR>", { desc = "telescope git commits" })
 map("n", "<leader>tg", "<cmd>Telescope git_status<CR>", { desc = "telescope git status" })
-map("n", "<leader>ts", "<cmd>Telescope luasnip<CR>", { desc = "telescope luasnip" })
 map("n", "<leader>tt", "<cmd>Telescope terms<CR>", { desc = "telescope pick hidden term" })
 map("n", "<leader>ty", "<cmd>Telescope neoclip<CR>", { desc = "telescope neoclip yank history" })
+map("n", "<leader>tW", function()
+  require("telescope").extensions.git_worktree.git_worktrees()
+end, { desc = "telescope git worktrees" })
+map("n", "<leader>tn", function()
+  require("telescope").extensions.git_worktree.create_git_worktree()
+end, { desc = "telescope create git worktree" })
 map(
   "n",
   "<leader>tb",
@@ -282,6 +287,15 @@ end, { desc = "Clear all marks in buffer" })
 -- ══════════════════════════════════════════════════════════════════════════════
 
 map("n", "<leader>md", "<cmd>RenderMarkdown toggle<CR>", { desc = "Toggle markdown rendering" })
+
+-- ══════════════════════════════════════════════════════════════════════════════
+-- Terminal Pane Navigation
+-- ══════════════════════════════════════════════════════════════════════════════
+
+map("t", "<C-h>", "<C-\\><C-n><C-w>h", { desc = "terminal navigate left pane" })
+map("t", "<C-j>", "<C-\\><C-n><C-w>j", { desc = "terminal navigate down pane" })
+map("t", "<C-k>", "<C-\\><C-n><C-w>k", { desc = "terminal navigate up pane" })
+map("t", "<C-l>", "<C-\\><C-n><C-w>l", { desc = "terminal navigate right pane" })
 
 -- ══════════════════════════════════════════════════════════════════════════════
 -- Visual Toggle Mappings

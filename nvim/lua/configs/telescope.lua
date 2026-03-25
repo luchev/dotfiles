@@ -35,7 +35,7 @@ return function(_, opts)
         i = { ["<c-s>"] = flash },
       },
     },
-    extensions_list = { "themes", "terms", "file_browser", "dap", "frecency", "luasnip", "gpt", "live_grep_args" },
+    extensions_list = { "themes", "terms", "file_browser", "dap", "frecency", "gpt", "live_grep_args", "git_worktree" },
   }
 
   return vim.tbl_deep_extend("force", opts or {}, options)

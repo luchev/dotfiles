@@ -217,6 +217,15 @@ return {
   },
 
   {
+    -- Git worktree management with telescope integration
+    "ThePrimeagen/git-worktree.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim" },
+    config = function()
+      require("git-worktree").setup()
+    end,
+  },
+
+  {
     -- Git diff viewer and merge tool
     "sindrets/diffview.nvim",
     cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles", "DiffviewFocusFiles", "DiffViewFileHistory" },
@@ -386,7 +395,6 @@ return {
       "nvim-telescope/telescope-file-browser.nvim",
       "nvim-telescope/telescope-dap.nvim",
       "nvim-telescope/telescope-frecency.nvim",
-      "benfowler/telescope-luasnip.nvim",
       "HPRIOR/telescope-gpt",
     },
     opts = function(_, opts)
