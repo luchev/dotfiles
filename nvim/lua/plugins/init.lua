@@ -124,35 +124,54 @@ return {
 
   {
     -- Syntax highlighting, incremental parsing, and code understanding
+    -- v2 rewrite: requires Neovim 0.12+, does not support lazy-loading
     "nvim-treesitter/nvim-treesitter",
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter-refactor",
-      "nvim-treesitter/nvim-treesitter-textobjects",
-    },
-    opts = function()
-      return require("configs.treesitter")
-    end,
-    config = function(_, opts)
-      require("nvim-treesitter").setup(opts)
-      local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-      parser_config.asciidoc = {
-        install_info = {
-          url = "https://github.com/cathaysia/tree-sitter-asciidoc.git",
-          files = { "tree-sitter-asciidoc/src/parser.c", "tree-sitter-asciidoc/src/scanner.c" },
-          branch = "master",
-          generate_requires_npm = false,
-          requires_generate_from_grammar = false,
-        },
+    branch = "main",
+    lazy = false,
+    build = ":TSUpdate",
+    -- nvim-treesitter-refactor and nvim-treesitter-textobjects are v1-only
+    -- and incompatible with v2 (require removed nvim-treesitter.configs module)
+    config = function()
+      require("nvim-treesitter").setup()
+
+      -- Install parsers (no-op if already installed)
+      require("nvim-treesitter").install {
+        "luadoc", "lua", "vim", "vimdoc", "python", "go", "markdown",
+        "markdown_inline", "bash", "nu", "yaml", "typescript",
+        "javascript", "rust", "proto", "git_config", "starlark",
       }
-      parser_config.asciidoc_inline = {
-        install_info = {
-          url = "https://github.com/cathaysia/tree-sitter-asciidoc.git",
-          files = { "tree-sitter-asciidoc_inline/src/parser.c", "tree-sitter-asciidoc_inline/src/scanner.c" },
-          branch = "master",
-          generate_requires_npm = false,
-          requires_generate_from_grammar = false,
-        },
-      }
+
+      -- Register custom asciidoc parsers (v2 API: assign directly, not get_parser_configs())
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "TSUpdate",
+        callback = function()
+          local parsers = require("nvim-treesitter.parsers")
+          parsers.asciidoc = {
+            install_info = {
+              url = "https://github.com/cathaysia/tree-sitter-asciidoc.git",
+              files = { "tree-sitter-asciidoc/src/parser.c", "tree-sitter-asciidoc/src/scanner.c" },
+              branch = "master",
+            },
+          }
+          parsers.asciidoc_inline = {
+            install_info = {
+              url = "https://github.com/cathaysia/tree-sitter-asciidoc.git",
+              files = { "tree-sitter-asciidoc_inline/src/parser.c", "tree-sitter-asciidoc_inline/src/scanner.c" },
+              branch = "master",
+            },
+          }
+        end,
+      })
+
+      -- Note: Neovim 0.12 built-in ftplugins already call vim.treesitter.start()
+      -- for supported languages (markdown, lua, go, etc.) -- no autocmd needed here.
+
+      -- Re-enable treesitter indent (v2: must be set explicitly per filetype)
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function()
+          vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end,
+      })
     end,
   },
 

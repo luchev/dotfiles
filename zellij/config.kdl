@@ -34,6 +34,9 @@ keybinds {
         bind "Alt n" {
             NewPane
         }
+        bind "Alt N" {
+            NewPane "stacked"
+        }
         bind "Alt Tab" {
             GoToNextTab
         }
@@ -461,6 +464,9 @@ keybinds {
         }
         bind "Alt n" {
             NewPane
+        }
+        bind "Alt N" {
+            NewPane "stacked"
         }
         bind "Alt i" {
             MoveTab "Left"

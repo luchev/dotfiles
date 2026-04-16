@@ -1,5 +1,102 @@
 {
   "fastMode": false,
+  "hooks": {
+    "Elicitation": [
+      {
+        "hooks": [
+          {
+            "async": true,
+            "command": "bash ~/.dotfiles/claude/zellij-status.sh notification",
+            "timeout": 5,
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "ElicitationResult": [
+      {
+        "hooks": [
+          {
+            "async": true,
+            "command": "bash ~/.dotfiles/claude/zellij-status.sh pretool",
+            "timeout": 5,
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "async": true,
+            "command": "bash ~/.dotfiles/claude/zellij-status.sh notification",
+            "timeout": 5,
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "async": true,
+            "command": "bash ~/.dotfiles/claude/zellij-status.sh pretool",
+            "timeout": 5,
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "async": true,
+            "command": "bash ~/.dotfiles/claude/zellij-status.sh idle",
+            "timeout": 5,
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "async": true,
+            "command": "bash ~/.dotfiles/claude/zellij-status.sh waiting",
+            "timeout": 5,
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "command": "bash ~/.dotfiles/claude/zellij-status.sh done",
+            "timeout": 5,
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "async": true,
+            "command": "bash ~/.dotfiles/claude/zellij-status.sh working",
+            "timeout": 5,
+            "type": "command"
+          }
+        ]
+      }
+    ]
+  },
   "statusLine": {
     "command": "bash ~/.dotfiles/claude/statusline-command.sh",
     "type": "command"
