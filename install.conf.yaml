@@ -46,6 +46,9 @@
     ~/.claude/settings.json:
       path: claude/settings.json
       force: true
+    ~/.claude/CLAUDE.md:
+      path: .claude/CLAUDE.md
+      force: true
     ~/.claude/settings.local.json:
       path: claude/settings.local.json
       force: true

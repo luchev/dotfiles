@@ -41,6 +41,7 @@ tags
 .tags
 Session.vim
 .claude/
+!.claude/CLAUDE.md
 !.claude/settings.json
 !.claude/output-styles/
 

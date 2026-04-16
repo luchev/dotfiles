@@ -54,6 +54,9 @@ Create local overrides that won't be committed:
 - `~/.gitconfig.local` - Git local config
 - `~/.config/nushell/config.local.nu` - Nushell local config
 - `~/.zshrc.local` - Zsh local config
+- `~/.claude/settings.local.json` - Claude Code machine-specific settings
+
+The global Claude Code behavioral guidelines live in `.claude/CLAUDE.md` and are symlinked to `~/.claude/CLAUDE.md` so they apply to every session.
 
 ## License
 
