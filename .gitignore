@@ -142,3 +142,4 @@ secring.*
 README.local.md
 NOTES.md
 TODO.local.md
+nvim/lazy-lock.json

@@ -1,3 +1,12 @@
+---
+name: verify
+description: >
+  Comprehensive pre-completion verification: tests, linting, build, security, git state, docs.
+  Use before marking work done, creating PRs, or deploying. Runs 10 verification categories.
+  Trigger when user says "verify this is done", "check everything", "ready to ship",
+  or after implementing a feature to ensure nothing was missed.
+---
+
 # Verify Command
 
 **Description**: Comprehensive verification before completing development work to ensure quality and correctness.

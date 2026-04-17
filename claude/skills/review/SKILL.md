@@ -1,3 +1,12 @@
+---
+name: review
+description: >
+  Comprehensive code review with blocking issues, suggestions, nitpicks, and questions.
+  Use when reviewing PRs, auditing implementations, or providing structured code feedback.
+  Trigger when user says "review this code", "review the PR", "check this implementation",
+  "give me feedback on", or invokes /review on a branch or file set.
+---
+
 # Review Command
 
 **Description**: Conduct comprehensive code reviews focusing on quality, correctness, security, and maintainability.

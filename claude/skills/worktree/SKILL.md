@@ -1,3 +1,12 @@
+---
+name: worktree
+description: >
+  Manage git worktrees to work on multiple branches simultaneously in isolated directories.
+  Use when parallel branch work is needed without stashing or context switching.
+  Trigger when user says "use a worktree", "work in isolation", "create a worktree",
+  "work on multiple branches", or needs to review a PR without disturbing current work.
+---
+
 # Worktree Command
 
 **Description**: Use git worktrees to work on multiple branches simultaneously in separate directories.

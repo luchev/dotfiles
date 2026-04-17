@@ -1,3 +1,12 @@
+---
+name: debug
+description: >
+  Systematic 5-phase debugging: Reproduce → Isolate → Root Cause → Fix → Verify.
+  Use when encountering bugs, unexpected behavior, failing tests, or production issues.
+  Trigger when user reports a bug, says "why is X happening", "this isn't working",
+  "tests are failing", or needs to diagnose any unexpected behavior.
+---
+
 # Debug Command
 
 **Description**: Systematic debugging is FASTER than guess-and-check thrashing. Follow structured phases to identify root causes.

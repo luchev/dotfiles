@@ -1,3 +1,12 @@
+---
+name: research
+description: >
+  Deep autonomous web research with multi-hop reasoning and source quality scoring.
+  Use when current knowledge is insufficient or user needs up-to-date information.
+  Trigger when user says "research X", "look up", "find best practices for",
+  "compare these tools", "what's the latest on", or needs information beyond training data.
+---
+
 # Research Command
 
 **Description**: Perform deep, autonomous web research with adaptive multi-hop reasoning and quality scoring.

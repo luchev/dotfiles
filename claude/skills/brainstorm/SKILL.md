@@ -1,3 +1,12 @@
+---
+name: brainstorm
+description: >
+  Mandatory structured brainstorming before any creative or implementation work.
+  Use before creating features, building components, adding functionality, or modifying behavior.
+  Trigger when user says "let's build X", "add feature", "implement X", "create X",
+  or starts any new implementation without prior exploration.
+---
+
 # Brainstorm Command
 
 **Description**: You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores requirements and design before implementation.

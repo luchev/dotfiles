@@ -1,3 +1,12 @@
+---
+name: document
+description: >
+  Generate comprehensive documentation: README, API docs, inline comments, ADRs, changelogs, guides.
+  Use when code needs documentation or user wants docs generated.
+  Trigger when user says "document this", "write docs", "create a README", "add docstrings",
+  "document the API", "write a changelog", or "create an onboarding guide".
+---
+
 # Document Command
 
 **Description**: Generate comprehensive, clear documentation for code, APIs, and systems.

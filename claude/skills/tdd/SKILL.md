@@ -1,3 +1,12 @@
+---
+name: tdd
+description: >
+  Enforce strict test-driven development: write failing test first, then minimal implementation.
+  The Iron Law: NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST.
+  Use for all new features and bug fixes. Trigger when user says "use TDD", "write tests first",
+  "test-driven", or when implementing any feature that should have tests.
+---
+
 # TDD Command
 
 **Description**: Enforce test-driven development - write failing tests first, then minimal implementation.

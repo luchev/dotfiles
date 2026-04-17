@@ -1,3 +1,12 @@
+---
+name: plan
+description: >
+  Create a detailed, step-by-step implementation plan with 2-5 minute actionable tasks.
+  Use after brainstorming or when user has clear requirements and needs them broken into tasks.
+  Trigger when user says "plan this", "create a plan", "break this down", "how should we implement",
+  or after /brainstorm completes. Saves plan to docs/plans/. Follows TDD task structure.
+---
+
 # Plan Command
 
 **Description**: Create detailed implementation plan with bite-sized, actionable tasks assuming the implementer has zero context.

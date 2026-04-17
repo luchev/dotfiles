@@ -1,3 +1,12 @@
+---
+name: improve
+description: >
+  Make targeted code improvements: quality, performance, maintainability, best practices.
+  Use when user wants code made better without changing behavior.
+  Trigger when user says "improve this", "refactor", "clean up", "optimize", "make this better",
+  "reduce technical debt", or "modernize". Does not change external behavior.
+---
+
 # Improve Command
 
 **Description**: Make targeted code improvements focusing on quality, performance, maintainability, and best practices.

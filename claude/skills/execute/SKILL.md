@@ -1,3 +1,12 @@
+---
+name: execute
+description: >
+  Execute an existing implementation plan in batches with verification checkpoints.
+  Use when a plan file exists (from /plan) and user wants to implement it.
+  Trigger when user says "execute the plan", "run the plan", "implement the plan",
+  "work through the tasks", or wants to proceed after /plan completes.
+---
+
 # Execute Command
 
 **Description**: Execute implementation plans with batch processing and verification checkpoints.

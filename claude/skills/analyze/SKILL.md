@@ -1,3 +1,12 @@
+---
+name: analyze
+description: >
+  Comprehensive code and architecture analysis: architecture, quality, performance, security, dependencies.
+  Use when user wants deep understanding of a codebase or preparation for refactoring.
+  Trigger when user says "analyze this", "audit the code", "review the architecture",
+  "find issues", "what's wrong with this codebase", or before major refactoring work.
+---
+
 # Analyze Command
 
 **Description**: Perform comprehensive code and architecture analysis to identify issues, patterns, and improvement opportunities.
