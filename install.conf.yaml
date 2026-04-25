@@ -150,6 +150,7 @@
       quiet: false
     - command:
         test -f ~/.gitconfig &&
+        ! test -L ~/.gitconfig &&
         ! grep -q '~/.dotfiles/gitconfig' ~/.gitconfig &&
         echo -e '[include]\n  path = "~/.dotfiles/gitconfig"' >> ~/.gitconfig ||
         true
