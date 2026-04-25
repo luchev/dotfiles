@@ -43,6 +43,7 @@ Session.vim
 .claude/
 !.claude/settings.json
 !.claude/output-styles/
+.mcp.json
 
 # Backup files
 *.backup
@@ -143,3 +144,4 @@ README.local.md
 NOTES.md
 TODO.local.md
 nvim/lazy-lock.json
+.mcp.json

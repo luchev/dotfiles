@@ -73,6 +73,9 @@
     ~/.gemini/policy.json:
       path: gemini/policy.json
       force: true
+    ~/.gemini/skills:
+      path: gemini/skills
+      force: true
 
 
 - shell:
