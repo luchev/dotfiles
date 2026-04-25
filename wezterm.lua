@@ -16,6 +16,7 @@ config.enable_tab_bar = false
 config.scrollback_lines = 10000
 config.term = 'xterm-256color'
 config.default_prog = { '/opt/homebrew/bin/nu', '--config', '~/.dotfiles/nushell/config.nu', '--env-config', '~/.dotfiles/nushell/env.nu' }
+config.audible_bell = 'Disabled'
 
 return config
 
