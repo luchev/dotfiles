@@ -61,6 +61,18 @@
     ~/.claude/agents:
       path: claude/agents
       force: true
+    ~/.gemini/settings.json:
+      path: gemini/settings.json
+      force: true
+    ~/.gemini/GEMINI.md:
+      path: gemini/GEMINI.md
+      force: true
+    ~/.geminiignore:
+      path: gemini/.geminiignore
+      force: true
+    ~/.gemini/policy.json:
+      path: gemini/policy.json
+      force: true
 
 
 - shell:
@@ -74,7 +86,7 @@
       description: Update Rust to latest stable version
       quiet: false
     - command: |
-          cargo install fd-find bat ripgrep starship atuin zoxide eza bottom du-dust just trippy pueue gitui bandwhich procs yazi-fm navi tlrc git-delta
+          cargo install fd-find bat ripgrep starship atuin zoxide eza bottom du-dust just trippy pueue gitui bandwhich procs yazi-fm navi tlrc git-delta tree-sitter-cli
       description: Install cargo packages
       quiet: false
     - command: |

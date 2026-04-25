@@ -1,0 +1,63 @@
+{
+  "security": {
+    "auth": {
+      "selectedType": "oauth-personal"
+    },
+    "toolSandboxing": true,
+    "enablePermanentToolApproval": true,
+    "autoAddToPolicyByDefault": true,
+    "alwaysConfirmDangerousCommands": true
+  },
+  "general": {
+    "preferredEditor": "neovim",
+    "vimMode": true,
+    "defaultApprovalMode": "auto_edit",
+    "enableAutoUpdate": true,
+    "enableNotifications": false,
+    "plan": {
+      "enabled": true
+    },
+    "sessionRetention": {
+      "enabled": true,
+      "maxAge": "365d"
+    }
+  },
+  "context": {
+    "fileFiltering": {
+      "respectGitIgnore": true,
+      "maxFileSize": "1MB"
+    }
+  },
+  "ui": {
+    "inlineThinkingMode": "off",
+    "showStatusInTitle": true,
+    "dynamicWindowTitle": true,
+    "hideBanner": true,
+    "footer": {
+      "hideContextPercentage": false
+    },
+    "showMemoryUsage": true,
+    "showCitations": true,
+    "useBackgroundColor": false,
+    "incrementalRendering": false,
+    "loadingPhrases": "tips"
+  },
+  "ide": {
+    "enabled": false
+  },
+  "model": {
+    "name": "",
+    "disableLoopDetection": false
+  },
+  "tools": {
+    "sandboxNetworkAccess": true
+  },
+  "experimental": {
+    "worktrees": true,
+    "modelSteering": true,
+    "contextManagement": true
+  },
+  "hooksConfig": {
+    "notifications": true
+  }
+}

@@ -1,0 +1,22 @@
+# Global Gemini Ignore Patterns
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Build and environment
+node_modules/
+vendor/
+.env
+.env.*
+!.env.example
+
+# Temporary files
+*.tmp
+*.bak
+*.log
+
+# IDEs
+.idea/
+.vscode/
+.vs/

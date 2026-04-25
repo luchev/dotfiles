@@ -136,8 +136,8 @@ return {
 
       -- Install parsers (no-op if already installed)
       require("nvim-treesitter").install {
-        "luadoc", "lua", "vim", "vimdoc", "python", "go", "markdown",
-        "markdown_inline", "bash", "nu", "yaml", "typescript",
+        "luadoc", "python", "go",
+        "bash", "nu", "yaml", "typescript",
         "javascript", "rust", "proto", "git_config", "starlark",
       }
 
