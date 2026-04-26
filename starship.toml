@@ -10,6 +10,8 @@ $custom\
 $jobs\
 $character"""
 
+command_timeout = 5000
+
 [directory]
 truncation_length = 2
 
