@@ -6,6 +6,7 @@ dir=$(echo "$input" | jq -r '.workspace.current_dir')
 remaining=$(echo "$input" | jq -r '.context_window.remaining_percentage // ""')
 remaining=${remaining%%.*}
 ctx_size=$(echo "$input" | jq -r '.context_window.context_window_size')
+transcript=$(echo "$input" | jq -r '.transcript_path // empty')
 buffer=33000
 effective=$(($ctx_size - $buffer))
 
@@ -15,6 +16,20 @@ printf "\033[36m🤖 %s\033[0m \033[35m📝 %s\033[0m \033[34m📁 %s\033[0m" "$
 
 if [ -n "$branch" ]; then
   printf " \033[33m🌿 %s\033[0m" "$branch"
+fi
+
+if [ -n "$transcript" ] && [ -f "$transcript" ]; then
+  turns=$(grep -oE '"promptId":"[^"]+"' "$transcript" 2>/dev/null | sort -u | wc -l)
+  if [ "$turns" -gt 0 ]; then
+    if [ "$turns" -lt 30 ]; then
+      turn_color="\033[32m"
+    elif [ "$turns" -lt 50 ]; then
+      turn_color="\033[33m"
+    else
+      turn_color="\033[31m"
+    fi
+    printf " ${turn_color}🔄 %s\033[0m" "$turns"
+  fi
 fi
 
 if [ -n "$remaining" ] && [ "$remaining" != "null" ]; then

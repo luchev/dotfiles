@@ -1,5 +1,12 @@
 require "nvchad.mappings"
 
+-- Remove nvchad default telescope bindings under <leader>f
+vim.keymap.del("n", "<leader>fa")
+vim.keymap.del("n", "<leader>fb")
+vim.keymap.del("n", "<leader>fh")
+vim.keymap.del("n", "<leader>fo")
+vim.keymap.del("n", "<leader>fz")
+
 local map = vim.keymap.set
 
 -- ══════════════════════════════════════════════════════════════════════════════
@@ -141,7 +148,7 @@ map("n", "<leader>wr", function()
   vim.lsp.buf.remove_workspace_folder()
 end, { desc = "Remove workspace folder" })
 map("n", "<leader>wl", function()
-  print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+  vim.notify(vim.inspect(vim.lsp.buf.list_workspace_folders()), vim.log.levels.INFO)
 end, { desc = "List workspace folders" })
 
 -- ══════════════════════════════════════════════════════════════════════════════
@@ -165,6 +172,7 @@ end, { desc = "telescope git worktrees" })
 map("n", "<leader>tn", function()
   require("telescope").extensions.git_worktree.create_git_worktree()
 end, { desc = "telescope create git worktree" })
+map("n", "<leader>ti", "<cmd>Noice telescope<CR>", { desc = "telescope noice messages" })
 map(
   "n",
   "<leader>tb",
@@ -305,7 +313,7 @@ map("t", "<C-l>", "<C-\\><C-n><C-w>l", { desc = "terminal navigate right pane" }
 -- Visual Toggle Mappings
 -- ══════════════════════════════════════════════════════════════════════════════
 
-map("n", "<leader>vn", function()
+map("n", "<leader>N", function()
   if vim.wo.number then
     -- Clean mode: disable all visual indicators
     vim.wo.number = false
@@ -329,6 +337,9 @@ map("n", "<leader>vn", function()
     if illuminate_ok then
       illuminate.pause()
     end
+
+    -- Disable mouse
+    vim.opt.mouse = ""
   else
     -- Normal mode: enable visual indicators
     vim.wo.number = true
@@ -352,5 +363,8 @@ map("n", "<leader>vn", function()
     if illuminate_ok then
       illuminate.resume()
     end
+
+    -- Enable mouse
+    vim.opt.mouse = "a"
   end
 end, { desc = "Toggle numbers and signs (clean view)" })

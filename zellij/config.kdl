@@ -2,6 +2,12 @@
 keybinds {
     unbind "Ctrl g"
     normal {
+        unbind "Ctrl n"
+        unbind "Ctrl h"
+        unbind "Ctrl t"
+        unbind "Ctrl p"
+        unbind "Ctrl s"
+        unbind "Ctrl o"
         bind "Ctrl q" {
             SwitchToMode "Locked"
         }
@@ -10,6 +16,21 @@ keybinds {
         }
         bind "d" {
             Detach
+        }
+        bind "t" {
+            SwitchToMode "Tab"
+        }
+        bind "r" {
+            SwitchToMode "Resize"
+        }
+        bind "m" {
+            SwitchToMode "Move"
+        }
+        bind "p" {
+            SwitchToMode "Pane"
+        }
+        bind "s" {
+            SwitchToMode "Scroll"
         }
     }
     locked {
@@ -28,6 +49,9 @@ keybinds {
         bind "Alt k" "Alt Up" {
             MoveFocus "Up"
         }
+        bind "Alt f" {
+            ToggleFloatingPanes
+        }
         bind "Alt m" {
             ToggleFocusFullscreen
         }
@@ -36,6 +60,9 @@ keybinds {
         }
         bind "Alt N" {
             NewPane "stacked"
+        }
+        bind "Alt y" {
+            CloseFocus
         }
         bind "Alt Tab" {
             GoToNextTab
@@ -46,6 +73,12 @@ keybinds {
         }
     }
     resize {
+        unbind "Alt =" "Alt +"
+        unbind "Alt -"
+        unbind "H"
+        unbind "J"
+        unbind "K"
+        unbind "L"
         bind "Ctrl n" {
             SwitchToMode "Normal"
         }
@@ -61,18 +94,6 @@ keybinds {
         bind "l" "Right" {
             Resize "Increase Right"
         }
-        bind "H" {
-            Resize "Decrease Left"
-        }
-        bind "J" {
-            Resize "Decrease Down"
-        }
-        bind "K" {
-            Resize "Decrease Up"
-        }
-        bind "L" {
-            Resize "Decrease Right"
-        }
         bind "=" "+" {
             Resize "Increase"
         }
@@ -81,6 +102,12 @@ keybinds {
         }
     }
     pane {
+        unbind "w"
+        unbind "Alt n"
+        unbind "Alt f"
+        unbind "Alt j" "Alt Down"
+        unbind "Alt k" "Alt Up"
+        unbind "Alt y"
         bind "Ctrl p" {
             SwitchToMode "Normal"
         }
@@ -115,7 +142,7 @@ keybinds {
             CloseFocus
             SwitchToMode "Normal"
         }
-        bind "f" {
+        bind "m" {
             ToggleFocusFullscreen
             SwitchToMode "Normal"
         }
@@ -123,7 +150,7 @@ keybinds {
             TogglePaneFrames
             SwitchToMode "Normal"
         }
-        bind "w" {
+        bind "f" {
             ToggleFloatingPanes
             SwitchToMode "Normal"
         }
@@ -137,13 +164,10 @@ keybinds {
         }
     }
     move {
-        bind "Ctrl h" {
-            SwitchToMode "Normal"
-        }
-        bind "n" "Tab" {
+        bind "n" {
             MovePane
         }
-        bind "p" {
+        bind "N" {
             MovePaneBackwards
         }
         bind "h" "Left" {
@@ -167,11 +191,19 @@ keybinds {
             SwitchToMode "RenameTab"
             TabNameInput 0
         }
-        bind "h" "Left" "Up" "k" {
+        bind "Left" "Up" "k" {
             GoToPreviousTab
         }
-        bind "l" "Right" "Down" "j" {
+        bind "Right" "Down" "j" {
             GoToNextTab
+        }
+        bind "h" {
+            BreakPaneLeft
+            SwitchToMode "Normal"
+        }
+        bind "l" {
+            BreakPaneRight
+            SwitchToMode "Normal"
         }
         bind "n" {
             NewTab
@@ -459,9 +491,6 @@ keybinds {
         bind "Ctrl q" {
             SwitchToMode "Locked"
         }
-        bind "Alt f" {
-            ToggleFloatingPanes
-        }
         bind "Alt n" {
             NewPane
         }
@@ -489,17 +518,14 @@ keybinds {
         bind "Alt Tab" {
             GoToNextTab
         }
-        bind "Alt =" "Alt +" {
-            Resize "Increase"
-        }
-        bind "Alt -" {
-            Resize "Decrease"
-        }
         bind "Alt [" {
             PreviousSwapLayout
         }
         bind "Alt ]" {
             NextSwapLayout
+        }
+        bind "Alt y" {
+            CloseFocus
         }
         bind "Ctrl y" {
             LaunchOrFocusPlugin "https://github.com/karimould/zellij-forgot/releases/download/0.4.1/zellij_forgot.wasm" {
@@ -536,11 +562,6 @@ keybinds {
     shared_except "tab" "locked" {
         bind "Ctrl t" {
             SwitchToMode "Tab"
-        }
-    }
-    shared_except "move" "locked" {
-        bind "Ctrl h" {
-            SwitchToMode "Move"
         }
     }
     shared_except "tmux" "locked" {
