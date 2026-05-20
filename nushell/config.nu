@@ -909,6 +909,7 @@ alias b = bat
 alias y = yazi
 alias t = tldr
 alias n = navi
+alias i = gemini
 alias zj = zellij
 alias rg = rg --color=auto
 alias rgc = rg --color=always
@@ -946,6 +947,18 @@ def fk [] {
         if ( $cmd | is-not-empty ) {
             nu -c $cmd
         }
+    }
+}
+
+# One-shot Gemini. Joins all args into a single prompt and runs via `-p`.
+# Pipe text in to feed stdin. Use `^gemini` to bypass for flags or interactive.
+def gemini [...args: string] {
+    let prompt = $args | str join " "
+    let input = $in
+    if $input == null {
+        ^gemini -p $prompt
+    } else {
+        $input | ^gemini -p $prompt
     }
 }
 
