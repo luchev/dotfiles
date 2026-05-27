@@ -63,3 +63,15 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 ---
 
 **These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
+
+---
+
+## Zellij pane topic
+
+When you've understood what a new session is about (typically after the first user prompt and any initial exploration), call:
+
+```
+bash ~/.dotfiles/claude/zellij-status.sh topic "<short summary, ≤40 chars>"
+```
+
+The topic appears as the pane label fallback (e.g. `💤 · <topic>`) and persists across turns. Update it if the session's focus shifts substantially. Don't call it for trivial one-off tasks where the session will be short.

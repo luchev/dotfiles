@@ -154,6 +154,18 @@ if ('EDITOR' not-in $env) {
 }
 
 do --env {
+    # Work-only: prefer the SSH agent injected into zsh (e.g. ussh on devpod),
+    # so nushell shares the same certs without needing its own agent.
+    let agent_sock_file = ($env.HOME | path join ".ssh/agent_sock")
+    if ($agent_sock_file | path exists) {
+        let sock = (open $agent_sock_file | str trim)
+        if ($sock | path exists) {
+            $env.SSH_AUTH_SOCK = $sock
+            return
+        }
+    }
+
+    # Fall back to a self-managed agent
     let ssh_agent_file = (
         $nu.temp-dir | path join $"ssh-agent-($env.USER? | default $env.USERNAME).nuon"
     )

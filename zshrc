@@ -105,3 +105,6 @@ eval "$(intelli-shell init zsh)"
 export PATH="$PATH:/Users/z/.lmstudio/bin"
 # End of LM Studio CLI section
 
+# Write SSH_AUTH_SOCK so nushell can share this agent
+[ -n "$SSH_AUTH_SOCK" ] && echo "$SSH_AUTH_SOCK" > ~/.ssh/agent_sock
+
