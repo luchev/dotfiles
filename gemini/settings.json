@@ -10,7 +10,7 @@
   },
   "general": {
     "preferredEditor": "neovim",
-    "vimMode": true,
+    "vimMode": false,
     "defaultApprovalMode": "auto_edit",
     "enableAutoUpdate": true,
     "enableNotifications": false,
