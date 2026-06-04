@@ -919,20 +919,11 @@ alias diff = diff --color=auto
 alias ta = tmux a -t
 alias tn = tmux new -s
 
-# Arc aliases
-alias af = arc flow
-alias ac = arc cascade
-alias ad = arc diff
-alias as = arc sync
-alias ast = arc stack --disable-rebase-check --nounit
-alias at = arc tidy --prune-abandoned --force
+# ── Local / work overrides (kept outside this repo) ───────────────────────────
+const local_config = ($nu.default-config-dir | path join 'local.nu')
+source $local_config
 
-# Bazel aliases
-alias bt = bazel test '...'
-alias bb = bazel build
-
-# Uber aliasses
-alias oc = object-config-client
+# ─────────────────────────────────────────────────────────────────────────────
 
 # Load the zoxide plugin
 source ~/.zoxide.nu

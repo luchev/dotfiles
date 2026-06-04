@@ -102,7 +102,6 @@ $env.NU_PLUGIN_DIRS = [
 $env.PATH = ($env.PATH | split row (char esep)
   | prepend '/usr/local/bin/'
   | prepend '/opt/homebrew/bin/'
-  | prepend '/opt/uber/bin/'
   | prepend '~/.cargo/bin/'
   | prepend '~/.dotfiles/argc-completions/bin'
   | prepend '~/.bin/')
@@ -153,16 +152,26 @@ if ('EDITOR' not-in $env) {
     $env.EDITOR = 'nvim'
 }
 
+$env.HISTFILE = $nu.history-path
+
+$env.ZELLIJ_CONFIG_DIR = $env.HOME + '/.config/zellij'
+
+# Intelli-shell keybind configuration
+$env.INTELLI_SEARCH_HOTKEY = "control char_k"
+
+# ── Local / work overrides (kept outside this repo) ──────────────────────────
+# Sourced first so a local overlay can set SSH_AUTH_SOCK / PATH / tokens before
+# the generic fallback below runs.
+const local_env = ($nu.default-config-dir | path join 'local-env.nu')
+source $local_env
+
+# ── SSH agent (self-managed fallback) ────────────────────────────────────────
+
 do --env {
-    # Work-only: prefer the SSH agent injected into zsh (e.g. ussh on devpod),
-    # so nushell shares the same certs without needing its own agent.
-    let agent_sock_file = ($env.HOME | path join ".ssh/agent_sock")
-    if ($agent_sock_file | path exists) {
-        let sock = (open $agent_sock_file | str trim)
-        if ($sock | path exists) {
-            $env.SSH_AUTH_SOCK = $sock
-            return
-        }
+    # If an override already provided a live socket, keep it.
+    let current = ($env.SSH_AUTH_SOCK? | default "")
+    if ($current != "" and ($current | path exists)) {
+        return
     }
 
     # Fall back to a self-managed agent
@@ -190,17 +199,5 @@ do --env {
     $ssh_agent_env | save --force $ssh_agent_file
 }
 
-$env.HISTFILE = $nu.history-path
+# ─────────────────────────────────────────────────────────────────────────────
 
-$env.ZELLIJ_CONFIG_DIR = $env.HOME + '/.config/zellij'
-
-# Intelli-shell keybind configuration
-$env.INTELLI_SEARCH_HOTKEY = "control char_k"
-
-# Set JIRA_API_TOKEN if ussh and jira are available
-if (not (which ussh | is-empty)) and (not (which jira | is-empty)) {
-    let result = (usso -ussh t3 -print | complete)
-    if $result.exit_code == 0 {
-        $env.JIRA_API_TOKEN = ($result.stdout | str trim)
-    }
-}

@@ -239,4 +239,9 @@
         ~/.dotfiles/install-claude-agents.sh
       description: Install Claude Code agents
       quiet: false
+    - command: |
+        mkdir -p ~/.config/nushell
+        touch ~/.config/nushell/local.nu ~/.config/nushell/local-env.nu
+      description: Ensure nushell local override files exist
+      quiet: false
 
