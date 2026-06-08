@@ -38,5 +38,33 @@ wezterm.on('update-status', function(window, pane)
   end
 end)
 
+-- Background blur (pairs with window_background_opacity above)
+if wezterm.target_triple:find 'darwin' then
+  config.macos_window_background_blur = 20
+else
+  config.kde_window_background_blur = true
+end
+
+-- Cursor
+config.default_cursor_style = 'BlinkingBar'
+config.cursor_blink_rate = 500
+config.cursor_blink_ease_in = 'EaseOut'
+config.cursor_blink_ease_out = 'EaseOut'
+config.force_reverse_video_cursor = true
+
+-- Visual bell flash (replaces the disabled audible bell)
+config.visual_bell = {
+  fade_in_duration_ms = 75,
+  fade_out_duration_ms = 75,
+  target = 'CursorColor',
+}
+
+-- Dim inactive panes
+config.inactive_pane_hsb = { saturation = 0.8, brightness = 0.6 }
+
+-- Smoother animations
+config.animation_fps = 60
+config.max_fps = 120
+
 return config
 

@@ -242,6 +242,8 @@
     - command: |
         mkdir -p ~/.config/nushell
         touch ~/.config/nushell/local.nu ~/.config/nushell/local-env.nu
+        mkdir -p "$HOME/Library/Application Support/nushell"
+        touch "$HOME/Library/Application Support/nushell/local.nu" "$HOME/Library/Application Support/nushell/local-env.nu"
       description: Ensure nushell local override files exist
       quiet: false
 
