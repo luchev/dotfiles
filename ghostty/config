@@ -1,0 +1,72 @@
+# Ghostty config — migrated from wezterm.lua
+# Reference: https://ghostty.org/docs/config/reference
+# Reload in-app with cmd+shift+, (or restart).
+
+# --- Font ---
+font-family = FiraCode Nerd Font Mono
+font-size = 16
+
+# --- Theme (Molokai ships with Ghostty) ---
+theme = Molokai
+
+# --- Window appearance ---
+background-opacity = 0.9
+background-blur = 20
+window-padding-x = 10
+window-padding-y = 10
+
+# --- Behavior ---
+# wezterm: window_close_confirmation = NeverPrompt
+confirm-close-surface = false
+# wezterm: term = xterm-256color (kept for SSH compatibility with hosts that
+# lack the xterm-ghostty terminfo; Ghostty's default is xterm-ghostty)
+term = xterm-256color
+# wezterm: scrollback_lines = 10000. Ghostty's scrollback-limit is in BYTES,
+# not lines; the default (~10MB) already holds far more than 10k lines.
+scrollback-limit = 10000000
+
+# --- Shell ---
+command = /opt/homebrew/bin/nu --config ~/.dotfiles/nushell/config.nu --env-config ~/.dotfiles/nushell/env.nu
+
+# --- Bell ---
+# wezterm: audible_bell = Disabled. Ghostty has no audio bell unless enabled.
+bell-features = no-audio,no-system,attention,title
+
+# --- Cursor ---
+# wezterm: default_cursor_style = BlinkingBar
+cursor-style = bar
+cursor-style-blink = true
+# wezterm: force_reverse_video_cursor (cursor inverts fg/bg of the cell under it)
+cursor-color = cell-foreground
+cursor-text = cell-background
+
+# --- Splits ---
+# wezterm: inactive_pane_hsb brightness 0.6 (dim inactive panes)
+unfocused-split-opacity = 0.6
+
+# === Extras (no wezterm counterpart) ====================================
+
+# Treat macOS Option as Alt so Alt-keybindings work in nushell/readline.
+macos-option-as-alt = true
+
+# Hide the mouse cursor while typing.
+mouse-hide-while-typing = true
+
+# Quit Ghostty when the last window closes (wezterm-like).
+quit-after-last-window-closed = true
+
+# Richer colors on modern Macs (wider gamut than sRGB).
+window-colorspace = display-p3
+
+# Cleaner, chromeless look (no native titlebar). Alternatives: transparent, tabs.
+macos-titlebar-style = hidden
+
+# Restore window layout/size on relaunch (uncomment to enable).
+# window-save-state = always
+
+# === No Ghostty equivalent (were in wezterm.lua) ========================
+# - SSH right-status icon (update-status): needs scripting; Ghostty has none.
+# - visual_bell flash: Ghostty's bell is limited to bell-features above.
+# - cursor_blink_rate: not configurable; uses system blink timing.
+# - animation_fps / max_fps: not exposed.
+# - enable_tab_bar=false: no toggle; native tabs only appear with 2+ tabs.

@@ -22,6 +22,9 @@
         force: true
     ~/.zsh_plugins.txt: zsh_plugins.txt
     ~/.wezterm.lua: wezterm.lua
+    ~/Library/Application Support/com.mitchellh.ghostty/config:
+      path: ghostty/config
+      force: true
     ~/Library/Application Support/nushell/config.nu:
       path: nushell/config.nu
       force: true
