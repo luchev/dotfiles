@@ -295,12 +295,6 @@ map("n", "<leader>mc", function()
 end, { desc = "Clear all marks in buffer" })
 
 -- ══════════════════════════════════════════════════════════════════════════════
--- Markdown Rendering Mappings
--- ══════════════════════════════════════════════════════════════════════════════
-
-map("n", "<leader>md", "<cmd>RenderMarkdown toggle<CR>", { desc = "Toggle markdown rendering" })
-
--- ══════════════════════════════════════════════════════════════════════════════
 -- Terminal Pane Navigation
 -- ══════════════════════════════════════════════════════════════════════════════
 
@@ -310,10 +304,11 @@ map("t", "<C-k>", "<C-\\><C-n><C-w>k", { desc = "terminal navigate up pane" })
 map("t", "<C-l>", "<C-\\><C-n><C-w>l", { desc = "terminal navigate right pane" })
 
 -- ══════════════════════════════════════════════════════════════════════════════
--- Visual Toggle Mappings
+-- Interface / Visual Toggles  (<leader>i)
 -- ══════════════════════════════════════════════════════════════════════════════
 
-map("n", "<leader>N", function()
+-- Clean view: numbers, signs, indent guides, context, illuminate, mouse off
+map("n", "<leader>ic", function()
   if vim.wo.number then
     -- Clean mode: disable all visual indicators
     vim.wo.number = false
@@ -367,4 +362,36 @@ map("n", "<leader>N", function()
     -- Enable mouse
     vim.opt.mouse = "a"
   end
-end, { desc = "Toggle numbers and signs (clean view)" })
+end, { desc = "Clean view (numbers/signs/guides/context off)" })
+
+-- Granular toggles
+map("n", "<leader>in", function()
+  vim.wo.number = not vim.wo.number
+  vim.wo.relativenumber = vim.wo.number
+end, { desc = "Toggle line numbers" })
+
+map("n", "<leader>ib", "<cmd>IBLToggle<CR>", { desc = "Toggle indent guides (blankline)" })
+
+map("n", "<leader>is", function()
+  vim.g.miniindentscope_disable = not vim.g.miniindentscope_disable
+end, { desc = "Toggle indent scope" })
+
+map("n", "<leader>iw", function()
+  require("illuminate").toggle()
+end, { desc = "Toggle word illumination" })
+
+map("n", "<leader>ix", "<cmd>TSContextToggle<CR>", { desc = "Toggle treesitter context bar" })
+
+map("n", "<leader>id", "<cmd>VimadeToggle<CR>", { desc = "Toggle dim inactive windows (vimade)" })
+
+map("n", "<leader>it", "<cmd>Twilight<CR>", { desc = "Toggle Twilight (dim out-of-scope)" })
+
+map("n", "<leader>iz", "<cmd>ZenMode<CR>", { desc = "Toggle Zen mode" })
+
+map("n", "<leader>ig", function()
+  require("gitsigns").toggle_signs()
+end, { desc = "Toggle git signs (gutter)" })
+
+map("n", "<leader>im", "<cmd>RenderMarkdown toggle<CR>", { desc = "Toggle markdown rendering" })
+
+map("n", "<leader>ip", "<cmd>Noice dismiss<CR>", { desc = "Dismiss popups/messages (noice)" })

@@ -454,6 +454,9 @@ return {
     keys = { "<leader>", "<c-r>", "<c-w>", '"', "'", "`", "c", "v", "g" },
     config = function(_, opts)
       dofile(vim.g.base46_cache .. "whichkey")
+      require("which-key").add {
+        { "<leader>i", group = "interface" },
+      }
     end,
   },
 
@@ -558,9 +561,6 @@ return {
       require("twilight").setup(opts)
       require("twilight").enable() -- on by default
     end,
-    keys = {
-      { "<leader>zt", "<cmd>Twilight<cr>", desc = "Twilight (toggle dim)" },
-    },
   },
 
   {
@@ -568,6 +568,38 @@ return {
     "folke/zen-mode.nvim",
     cmd = "ZenMode",
     opts = {},
+  },
+
+  {
+    -- Animated highlights for yank/paste and undo/redo operations
+    "rachartier/tiny-glimmer.nvim",
+    lazy = false,
+    opts = {
+      overwrite = {
+        undo = {
+          enabled = true,
+          default_animation = {
+            name = "fade",
+            settings = {
+              from_color = "DiffDelete",
+              max_duration = 500,
+              min_duration = 500,
+            },
+          },
+        },
+        redo = {
+          enabled = true,
+          default_animation = {
+            name = "fade",
+            settings = {
+              from_color = "DiffAdd",
+              max_duration = 500,
+              min_duration = 500,
+            },
+          },
+        },
+      },
+    },
   },
 
   {

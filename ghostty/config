@@ -10,7 +10,7 @@ font-size = 16
 theme = Molokai
 
 # --- Window appearance ---
-background-opacity = 0.9
+background-opacity = 0.75
 background-blur = 20
 window-padding-x = 10
 window-padding-y = 10
@@ -58,7 +58,8 @@ quit-after-last-window-closed = true
 # Richer colors on modern Macs (wider gamut than sRGB).
 window-colorspace = display-p3
 
-# Cleaner, chromeless look (no native titlebar). Alternatives: transparent, tabs.
+# Chromeless look (no titlebar). Not draggable via the titlebar — use
+# option+drag on the frame, or ctrl+cmd+drag. Alternatives: transparent, tabs.
 macos-titlebar-style = hidden
 
 # Restore window layout/size on relaunch (uncomment to enable).
