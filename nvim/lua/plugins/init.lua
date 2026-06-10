@@ -546,6 +546,31 @@ return {
   },
 
   {
+    -- Dim inactive code outside the current scope (treesitter-based)
+    "folke/twilight.nvim",
+    event = "VeryLazy",
+    opts = {
+      dimming = {
+        alpha = 0.4, -- higher = less dimming (default 0.25 dims heavily; 1.0 = no dim)
+      },
+    },
+    config = function(_, opts)
+      require("twilight").setup(opts)
+      require("twilight").enable() -- on by default
+    end,
+    keys = {
+      { "<leader>zt", "<cmd>Twilight<cr>", desc = "Twilight (toggle dim)" },
+    },
+  },
+
+  {
+    -- Distraction-free coding mode (integrates with twilight when present)
+    "folke/zen-mode.nvim",
+    cmd = "ZenMode",
+    opts = {},
+  },
+
+  {
     -- Render markdown with treesitter in buffers
     "MeanderingProgrammer/render-markdown.nvim",
     ft = { "markdown", "copilot-chat" },

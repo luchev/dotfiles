@@ -22,6 +22,7 @@ local M = {}
 
 M.base46 = {
   theme = "doomchad", -- tokyodark, doomchad, tokyonight, tomorrow_night
+  transparency = true,
 }
 
 M.term = {
