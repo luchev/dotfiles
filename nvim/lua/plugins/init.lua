@@ -9,6 +9,75 @@ return {
   },
 
   {
+    -- Utility library (also a claudecode dep). Only the non-conflicting modules
+    -- are enabled; the rest duplicate existing plugins (notifier->noice,
+    -- indent->indent-blankline, scroll->mini.animate, zen->zen-mode,
+    -- dim->twilight, picker->telescope, words->illuminate).
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+    opts = {
+      bigfile = { enabled = true }, -- disable heavy features on huge files
+      quickfile = { enabled = true }, -- render the file before plugins load
+      -- Indent guides + current-scope highlight (replaces indent-blankline and
+      -- mini.indentscope). Animation disabled per preference.
+      indent = {
+        indent = { char = "│" },
+        scope = { char = "│" },
+        animate = { enabled = false },
+      },
+      -- "Advanced" dashboard preset from the snacks.nvim docs (replaces startify)
+      dashboard = {
+        enabled = true,
+        -- default keys minus "Restore Session" (no session plugin installed)
+        preset = {
+          keys = {
+            { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
+            { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
+            { icon = " ", key = "g", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
+            { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')" },
+            { icon = " ", key = "c", desc = "Config", action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})" },
+            { icon = "󰒲 ", key = "L", desc = "Lazy", action = ":Lazy", enabled = package.loaded.lazy ~= nil },
+            { icon = " ", key = "q", desc = "Quit", action = ":qa" },
+          },
+        },
+        sections = {
+          { section = "header" },
+          {
+            pane = 2,
+            section = "terminal",
+            cmd = "colorscript -e square",
+            height = 5,
+            padding = 1,
+            -- optional dep: hide this pane when `colorscript` isn't installed
+            enabled = function()
+              return vim.fn.executable "colorscript" == 1
+            end,
+          },
+          { section = "keys", gap = 1, padding = 1 },
+          { pane = 2, icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = 1 },
+          { pane = 2, icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1 },
+          {
+            pane = 2,
+            icon = " ",
+            title = "Git Status",
+            section = "terminal",
+            enabled = function()
+              return Snacks.git.get_root() ~= nil
+            end,
+            cmd = "git status --short --branch --renames",
+            height = 5,
+            padding = 1,
+            ttl = 5 * 60,
+            indent = 3,
+          },
+          { section = "startup" },
+        },
+      },
+    },
+  },
+
+  {
     -- Auto-formatting with support for multiple formatters
     "stevearc/conform.nvim",
     cmd = { "Format" },
@@ -94,6 +163,17 @@ return {
       { "<leader>l]", "<cmd>Lspsaga diagnostic_jump_next<cr>", desc = "Next diagnostic" },
       { "<leader>ls", "<cmd>Lspsaga show_line_diagnostics<cr>", desc = "Line diagnostics" },
     },
+  },
+
+  {
+    -- Pretty inline diagnostics shown at the cursor line
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "VeryLazy",
+    priority = 1000,
+    config = function()
+      require("tiny-inline-diagnostic").setup()
+      vim.diagnostic.config { virtual_text = false }
+    end,
   },
 
   {
@@ -382,12 +462,6 @@ return {
 
   -- File Navigation
   {
-    -- Start screen with recent files and sessions
-    "mhinz/vim-startify",
-    lazy = false,
-  },
-
-  {
     -- File explorer tree with git integration
     "nvim-tree/nvim-tree.lua",
     cmd = { "NvimTreeToggle", "NvimTreeFocus" },
@@ -433,16 +507,6 @@ return {
         db_safe_mode = false,
         matcher = "fuzzy",
       }
-    end,
-  },
-
-  {
-    -- Fast fuzzy finder using fzf algorithm
-    "ibhagwan/fzf-lua",
-    cmd = { "FzfLua", "F" },
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    config = function()
-      require("configs.fzflua")()
     end,
   },
 
@@ -512,17 +576,6 @@ return {
   },
 
   {
-    -- Indent guides with scope indicators
-    "lukas-reineke/indent-blankline.nvim",
-    main = "ibl",
-    event = "BufReadPre",
-    opts = {
-      indent = { char = "│" },
-      scope = { enabled = false },
-    },
-  },
-
-  {
     -- Highlight other uses of the word under the cursor
     "RRethy/vim-illuminate",
     event = "BufReadPost",
@@ -554,12 +607,11 @@ return {
     event = "VeryLazy",
     opts = {
       dimming = {
-        alpha = 0.4, -- higher = less dimming (default 0.25 dims heavily; 1.0 = no dim)
+        alpha = 0.8, -- higher = less dimming (default 0.25 dims heavily; 1.0 = no dim)
       },
     },
     config = function(_, opts)
       require("twilight").setup(opts)
-      require("twilight").enable() -- on by default
     end,
   },
 

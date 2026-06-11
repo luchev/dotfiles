@@ -179,18 +179,15 @@ map(
   "<cmd>Telescope file_browser path=%:p:h select_buffer=true<CR>",
   { desc = "telescope file browser" }
 )
+map("n", "<leader>ts", "<cmd>Telescope treesitter<CR>", { desc = "telescope treesitter symbols" })
+map("n", "<leader>tr", "<cmd>Telescope grep_string<CR>", { desc = "telescope grep word under cursor" })
+map("v", "<leader>tv", function()
+  vim.cmd('noautocmd normal! gv"vy')
+  require("telescope.builtin").grep_string { search = vim.fn.getreg("v") }
+end, { desc = "telescope grep visual selection" })
 
--- ══════════════════════════════════════════════════════════════════════════════
--- FzfLua Mappings
--- ══════════════════════════════════════════════════════════════════════════════
-
-map("n", "<C-p>", "<cmd>FzfLua files<CR>", { desc = "Fzf find files" })
-map("n", "<leader>ff", "<cmd>FzfLua files<CR>", { desc = "Fzf find files" })
-map("n", "<leader>ft", "<cmd>FzfLua treesitter<CR>", { desc = "Fzf treesitter symbols" })
-map("n", "<leader>fg", "<cmd>FzfLua grep<CR>", { desc = "Fzf grep" })
-map("n", "<leader>fw", "<cmd>FzfLua grep_cword<CR>", { desc = "Fzf grep word under cursor" })
-map("n", "<leader>fl", "<cmd>FzfLua git_commits<CR>", { desc = "Fzf git log" })
-map("v", "<leader>fv", "<cmd>FzfLua grep_visual<CR>", { desc = "Fzf grep visual selection" })
+-- Quick file open (plain find_files), kept outside the <leader>t namespace
+map("n", "<C-p>", "<cmd>Telescope find_files<CR>", { desc = "telescope find files" })
 
 -- ══════════════════════════════════════════════════════════════════════════════
 -- Formatting Mappings
@@ -315,11 +312,8 @@ map("n", "<leader>ic", function()
     vim.wo.relativenumber = false
     vim.wo.signcolumn = "no"
 
-    -- Disable indent-blankline
-    vim.cmd("IBLDisable")
-
-    -- Disable mini.indentscope
-    vim.b.miniindentscope_disable = true
+    -- Disable indent guides/scope (snacks)
+    Snacks.indent.disable()
 
     -- Disable treesitter context
     local ts_context_ok, ts_context = pcall(require, "treesitter-context")
@@ -341,11 +335,8 @@ map("n", "<leader>ic", function()
     vim.wo.relativenumber = true
     vim.wo.signcolumn = "yes"
 
-    -- Enable indent-blankline
-    vim.cmd("IBLEnable")
-
-    -- Enable mini.indentscope
-    vim.b.miniindentscope_disable = false
+    -- Enable indent guides/scope (snacks)
+    Snacks.indent.enable()
 
     -- Enable treesitter context
     local ts_context_ok, ts_context = pcall(require, "treesitter-context")
@@ -370,11 +361,13 @@ map("n", "<leader>in", function()
   vim.wo.relativenumber = vim.wo.number
 end, { desc = "Toggle line numbers" })
 
-map("n", "<leader>ib", "<cmd>IBLToggle<CR>", { desc = "Toggle indent guides (blankline)" })
-
-map("n", "<leader>is", function()
-  vim.g.miniindentscope_disable = not vim.g.miniindentscope_disable
-end, { desc = "Toggle indent scope" })
+map("n", "<leader>ib", function()
+  if Snacks.indent.enabled then
+    Snacks.indent.disable()
+  else
+    Snacks.indent.enable()
+  end
+end, { desc = "Toggle indent guides + scope" })
 
 map("n", "<leader>iw", function()
   require("illuminate").toggle()
