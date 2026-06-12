@@ -171,8 +171,53 @@ return {
     event = "VeryLazy",
     priority = 1000,
     config = function()
-      require("tiny-inline-diagnostic").setup()
+      require("tiny-inline-diagnostic").setup {
+        transparent_bg = true,
+        options = {
+          multilines = {
+            enabled = true,
+            always_show = true,
+          },
+        },
+      }
       vim.diagnostic.config { virtual_text = false }
+
+      -- The plugin's `blend` only tints the diagnostic *background*, which
+      -- transparent_bg removes -- so the inline text stays full-bright. Dim the
+      -- *foreground* of its groups directly. Use each severity's BASE diagnostic
+      -- color (full brightness) as the source so already-dimmed variants don't
+      -- get double-dimmed into near-invisibility.
+      local DIM = 0.45 -- share of the original color: lower = dimmer
+      local BG = { 0x1a, 0x1a, 0x1a } -- blend target (terminal backdrop)
+      local severities = { "Error", "Warn", "Info", "Hint" }
+      local function dim_inline()
+        local dimmed = {}
+        for _, s in ipairs(severities) do
+          local d = vim.api.nvim_get_hl(0, { name = "Diagnostic" .. s, link = false })
+          if d.fg then
+            dimmed[s] = math.floor((d.fg / 65536 % 256) * DIM + BG[1] * (1 - DIM) + 0.5) * 65536
+              + math.floor((d.fg / 256 % 256) * DIM + BG[2] * (1 - DIM) + 0.5) * 256
+              + math.floor((d.fg % 256) * DIM + BG[3] * (1 - DIM) + 0.5)
+          end
+        end
+        for _, name in ipairs(vim.fn.getcompletion("TinyInline", "highlight")) do
+          for _, s in ipairs(severities) do
+            if dimmed[s] and name:find(s) then
+              local h = vim.api.nvim_get_hl(0, { name = name, link = false })
+              h.fg = dimmed[s]
+              vim.api.nvim_set_hl(0, name, h)
+              break
+            end
+          end
+        end
+      end
+      dim_inline()
+      -- re-apply after the plugin/colorscheme rebuilds its groups
+      vim.api.nvim_create_autocmd("ColorScheme", {
+        callback = function()
+          vim.schedule(dim_inline)
+        end,
+      })
     end,
   },
 
@@ -561,12 +606,6 @@ return {
   },
 
   {
-    -- LSP progress notifications in the corner
-    "j-hui/fidget.nvim",
-    opts = {},
-  },
-
-  {
     -- Jump to any location with minimal keystrokes
     "folke/flash.nvim",
     event = "VeryLazy",
@@ -673,6 +712,8 @@ return {
   {
     -- Code outline sidebar with symbols from LSP and treesitter
     "stevearc/aerial.nvim",
+    -- main branch requires Neovim 0.12+; pin to the 0.11 branch for 0.11.x
+    branch = "nvim-0.11",
     cmd = { "AerialToggle", "AerialOpen", "AerialClose", "AerialNext", "AerialPrev" },
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
@@ -777,15 +818,6 @@ return {
     dependencies = { "nvim-telescope/telescope.nvim" },
     config = function()
       require("neoclip").setup()
-    end,
-  },
-
-  {
-    -- Grammar checker using LanguageTool
-    "rhysd/vim-grammarous",
-    cmd = "GrammarousCheck",
-    config = function()
-      vim.g["grammarous#jar_url"] = "https://www.languagetool.org/download/archive/LanguageTool-5.9.zip"
     end,
   },
 

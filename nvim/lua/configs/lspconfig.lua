@@ -20,7 +20,7 @@ vim.keymap.set({ "n", "i" }, "<leader>ls", function()
   vim.lsp.buf.signature_help()
 end, { desc = "LSP signature help (focus)" })
 
-local servers = { "html", "cssls", "gopls", "ulsp" }
+local servers = { "html", "cssls", "gopls", "ulsp", "harper_ls" }
 local nvlsp = require("nvchad.configs.lspconfig")
 
 -- Define custom ulsp server config

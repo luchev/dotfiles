@@ -52,9 +52,13 @@ quit-after-last-window-closed = true
 # Richer colors on modern Macs (wider gamut than sRGB).
 window-colorspace = display-p3
 
-# Chromeless look (no titlebar). Not draggable via the titlebar — use
-# option+drag on the frame, or ctrl+cmd+drag. Alternatives: transparent, tabs.
-macos-titlebar-style = hidden
+# Integrated tab bar (visible even without the native titlebar). Alternatives:
+# hidden (chromeless, no tab bar), transparent, native.
+macos-titlebar-style = tabs
 
 # Restore window layout/size on relaunch (uncomment to enable).
 # window-save-state = always
+
+# --- Keybindings ---
+# Ctrl+T opens a new tab (in addition to the default super+t)
+keybind = ctrl+t=new_tab

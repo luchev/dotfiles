@@ -12,6 +12,7 @@ local options = {
     "kdlfmt",
     "bzl",
     "starpls",
+    "harper-ls",
   },
 
   PATH = "skip",
