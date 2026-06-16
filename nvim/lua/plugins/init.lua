@@ -700,4 +700,20 @@ return {
     "mjakl/vim-asciidoc",
     event = "BufRead */adoc/*.adoc",
   },
+
+  {
+    -- Gemini CLI integration for AI pair programming
+    "z/gemini.nvim",
+    dir = "/Users/z/playground/gemini.nvim",
+    cmd = { "Gemini" },
+    config = function()
+      require("gemini").setup({
+        terminal_style = "split",
+      })
+    end,
+    keys = {
+      { "<leader>g", nil, desc = "AI/Gemini" },
+      { "<leader>gg", "<cmd>Gemini<cr>", desc = "Toggle Gemini" },
+    },
+  },
 }

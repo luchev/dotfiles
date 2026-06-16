@@ -236,6 +236,10 @@
       description: Install commitizen
       quiet: false
     - command:
+        ~/.dotfiles/nushell/sync-env-from-bitwarden.sh
+      description: Sync env vars from Bitwarden to nushell config
+      quiet: false
+    - command:
         ~/.dotfiles/install-claude-agents.sh
       description: Install Claude Code agents
       quiet: false

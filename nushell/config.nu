@@ -903,13 +903,11 @@ alias v = nvim
 alias g = git
 alias e = eza --color=auto --icons=auto
 alias h = atuin
-alias f = fdfind
-alias s = fd-find
+alias s = fd
 alias b = bat
 alias y = yazi
 alias t = tldr
 alias n = navi
-alias i = gemini
 alias zj = zellij
 alias rg = rg --color=auto
 alias rgc = rg --color=always
@@ -952,7 +950,7 @@ def fk [] {
 
 # One-shot Gemini. Joins all args into a single prompt and runs via `-p`.
 # Pipe text in to feed stdin. Use `^gemini` to bypass for flags or interactive.
-def gemini [...args: string] {
+def i [...args: string] {
     let prompt = $args | str join " "
     let input = $in
     if $input == null {
@@ -987,6 +985,20 @@ use ~/.cache/starship/init.nu
 # Automatically format jc's output in nushell format
 use ~/.dotfiles/nu_scripts/modules/jc/
 
+# Source local nushell config if it exists
+const local_config = "~/.config-local.nu"
+const local_config = if ("~/.config-local.nu" | path exists) { 
+  "~/.config-local.nu" 
+} else { 
+  ""
+}
+try {
+  source-env $local_config
+} catch {
+  echo "No local nushell config found at ~/.config-local.nu"
+}
+
+
 # Completions
 # source ~/.dotfiles/nu_scripts/custom-completions/bat/bat-completions.nu
 # source ~/.dotfiles/nu_scripts/custom-completions/just/just-completions.nu
@@ -994,9 +1006,14 @@ use ~/.dotfiles/nu_scripts/modules/jc/
 # source ~/.dotfiles/nu_scripts/custom-completions/git/git-completions.nu
 # source ~/.dotfiles/nu_scripts/custom-completions/man/man-completions.nu
 # source ~/.dotfiles/nu_scripts/custom-completions/npm/npm-completions.nu
-# source ~/.dotfiles/nu_scripts/custom-completions/rg/rg-completions.nu
-# source ~/.dotfiles/nu_scripts/custom-completions/rustup/rustup-completions.nu
-# source ~/.dotfiles/nu_scripts/custom-completions/vscode/vscode-completions.nu
-# source ~/.dotfiles/nu_scripts/custom-completions/zellij/zellij-completions.nu
-# source ~/.dotfiles/nu_scripts/custom-completions/rg/rg-completions.nu
 
+
+# Anthropic/DeepSeek configuration
+$env.ANTHROPIC_BASE_URL = "https://api.deepseek.com/anthropic"
+$env.ANTHROPIC_AUTH_TOKEN = $env.DEEPSEEK_API_KEY
+$env.ANTHROPIC_MODEL = "deepseek-v4-pro[1m]"
+$env.ANTHROPIC_DEFAULT_OPUS_MODEL = "deepseek-v4-pro[1m]"
+$env.ANTHROPIC_DEFAULT_SONNET_MODEL = "deepseek-v4-pro[1m]"
+$env.ANTHROPIC_DEFAULT_HAIKU_MODEL = "deepseek-v4-flash"
+$env.CLAUDE_CODE_SUBAGENT_MODEL = "deepseek-v4-flash"
+$env.CLAUDE_CODE_EFFORT_LEVEL = "max"

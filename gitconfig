@@ -160,3 +160,8 @@
     wtls = !git worktree list | awk '{print $1}'  # List worktree paths only
     wtclean = !git worktree prune && git worktree list  # Prune and show remaining worktrees
     wtbranch = !git worktree add -b $(basename $PWD)  # Create worktree from current dir name
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f

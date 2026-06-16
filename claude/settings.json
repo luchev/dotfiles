@@ -1,102 +1,4 @@
 {
-  "fastMode": false,
-  "hooks": {
-    "Elicitation": [
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "bash ~/.dotfiles/claude/zellij-status.sh notification",
-            "timeout": 5,
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "ElicitationResult": [
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "bash ~/.dotfiles/claude/zellij-status.sh pretool",
-            "timeout": 5,
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "Notification": [
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "bash ~/.dotfiles/claude/zellij-status.sh notification",
-            "timeout": 5,
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "bash ~/.dotfiles/claude/zellij-status.sh pretool",
-            "timeout": 5,
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "bash ~/.dotfiles/claude/zellij-status.sh idle",
-            "timeout": 5,
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "bash ~/.dotfiles/claude/zellij-status.sh waiting",
-            "timeout": 5,
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "command": "bash ~/.dotfiles/claude/zellij-status.sh done",
-            "timeout": 5,
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "bash ~/.dotfiles/claude/zellij-status.sh working",
-            "timeout": 5,
-            "type": "command"
-          }
-        ]
-      }
-    ]
-  },
   "permissions": {
     "allow": [
       "mcp__monorepo-experts-mcp-server__generate_standard_go_mocks",
@@ -105,8 +7,106 @@
       "mcp__monorepo-experts-mcp-server__get_coverage_report"
     ]
   },
+  "hooks": {
+    "Elicitation": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.dotfiles/claude/zellij-status.sh notification",
+            "timeout": 5,
+            "async": true
+          }
+        ]
+      }
+    ],
+    "ElicitationResult": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.dotfiles/claude/zellij-status.sh pretool",
+            "timeout": 5,
+            "async": true
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.dotfiles/claude/zellij-status.sh notification",
+            "timeout": 5,
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.dotfiles/claude/zellij-status.sh pretool",
+            "timeout": 5,
+            "async": true
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.dotfiles/claude/zellij-status.sh idle",
+            "timeout": 5,
+            "async": true
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.dotfiles/claude/zellij-status.sh waiting",
+            "timeout": 5,
+            "async": true
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.dotfiles/claude/zellij-status.sh done",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.dotfiles/claude/zellij-status.sh working",
+            "timeout": 5,
+            "async": true
+          }
+        ]
+      }
+    ]
+  },
   "statusLine": {
-    "command": "bash ~/.dotfiles/claude/statusline-command.sh",
-    "type": "command"
-  }
+    "type": "command",
+    "command": "bash ~/.dotfiles/claude/statusline-command.sh"
+  },
+  "theme": "dark"
 }

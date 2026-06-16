@@ -325,6 +325,7 @@ map("n", "<leader>N", function()
 
     -- Disable mini.indentscope
     vim.b.miniindentscope_disable = true
+    require('mini.indentscope').config.symbol = ""
 
     -- Disable treesitter context
     local ts_context_ok, ts_context = pcall(require, "treesitter-context")
@@ -351,6 +352,7 @@ map("n", "<leader>N", function()
 
     -- Enable mini.indentscope
     vim.b.miniindentscope_disable = false
+    require('mini.indentscope').config.symbol = "│"
 
     -- Enable treesitter context
     local ts_context_ok, ts_context = pcall(require, "treesitter-context")
