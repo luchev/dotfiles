@@ -24,7 +24,7 @@ STATE_FILE="$CACHE_DIR/$PANE_ID.json"
 LOCK_FILE="$CACHE_DIR/$PANE_ID.lock"
 mkdir -p "$CACHE_DIR"
 
-DEFAULT_STATE='{"ticket":null,"topic":null,"phase":"thinking","active":[],"tasks_total":0,"tasks_done":0,"compacting":false,"perm":false,"elicit_server":null,"error_type":null,"skill":null,"detail":null,"current_task":null,"tasks_map":{},"progress":null}'
+DEFAULT_STATE='{"ticket":null,"topic":null,"cwd_label":null,"phase":"thinking","active":[],"tasks_total":0,"tasks_done":0,"compacting":false,"perm":false,"elicit_server":null,"error_type":null,"skill":null,"detail":null,"current_task":null,"tasks_map":{},"progress":null}'
 
 # ── State I/O ──────────────────────────────────────────────────────────────────
 
@@ -66,6 +66,12 @@ extract_ticket() {
   [ -n "$t" ] && { printf '%s' "$t"; return; }
   top=$(git -C "$cwd" --no-optional-locks rev-parse --show-toplevel 2>/dev/null) || top=""
   printf '%s' "$top" | grep -oE '[A-Z]{2,10}-[0-9]+' | head -1
+}
+
+compute_cwd_label() {
+  local cwd="${1:-$PWD}" top
+  top=$(git -C "$cwd" --no-optional-locks rev-parse --show-toplevel 2>/dev/null) || top="$cwd"
+  printf '%s' "${top/$HOME/\~}"
 }
 
 # tool_label <tool_name> <tool_input_json> → human label
@@ -124,8 +130,8 @@ tool_label() {
 
 render() {
   local s="$1" label_cache="$CACHE_DIR/$PANE_ID.label" last=""
-  local error_type compacting perm elicit detail current_task phase ticket topic tasks_done tasks_total active_labels skill_label progress_str
-  IFS=$'\x1f' read -r error_type compacting perm elicit detail current_task phase ticket topic tasks_done tasks_total active_labels skill_label progress_str < <(
+  local error_type compacting perm elicit detail current_task phase ticket topic cwd_label tasks_done tasks_total active_labels skill_label progress_str
+  IFS=$'\x1f' read -r error_type compacting perm elicit detail current_task phase ticket topic cwd_label tasks_done tasks_total active_labels skill_label progress_str < <(
     printf '%s' "$s" | jq -r --arg sep $'\x1f' '[
       (.error_type // ""),
       (.compacting | tostring),
@@ -136,18 +142,27 @@ render() {
       .phase,
       (.ticket // ""),
       (.topic // ""),
+      (.cwd_label // ""),
       (.tasks_done | tostring),
       (.tasks_total | tostring),
       ([.active[].label] | join(" · ")),
-      (if .skill then "\(.skill.name)\(if (.skill.action // "") != "" then ":\(.skill.action)" else "" end)" else "" end),
+      (if .skill then .skill.name else "" end),
       (if .progress then "\(.progress.n)/\(.progress.m)\(if (.progress.label // "") != "" then " \(.progress.label)" else "" end)" else "" end)
     ] | join($sep)'
   )
 
   local ticket_suffix="" tasks_suffix="" progress_suffix="" label fallback_ctx
   [ -n "$ticket" ] && ticket_suffix=" · $ticket"
-  # Fallback context for idle/done/thinking: prefer ticket, then topic, then "Claude".
-  fallback_ctx="${ticket_suffix:- ${topic:-Claude}}"
+  # Fallback context for idle/done/thinking: ticket > topic > cwd_label > "Claude".
+  if [ -n "$ticket" ]; then
+    fallback_ctx=" · $ticket"
+  elif [ -n "$topic" ]; then
+    fallback_ctx=" $topic"
+  elif [ -n "$cwd_label" ]; then
+    fallback_ctx=" · $cwd_label"
+  else
+    fallback_ctx=" Claude"
+  fi
   if [ "${tasks_total:-0}" -gt 0 ]; then
     tasks_suffix=" ($tasks_done/$tasks_total)"
   fi
@@ -181,38 +196,42 @@ render() {
   [ -f "$label_cache" ] && last=$(cat "$label_cache" 2>/dev/null)
   [ "$label" = "$last" ] && return
   printf '%s' "$label" > "$label_cache"
-  zellij action rename-pane --pane-id "$PANE_ID" "$label" >/dev/null 2>&1 || true
+  TMPDIR=/tmp zellij action rename-pane --pane-id "$PANE_ID" "$label" >/dev/null 2>&1 || true
 }
 
 # ── Hook handlers ──────────────────────────────────────────────────────────────
 
 handler_init() {
-  local input cwd ticket
+  local input cwd ticket cwd_lbl
   input=$(cat 2>/dev/null || true)
   cwd=$(printf '%s' "$input" | jq -r '.cwd // ""' 2>/dev/null)
   [ -z "$cwd" ] && cwd="$PWD"
   ticket=$(extract_ticket "" "$cwd")
-  printf '%s' "$DEFAULT_STATE" | jq -c --arg t "$ticket" \
-    '. * {ticket: (if $t=="" then null else $t end)}'
+  cwd_lbl=$(compute_cwd_label "$cwd")
+  printf '%s' "$DEFAULT_STATE" | jq -c --arg t "$ticket" --arg c "$cwd_lbl" \
+    '. * {ticket: (if $t=="" then null else $t end), cwd_label: (if $c=="" then null else $c end)}'
 }
 
 handler_turn() {
-  local input cwd prompt ticket topic
+  local input cwd prompt ticket topic cwd_lbl
   input=$(cat 2>/dev/null || true)
   cwd=$(printf '%s' "$input" | jq -r '.cwd // ""')
   prompt=$(printf '%s' "$input" | jq -r '.prompt // ""')
   ticket=$(extract_ticket "$prompt" "$cwd")
+  cwd_lbl=$(compute_cwd_label "$cwd")
   # First substantive prompt of the session becomes the topic (40 chars, single-line).
   # Skip trivial prompts (<12 chars after normalization) so words like "retry" don't stick.
+  # Also skip bare URLs so "resume https://..." doesn't become the topic.
   topic=$(printf '%s' "$prompt" | tr '\n\t' '  ' | sed 's/^ *//;s/ *$//')
-  if [ "${#topic}" -lt 12 ]; then
+  if [ "${#topic}" -lt 12 ] || printf '%s' "$topic" | grep -qE '^https?://' || printf '%s' "$topic" | grep -qE '^<'; then
     topic=""
   else
     topic=$(printf '%s' "$topic" | cut -c1-40)
   fi
   # Don't touch skill/detail/progress here — expand may have set them just before this hook.
-  printf '%s' "$1" | jq -c --arg t "$ticket" --arg tp "$topic" \
-    '. * {ticket: (if $t=="" then null else $t end), phase:"thinking", perm:false, elicit_server:null, error_type:null}
+  printf '%s' "$1" | jq -c --arg t "$ticket" --arg tp "$topic" --arg c "$cwd_lbl" \
+    '. * {ticket: (if $t=="" then null else $t end), phase:"thinking", perm:false, elicit_server:null, error_type:null,
+           cwd_label: (if $c=="" then null else $c end)}
      | .topic = (if (.topic // "") == "" and $tp != "" then $tp else .topic end)'
 }
 
@@ -220,10 +239,9 @@ handler_expand() {
   local input cname cargs
   input=$(cat 2>/dev/null || true)
   cname=$(printf '%s' "$input" | jq -r '.command_name // ""')
-  cargs=$(printf '%s' "$input" | jq -r '.command_args // ""')
   # New slash command → fresh turn-scoped fields.
-  printf '%s' "$1" | jq -c --arg n "$cname" --arg a "$cargs" \
-    '.skill = (if $n == "" then null else {name:$n, action:$a} end) | .detail = null | .progress = null'
+  printf '%s' "$1" | jq -c --arg n "$cname" \
+    '.skill = (if $n == "" then null else {name:$n} end) | .detail = null | .progress = null'
 }
 
 handler_tool_start() {
@@ -237,9 +255,8 @@ handler_tool_start() {
     Skill)
       local sname sargs
       sname=$(printf '%s' "$tool_input" | jq -r '.skill // ""')
-      sargs=$(printf '%s' "$tool_input" | jq -r '.args // ""')
-      printf '%s' "$state" | jq -c --arg n "$sname" --arg a "$sargs" \
-        '.skill = (if $n == "" then .skill else {name:$n, action:$a} end) | .perm=false'
+      printf '%s' "$state" | jq -c --arg n "$sname" \
+        '.skill = (if $n == "" then .skill else {name:$n} end) | .perm=false'
       return
       ;;
     TaskCreate|TaskGet|TaskList)
@@ -381,7 +398,7 @@ handler_progress() {
 }
 
 handler_cleanup() {
-  zellij action undo-rename-pane --pane-id "$PANE_ID" >/dev/null 2>&1 || true
+  TMPDIR=/tmp zellij action undo-rename-pane --pane-id "$PANE_ID" >/dev/null 2>&1 || true
   rm -f "$STATE_FILE" "$LOCK_FILE" "$CACHE_DIR/$PANE_ID.label"
 }
 

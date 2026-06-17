@@ -1,0 +1,64 @@
+# Reference: https://ghostty.org/docs/config/reference
+# Reload in-app with cmd+shift+, (or restart).
+
+# --- Font ---
+font-family = FiraCode Nerd Font Mono
+font-size = 16
+
+# --- Theme (Molokai ships with Ghostty) ---
+theme = Molokai
+
+# --- Window appearance ---
+background-opacity = 0.85
+background-blur = 20
+window-padding-x = 6
+window-padding-y = 6
+
+# --- Cursor warp trail shader (sahaj-b/ghostty-cursor-shaders) ---
+# custom-shader-animation = always keeps the trail from freezing on unfocus
+# with the default bar cursor.
+custom-shader = ~/.dotfiles/ghostty/shaders/cursor_warp.glsl
+custom-shader-animation = always
+
+# --- Behavior ---
+confirm-close-surface = false
+term = xterm-256color
+scrollback-limit = 10000000
+
+# --- Shell ---
+command = /opt/homebrew/bin/nu --config ~/.dotfiles/nushell/config.nu --env-config ~/.dotfiles/nushell/env.nu
+
+# --- Bell ---
+bell-features = no-audio,no-system,attention,title
+
+# --- Cursor ---
+cursor-style = bar
+cursor-style-blink = true
+cursor-color = cell-foreground
+cursor-text = cell-background
+
+# --- Splits ---
+unfocused-split-opacity = 0.6
+
+# Treat macOS Option as Alt so Alt-keybindings work in nushell/readline.
+macos-option-as-alt = true
+
+# Hide the mouse cursor while typing.
+mouse-hide-while-typing = true
+
+# Quit Ghostty when the last window closes (wezterm-like).
+quit-after-last-window-closed = true
+
+# Richer colors on modern Macs (wider gamut than sRGB).
+window-colorspace = display-p3
+
+# Integrated tab bar (visible even without the native titlebar). Alternatives:
+# hidden (chromeless, no tab bar), transparent, native.
+macos-titlebar-style = tabs
+
+# Restore window layout/size on relaunch (uncomment to enable).
+# window-save-state = always
+
+# --- Keybindings ---
+# Ctrl+T opens a new tab (in addition to the default super+t)
+keybind = ctrl+t=new_tab

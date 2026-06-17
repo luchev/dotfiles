@@ -45,6 +45,10 @@ alias ls='ls --color=auto'
 alias -- -='cd -'
 alias ..='cd ..'
 
+# Wrap aifx so Ghostty's cursor shader animates the real cursor (tfil strips
+# Claude Code/Ink's fake cursor). No-op when tfil isn't installed.
+command -v tfil >/dev/null && alias aifx='tfil --strip-ink-fake-cursor aifx'
+
 # Tmux aliases
 alias ta='tmux a -t'
 alias tn='tmux new -s'

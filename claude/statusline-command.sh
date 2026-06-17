@@ -20,29 +20,31 @@ fi
 
 if [ -n "$transcript" ] && [ -f "$transcript" ]; then
   turns=$(grep -oE '"promptId":"[^"]+"' "$transcript" 2>/dev/null | sort -u | wc -l)
-  if [ "$turns" -gt 0 ]; then
-    if [ "$turns" -lt 30 ]; then
-      turn_color="\033[32m"
-    elif [ "$turns" -lt 50 ]; then
-      turn_color="\033[33m"
-    else
-      turn_color="\033[31m"
-    fi
-    printf " ${turn_color}🔄 %s\033[0m" "$turns"
+  if [ "$turns" -lt 30 ]; then
+    turn_color="\033[32m"
+  elif [ "$turns" -lt 50 ]; then
+    turn_color="\033[33m"
+  else
+    turn_color="\033[31m"
   fi
+  printf " ${turn_color}🔄 %s\033[0m" "$turns"
 fi
 
-if [ -n "$remaining" ] && [ "$remaining" != "null" ]; then
-  used=$(( ($ctx_size * (100 - $remaining)) / 100 - $buffer ))
-  if [ "$used" -lt 0 ]; then used=0; fi
-  used_pct=$(( ($used * 100) / $effective ))
-  if [ "$used_pct" -le 30 ]; then
-    printf " 💾 \033[32m%s%% (%dk/%dk)\033[0m" "$used_pct" "$(($used / 1000))" "$(($effective / 1000))"
-  elif [ "$used_pct" -le 60 ]; then
-    printf " 💾 \033[33m%s%% (%dk/%dk)\033[0m" "$used_pct" "$(($used / 1000))" "$(($effective / 1000))"
-  else
-    printf " 💾 \033[31m%s%% (%dk/%dk)\033[0m" "$used_pct" "$(($used / 1000))" "$(($effective / 1000))"
-  fi
+if [ -z "$remaining" ] || [ "$remaining" = "null" ]; then remaining=100; fi
+used=$(( ($ctx_size * (100 - $remaining)) / 100 - $buffer ))
+if [ "$used" -lt 0 ]; then used=0; fi
+used_pct=$(( ($used * 100) / $effective ))
+if [ "$ctx_size" -ge 1000000 ]; then
+  ctx_label="$(($ctx_size / 1000000))m"
+else
+  ctx_label="$(($ctx_size / 1000))k"
+fi
+if [ "$used_pct" -le 30 ]; then
+  printf " 💾 \033[32m%s%% (%dk/%s)\033[0m" "$used_pct" "$(($used / 1000))" "$ctx_label"
+elif [ "$used_pct" -le 60 ]; then
+  printf " 💾 \033[33m%s%% (%dk/%s)\033[0m" "$used_pct" "$(($used / 1000))" "$ctx_label"
+else
+  printf " 💾 \033[31m%s%% (%dk/%s)\033[0m" "$used_pct" "$(($used / 1000))" "$ctx_label"
 fi
 
 cost=$(echo "$input" | jq -r '.cost.total_cost_usd // empty')

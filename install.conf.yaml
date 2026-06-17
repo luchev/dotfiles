@@ -22,6 +22,9 @@
         force: true
     ~/.zsh_plugins.txt: zsh_plugins.txt
     ~/.wezterm.lua: wezterm.lua
+    ~/Library/Application Support/com.mitchellh.ghostty/config:
+      path: ghostty/config
+      force: true
     ~/Library/Application Support/nushell/config.nu:
       path: nushell/config.nu
       force: true
@@ -49,8 +52,8 @@
     ~/.claude/output-styles:
       path: claude/output-styles
       force: true
-    ~/.claude/commands:
-      path: claude/commands
+    ~/.claude/skills:
+      path: claude/skills
       force: true
     ~/.claude/agents:
       path: claude/agents
@@ -83,8 +86,32 @@
       description: Update Rust to latest stable version
       quiet: false
     - command: |
-          cargo install fd-find bat ripgrep starship atuin zoxide eza bottom du-dust just trippy pueue gitui bandwhich procs yazi-fm navi tlrc git-delta tree-sitter-cli
+          cargo install fd-find bat ripgrep starship zoxide eza bottom du-dust just trippy pueue gitui bandwhich procs navi tlrc git-delta tree-sitter-cli
       description: Install cargo packages
+      quiet: false
+    # atuin is installed on its own with --locked: its latest release resolves a
+    # transitive dep to a version that fails to compile, so we build against the
+    # Cargo.lock the maintainer published. (--locked still installs the newest
+    # atuin release; it only pins the build-time dependency versions.)
+    - command: |
+          cargo install --locked atuin
+      description: Install atuin (locked deps to avoid a broken transitive build)
+      quiet: false
+    # tfil: PTY proxy that strips Claude Code/Ink's fake cursor so Ghostty's
+    # cursor shader animates the real cursor. Author recommends --locked.
+    - command: |
+          cargo install --locked tfil
+      description: Install tfil (cursor-shader fix for Claude Code)
+      quiet: false
+    # yazi is installed on its own step, NOT in the batch above, so a yazi build
+    # failure can't abort the other crates (that cascade is what first broke the
+    # install). The yazi-fm/yazi-cli crates on crates.io intentionally panic on a
+    # direct `cargo install`; the official path is the `yazi-build` helper crate,
+    # which produces the `yazi`/`ya` binaries. --force is required (per yazi docs)
+    # so cargo will install/overwrite those binaries instead of refusing.
+    - command: |
+          cargo install --locked --force yazi-build
+      description: Install yazi via the yazi-build helper crate
       quiet: false
     - command: |
         bash -c '
@@ -236,5 +263,12 @@
     - command:
         ~/.dotfiles/install-claude-agents.sh
       description: Install Claude Code agents
+      quiet: false
+    - command: |
+        mkdir -p ~/.config/nushell
+        touch ~/.config/nushell/local.nu ~/.config/nushell/local-env.nu
+        mkdir -p "$HOME/Library/Application Support/nushell"
+        touch "$HOME/Library/Application Support/nushell/local.nu" "$HOME/Library/Application Support/nushell/local-env.nu"
+      description: Ensure nushell local override files exist
       quiet: false
 

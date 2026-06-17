@@ -1,5 +1,9 @@
 local options = {
   lsp = {
+    -- show LSP progress (e.g. rust-analyzer indexing) via noice (replaces fidget)
+    progress = {
+      enabled = true,
+    },
     -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
     override = {
       ["vim.lsp.util.convert_input_to_markdown_lines"] = true,

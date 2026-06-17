@@ -179,18 +179,15 @@ map(
   "<cmd>Telescope file_browser path=%:p:h select_buffer=true<CR>",
   { desc = "telescope file browser" }
 )
+map("n", "<leader>ts", "<cmd>Telescope treesitter<CR>", { desc = "telescope treesitter symbols" })
+map("n", "<leader>tr", "<cmd>Telescope grep_string<CR>", { desc = "telescope grep word under cursor" })
+map("v", "<leader>tv", function()
+  vim.cmd('noautocmd normal! gv"vy')
+  require("telescope.builtin").grep_string { search = vim.fn.getreg("v") }
+end, { desc = "telescope grep visual selection" })
 
--- ══════════════════════════════════════════════════════════════════════════════
--- FzfLua Mappings
--- ══════════════════════════════════════════════════════════════════════════════
-
-map("n", "<C-p>", "<cmd>FzfLua files<CR>", { desc = "Fzf find files" })
-map("n", "<leader>ff", "<cmd>FzfLua files<CR>", { desc = "Fzf find files" })
-map("n", "<leader>ft", "<cmd>FzfLua treesitter<CR>", { desc = "Fzf treesitter symbols" })
-map("n", "<leader>fg", "<cmd>FzfLua grep<CR>", { desc = "Fzf grep" })
-map("n", "<leader>fw", "<cmd>FzfLua grep_cword<CR>", { desc = "Fzf grep word under cursor" })
-map("n", "<leader>fl", "<cmd>FzfLua git_commits<CR>", { desc = "Fzf git log" })
-map("v", "<leader>fv", "<cmd>FzfLua grep_visual<CR>", { desc = "Fzf grep visual selection" })
+-- Quick file open (plain find_files), kept outside the <leader>t namespace
+map("n", "<C-p>", "<cmd>Telescope find_files<CR>", { desc = "telescope find files" })
 
 -- ══════════════════════════════════════════════════════════════════════════════
 -- Formatting Mappings
@@ -295,12 +292,6 @@ map("n", "<leader>mc", function()
 end, { desc = "Clear all marks in buffer" })
 
 -- ══════════════════════════════════════════════════════════════════════════════
--- Markdown Rendering Mappings
--- ══════════════════════════════════════════════════════════════════════════════
-
-map("n", "<leader>md", "<cmd>RenderMarkdown toggle<CR>", { desc = "Toggle markdown rendering" })
-
--- ══════════════════════════════════════════════════════════════════════════════
 -- Terminal Pane Navigation
 -- ══════════════════════════════════════════════════════════════════════════════
 
@@ -310,22 +301,19 @@ map("t", "<C-k>", "<C-\\><C-n><C-w>k", { desc = "terminal navigate up pane" })
 map("t", "<C-l>", "<C-\\><C-n><C-w>l", { desc = "terminal navigate right pane" })
 
 -- ══════════════════════════════════════════════════════════════════════════════
--- Visual Toggle Mappings
+-- Interface / Visual Toggles  (<leader>i)
 -- ══════════════════════════════════════════════════════════════════════════════
 
-map("n", "<leader>N", function()
+-- Clean view: numbers, signs, indent guides, context, illuminate, mouse off
+map("n", "<leader>ic", function()
   if vim.wo.number then
     -- Clean mode: disable all visual indicators
     vim.wo.number = false
     vim.wo.relativenumber = false
     vim.wo.signcolumn = "no"
 
-    -- Disable indent-blankline
-    vim.cmd("IBLDisable")
-
-    -- Disable mini.indentscope
-    vim.b.miniindentscope_disable = true
-    require('mini.indentscope').config.symbol = ""
+    -- Disable indent guides/scope (snacks)
+    Snacks.indent.disable()
 
     -- Disable treesitter context
     local ts_context_ok, ts_context = pcall(require, "treesitter-context")
@@ -347,12 +335,8 @@ map("n", "<leader>N", function()
     vim.wo.relativenumber = true
     vim.wo.signcolumn = "yes"
 
-    -- Enable indent-blankline
-    vim.cmd("IBLEnable")
-
-    -- Enable mini.indentscope
-    vim.b.miniindentscope_disable = false
-    require('mini.indentscope').config.symbol = "│"
+    -- Enable indent guides/scope (snacks)
+    Snacks.indent.enable()
 
     -- Enable treesitter context
     local ts_context_ok, ts_context = pcall(require, "treesitter-context")
@@ -369,4 +353,38 @@ map("n", "<leader>N", function()
     -- Enable mouse
     vim.opt.mouse = "a"
   end
-end, { desc = "Toggle numbers and signs (clean view)" })
+end, { desc = "Clean view (numbers/signs/guides/context off)" })
+
+-- Granular toggles
+map("n", "<leader>in", function()
+  vim.wo.number = not vim.wo.number
+  vim.wo.relativenumber = vim.wo.number
+end, { desc = "Toggle line numbers" })
+
+map("n", "<leader>ib", function()
+  if Snacks.indent.enabled then
+    Snacks.indent.disable()
+  else
+    Snacks.indent.enable()
+  end
+end, { desc = "Toggle indent guides + scope" })
+
+map("n", "<leader>iw", function()
+  require("illuminate").toggle()
+end, { desc = "Toggle word illumination" })
+
+map("n", "<leader>ix", "<cmd>TSContextToggle<CR>", { desc = "Toggle treesitter context bar" })
+
+map("n", "<leader>id", "<cmd>VimadeToggle<CR>", { desc = "Toggle dim inactive windows (vimade)" })
+
+map("n", "<leader>it", "<cmd>Twilight<CR>", { desc = "Toggle Twilight (dim out-of-scope)" })
+
+map("n", "<leader>iz", "<cmd>ZenMode<CR>", { desc = "Toggle Zen mode" })
+
+map("n", "<leader>ig", function()
+  require("gitsigns").toggle_signs()
+end, { desc = "Toggle git signs (gutter)" })
+
+map("n", "<leader>im", "<cmd>RenderMarkdown toggle<CR>", { desc = "Toggle markdown rendering" })
+
+map("n", "<leader>ip", "<cmd>Noice dismiss<CR>", { desc = "Dismiss popups/messages (noice)" })

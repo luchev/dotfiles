@@ -87,7 +87,18 @@
       "WebFetch(domain:api.github.com)",
       "Bash(perl -i -pe:*)",
       "Bash(ls:*)",
-      "Bash(gh api:*)"
+      "Bash(gh api:*)",
+      "Bash(~/bin/claude-clean)",
+      "Bash(python -c ' *)",
+      "Bash(python3 -c ' *)",
+      "Skill(update-config)",
+      "Bash(python3 *)",
+      "Bash(sed -n '50,80p' \"/Users/luchev/playground/rambo/ui/app/strategies/registry/page.tsx\")",
+      "Bash(sed -n '185,270p' \"/Users/luchev/playground/rambo/ui/app/strategies/[stem]/page.tsx\")",
+      "Bash(npx tsc *)",
+      "Bash(just --list)",
+      "Bash(awk '{print $1}')",
+      "Bash(.venv/bin/python3 *)"
     ],
     "deny": [],
     "ask": []
