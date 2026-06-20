@@ -1120,7 +1120,13 @@ def --wrapped aifx [...args] {
 }
 
 # ── Local / work overrides (kept outside this repo) ───────────────────────────
-const local_config = ($nu.default-config-dir | path join 'local.nu')
+const local_config = (
+    if (($nu.default-config-dir | path join 'local.nu') | path exists) {
+        $nu.default-config-dir | path join 'local.nu'
+    } else {
+        null
+    }
+)
 source $local_config
 
 # ─────────────────────────────────────────────────────────────────────────────

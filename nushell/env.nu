@@ -162,7 +162,13 @@ $env.INTELLI_SEARCH_HOTKEY = "control char_k"
 # ── Local / work overrides (kept outside this repo) ──────────────────────────
 # Sourced first so a local overlay can set SSH_AUTH_SOCK / PATH / tokens before
 # the generic fallback below runs.
-const local_env = ($nu.default-config-dir | path join 'local-env.nu')
+const local_env = (
+    if (($nu.default-config-dir | path join 'local-env.nu') | path exists) {
+        $nu.default-config-dir | path join 'local-env.nu'
+    } else {
+        null
+    }
+)
 source $local_env
 
 # ── SSH agent (self-managed fallback) ────────────────────────────────────────
