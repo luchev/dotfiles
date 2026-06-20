@@ -108,5 +108,8 @@
     "type": "command",
     "command": "bash ~/.dotfiles/claude/statusline-command.sh"
   },
-  "theme": "dark"
+  "theme": "dark",
+  "enabledPlugins": {
+    "pyright-lsp@claude-plugins-official": true
+  }
 }

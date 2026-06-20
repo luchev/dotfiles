@@ -1037,6 +1037,18 @@ if ('EDITOR' not-in $env) {
     $env.EDITOR = 'nvim'
 }
 
+# ── Local / work overrides (kept outside this repo) ──────────────────────────
+# Sourced first so a local overlay can set SSH_AUTH_SOCK / PATH / tokens before
+# the generic fallback below runs.
+const local_env = (
+    if (($nu.default-config-dir | path join 'local-env.nu') | path exists) {
+        $nu.default-config-dir | path join 'local-env.nu'
+    } else {
+        null
+    }
+)
+source $local_env
+
 do --env {
     # Work-only: prefer the SSH agent injected into zsh (e.g. ussh on devpod),
     # so nushell shares the same certs without needing its own agent.
