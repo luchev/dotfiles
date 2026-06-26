@@ -1,7 +1,8 @@
 [submodule "dotbot"]
 	path = dotbot
 	url = https://github.com/anishathalye/dotbot
-	ignore = dirty
+	ignore = all
 [submodule "argc-completions"]
 	path = argc-completions
 	url = https://github.com/sigoden/argc-completions
+	ignore = all
