@@ -2,9 +2,6 @@
 	path = dotbot
 	url = https://github.com/anishathalye/dotbot
 	ignore = dirty
-[submodule "nu_scripts"]
-	path = nu_scripts
-	url = https://github.com/nushell/nu_scripts
 [submodule "argc-completions"]
 	path = argc-completions
 	url = https://github.com/sigoden/argc-completions

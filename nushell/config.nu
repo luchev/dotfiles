@@ -1154,14 +1154,7 @@ def i [...args: string] {
 }
 
 # Theme
-source ~/.dotfiles/nu_scripts/themes/nu-themes/monokai-soda.nu
-#source ~/.dotfiles/nu_scripts/themes/nu-themes/cobalt-neon.nu
-#source ~/.dotfiles/nu_scripts/themes/nu-themes/darkside.nu
-#source ~/.dotfiles/nu_scripts/themes/nu-themes/helios.nu
-#source ~/.dotfiles/nu_scripts/themes/nu-themes/monokai-dark.nu
-#source ~/.dotfiles/nu_scripts/themes/nu-themes/dimmed-monokai.nu
-#source ~/.dotfiles/nu_scripts/themes/nu-themes/monokai.nu
-#source ~/.dotfiles/nu_scripts/themes/nu-themes/molokai.nu
+source ~/.dotfiles/nushell/themes/monokai-soda.nu
 
 # Generate a new argc-completions file for a new command
 def argc-generate [cmd] {
@@ -1175,9 +1168,6 @@ source ~/.intelli-shell.nu
 # Load the starship prompt
 use ~/.cache/starship/init.nu
 
-# Automatically format jc's output in nushell format
-use ~/.dotfiles/nu_scripts/modules/jc/
-
 # Source local nushell config if it exists
 const local_config = "~/.config-local.nu"
 const local_config = if ("~/.config-local.nu" | path exists) { 
@@ -1190,15 +1180,6 @@ try {
 } catch {
   echo "No local nushell config found at ~/.config-local.nu"
 }
-
-
-# Completions
-# source ~/.dotfiles/nu_scripts/custom-completions/bat/bat-completions.nu
-# source ~/.dotfiles/nu_scripts/custom-completions/just/just-completions.nu
-# source ~/.dotfiles/nu_scripts/custom-completions/cargo/cargo-completions.nu
-# source ~/.dotfiles/nu_scripts/custom-completions/git/git-completions.nu
-# source ~/.dotfiles/nu_scripts/custom-completions/man/man-completions.nu
-# source ~/.dotfiles/nu_scripts/custom-completions/npm/npm-completions.nu
 
 
 # Anthropic/DeepSeek configuration
