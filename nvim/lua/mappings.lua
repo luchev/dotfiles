@@ -237,6 +237,20 @@ map("n", "<leader>cca", function()
 end, { desc = "Copilot ask about all files" })
 
 -- ══════════════════════════════════════════════════════════════════════════════
+-- OpenCode Mappings
+-- ══════════════════════════════════════════════════════════════════════════════
+
+map({ "n", "x" }, "<leader>aa", function()
+  require("opencode").ask("@this: ")
+end, { desc = "Ask OpenCode" })
+map({ "n", "x" }, "<leader>as", function()
+  require("opencode").select()
+end, { desc = "Select OpenCode prompt" })
+map("n", "<leader>at", function()
+  Snacks.terminal.toggle("opencode --port", { win = { position = "right", width = 0.5 } })
+end, { desc = "Toggle OpenCode window" })
+
+-- ══════════════════════════════════════════════════════════════════════════════
 -- Flash Mappings
 -- ══════════════════════════════════════════════════════════════════════════════
 
@@ -267,12 +281,6 @@ end, { desc = "Flash Treesitter" })
 
 map("n", "<C-n>", "<cmd>NvimTreeToggle<CR>", { desc = "nvimtree toggle" })
 map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "nvimtree toggle" })
-
--- ══════════════════════════════════════════════════════════════════════════════
--- Claude Code Mappings
--- ══════════════════════════════════════════════════════════════════════════════
-
-map({ "n", "v", "i", "c", "t", "o" }, "<C-g>", "<cmd>ClaudeCode<CR>", { desc = "Toggle Claude Code" })
 
 -- ══════════════════════════════════════════════════════════════════════════════
 -- Marks Mappings

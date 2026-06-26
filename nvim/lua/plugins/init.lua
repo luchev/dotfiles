@@ -9,16 +9,18 @@ return {
   },
 
   {
-    -- Utility library (also a claudecode dep). Only the non-conflicting modules
+    -- Utility library (also an opencode dep). Only the non-conflicting modules
     -- are enabled; the rest duplicate existing plugins (notifier->noice,
     -- indent->indent-blankline, scroll->mini.animate, zen->zen-mode,
-    -- dim->twilight, picker->telescope, words->illuminate).
+    -- dim->twilight, words->illuminate).
     "folke/snacks.nvim",
     priority = 1000,
     lazy = false,
     opts = {
       bigfile = { enabled = true }, -- disable heavy features on huge files
       quickfile = { enabled = true }, -- render the file before plugins load
+      input = { enabled = true },
+      picker = { enabled = true },
       -- Indent guides + current-scope highlight (replaces indent-blankline and
       -- mini.indentscope). Animation disabled per preference.
       indent = {
@@ -438,39 +440,21 @@ return {
   },
 
   {
-    -- Claude Code integration for AI pair programming
-    "coder/claudecode.nvim",
-    cmd = { "ClaudeCode" },
+    -- OpenCode AI agent integration
+    "nickjvandyke/opencode.nvim",
+    version = "*",
+    lazy = true,
     dependencies = { "folke/snacks.nvim" },
-    config = true,
-    opts = function()
-      local has_aifx = vim.fn.executable "aifx" == 1
-      return {
-        terminal_cmd = has_aifx and "aifx agent run claude" or nil,
-        terminal = {
-          split_side = "right",
-          split_width_percentage = 0.5,
+    init = function()
+      vim.g.opencode_opts = {
+        server = {
+          start = function()
+            Snacks.terminal.get("opencode --port", { win = { position = "right", width = 0.5 }, create = true })
+          end,
         },
       }
+      vim.o.autoread = true
     end,
-    keys = {
-      { "<leader>a", nil, desc = "AI/Claude Code" },
-      { "<leader>ac", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude" },
-      { "<leader>af", "<cmd>ClaudeCodeFocus<cr>", desc = "Focus Claude" },
-      { "<leader>ar", "<cmd>ClaudeCode --resume<cr>", desc = "Resume Claude" },
-      { "<leader>aC", "<cmd>ClaudeCode --continue<cr>", desc = "Continue Claude" },
-      { "<leader>am", "<cmd>ClaudeCodeSelectModel<cr>", desc = "Select Claude model" },
-      { "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>", desc = "Add current buffer" },
-      { "<leader>as", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send to Claude" },
-      {
-        "<leader>as",
-        "<cmd>ClaudeCodeTreeAdd<cr>",
-        desc = "Add file",
-        ft = { "NvimTree", "oil", "minifiles" },
-      },
-      { "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
-      { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
-    },
   },
 
   {
@@ -565,6 +549,7 @@ return {
       dofile(vim.g.base46_cache .. "whichkey")
       require("which-key").add {
         { "<leader>i", group = "interface" },
+        { "<leader>a", group = "AI" },
       }
     end,
   },
@@ -842,19 +827,4 @@ return {
     event = "BufRead */adoc/*.adoc",
   },
 
-  {
-    -- Gemini CLI integration for AI pair programming
-    "z/gemini.nvim",
-    dir = "/Users/z/playground/gemini.nvim",
-    cmd = { "Gemini" },
-    config = function()
-      require("gemini").setup({
-        terminal_style = "split",
-      })
-    end,
-    keys = {
-      { "<leader>g", nil, desc = "AI/Gemini" },
-      { "<leader>gg", "<cmd>Gemini<cr>", desc = "Toggle Gemini" },
-    },
-  },
 }
