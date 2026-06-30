@@ -59,6 +59,9 @@ Session.vim
 .cache/
 tmp/
 
+# OpenCode runtime state
+.omo/
+
 # Logs
 *.log
 logs/
