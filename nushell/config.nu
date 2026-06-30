@@ -1184,7 +1184,7 @@ try {
 
 # Anthropic/DeepSeek configuration
 $env.ANTHROPIC_BASE_URL = "https://api.deepseek.com/anthropic"
-$env.ANTHROPIC_AUTH_TOKEN = $env.DEEPSEEK_API_KEY
+$env.ANTHROPIC_AUTH_TOKEN = ($env | get -i DEEPSEEK_API_KEY | default "")
 $env.ANTHROPIC_MODEL = "deepseek-v4-flash"
 $env.ANTHROPIC_DEFAULT_OPUS_MODEL = "deepseek-v4-pro[1m]"
 $env.ANTHROPIC_DEFAULT_SONNET_MODEL = "deepseek-v4-pro[1m]"
