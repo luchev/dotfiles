@@ -1,0 +1,6 @@
+{
+  "plugin": [
+    "oh-my-openagent",
+    "@tarquinen/opencode-dcp"
+  ]
+}

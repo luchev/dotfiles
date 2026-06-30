@@ -112,3 +112,10 @@ export PATH="$PATH:/Users/z/.lmstudio/bin"
 # Write SSH_AUTH_SOCK so nushell can share this agent
 [ -n "$SSH_AUTH_SOCK" ] && echo "$SSH_AUTH_SOCK" > ~/.ssh/agent_sock
 
+
+# bun completions
+[ -s "/Users/z/.bun/_bun" ] && source "/Users/z/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

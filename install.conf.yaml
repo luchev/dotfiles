@@ -70,6 +70,15 @@
     ~/.gemini/skills:
       path: gemini/skills
       force: true
+    ~/.config/opencode/opencode.jsonc:
+      path: opencode/opencode.jsonc
+      force: true
+    ~/.config/opencode/tui.json:
+      path: opencode/tui.json
+      force: true
+    ~/.config/opencode/command:
+      path: opencode/command
+      force: true
 
 
 - shell:

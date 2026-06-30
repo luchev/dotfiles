@@ -1,0 +1,120 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  // ── Plugins ───────────────────────────────────────────────────────────────────
+  // OpenCode auto-installs these on first run.
+  // opencode-pty:                interactive PTY management — dev servers, REPLs,
+  //                              long-running processes as background sessions.
+  //                              Tools: pty_spawn, pty_write, pty_read, pty_list, pty_kill
+  //                              Slash: /pty-open-background-spy, /pty-show-server-url
+  // opencode-antigravity-auth:   Google Antigravity IDE OAuth — access Gemini 3 Pro
+  //                              and Claude 4.6 via your existing Antigravity (agy) credentials.
+  // opencode-gemini-auth:        Google Gemini OAuth — use your Gemini plan quota directly.
+  // @tarquinen/opencode-dcp:     Dynamic Context Pruning — removes stale/duplicate tool
+  //                              outputs from context in real-time without touching session
+  //                              history. Cuts token usage 50-80% in long sessions.
+  //                              Strategies: deduplication, error-purging, compression.
+  // oh-my-openagent:             Batteries-included harness — multi-model orchestration,
+  //                              parallel background agents, LSP/AST tools.
+  //                              (auto-migrated from oh-my-opencode)
+  // opencode-notify:             Desktop notifications for permission requests,
+  //                              session completion, and errors.
+  // @ramtinj95/opencode-tokenscope: Token usage analysis with per-category
+  //                              breakdowns, visual charts, and subagent cost tracking.
+  "plugin": [
+    "opencode-pty",
+    "opencode-antigravity-auth",
+    "opencode-gemini-auth",
+    "@tarquinen/opencode-dcp",
+    "oh-my-openagent",
+    "opencode-obsidian",
+    "opencode-notify",
+    "@ramtinj95/opencode-tokenscope"
+  ],
+
+  // ── Provider ─────────────────────────────────────────────────────────────────
+  // DeepSeek via its Anthropic-compatible API — mirrors the Claude Code setup
+  // in nushell/config.nu:
+  //   ANTHROPIC_BASE_URL         = https://api.deepseek.com/anthropic
+  //   ANTHROPIC_AUTH_TOKEN       = $DEEPSEEK_API_KEY
+  //   ANTHROPIC_DEFAULT_SONNET/OPUS_MODEL = deepseek-v4-pro[1m]
+  //   ANTHROPIC_DEFAULT_HAIKU_MODEL       = deepseek-v4-flash
+  //   CLAUDE_CODE_SUBAGENT_MODEL          = deepseek-v4-flash
+  //   CLAUDE_CODE_EFFORT_LEVEL   = max
+  "provider": {
+    "deepseek": {
+      "npm": "@ai-sdk/anthropic",
+      "name": "DeepSeek",
+      "options": {
+        "baseURL": "https://api.deepseek.com/anthropic",
+        "apiKey": "{env:DEEPSEEK_API_KEY}"
+      },
+      "models": {
+        // Pro — mirrors ANTHROPIC_DEFAULT_SONNET/OPUS_MODEL (deepseek-v4-pro[1m])
+        "deepseek-v4-pro": {
+          "name": "DeepSeek V4 Pro",
+          "reasoning": true
+        },
+        // Flash — mirrors ANTHROPIC_MODEL / ANTHROPIC_DEFAULT_HAIKU_MODEL
+        "deepseek-v4-flash": {
+          "name": "DeepSeek V4 Flash"
+        }
+      }
+    }
+  },
+
+  // Show all configured providers (deepseek, antigravity, gemini, auto-detected…)
+  // "enabled_providers": ["deepseek"],  // uncomment to hide everything else
+
+  // ── Models ───────────────────────────────────────────────────────────────────
+  // Primary model for main agents (flash for speed)
+  "model": "deepseek/deepseek-v4-flash",
+  // Lightweight tasks (title generation, etc.) → flash
+  "small_model": "deepseek/deepseek-v4-flash",
+
+  // ── Agents ───────────────────────────────────────────────────────────────────
+  "agent": {
+    "build": {
+      // Raise iteration cap for long tasks (default is low)
+      "steps": 100
+    },
+    // Subagent-tier work uses flash, mirroring CLAUDE_CODE_SUBAGENT_MODEL
+    "title": { "model": "deepseek/deepseek-v4-flash" },
+    "summary": { "model": "deepseek/deepseek-v4-flash" },
+    "compaction": { "model": "deepseek/deepseek-v4-flash" }
+  },
+
+  // ── Permissions ───────────────────────────────────────────────────────────────
+  // Allow all tools without prompts — matches the broad allow-list in
+  // claude/settings.local.json
+  "permission": "allow",
+
+  // ── Context / compaction ─────────────────────────────────────────────────────
+  "compaction": {
+    "auto": true,   // compact automatically when context fills
+    "prune": true   // remove stale tool outputs to save tokens
+  },
+
+  // ── Instructions ─────────────────────────────────────────────────────────────
+  // Reuse your existing Claude system-prompt conventions
+  "instructions": ["~/.claude/CLAUDE.md"],
+
+  // ── Skills ───────────────────────────────────────────────────────────────────
+  "skills": {
+    "paths": ["~/.claude/skills", "~/.gemini/skills"]
+  },
+
+  // ── Experimental ─────────────────────────────────────────────────────────────
+  "experimental": {
+    // Parallel tool calls in a single round-trip — significant speedup
+    "batch_tool": true
+  },
+
+  // ── Misc ─────────────────────────────────────────────────────────────────────
+  "autoupdate": "notify",   // show update notifications, don't auto-install
+  "share": "disabled",      // disable session sharing
+  "snapshot": true,         // track file snapshots for undo/revert
+  "lsp": true,              // enable built-in LSP servers for code diagnostics
+  "formatter": true         // auto-format files after edits (rustfmt, prettier…)
+}
+

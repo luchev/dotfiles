@@ -988,6 +988,7 @@ $env.PATH = ($env.PATH | split row (char esep)
   | prepend '/opt/homebrew/bin/'
   | prepend '/opt/uber/bin/'
   | prepend '~/.cargo/bin/'
+  | prepend '~/.bun/bin/'
   | prepend '~/.dotfiles/argc-completions/bin'
   | prepend '~/.bin/')
 
@@ -1115,6 +1116,7 @@ alias zj = zellij
 alias rg = rg --color=auto
 alias rgc = rg --color=always
 alias diff = diff --color=auto
+alias a = agy # antigravity
 
 # Tmux aliases
 alias ta = tmux a -t
@@ -1159,15 +1161,15 @@ def fk [] {
     }
 }
 
-# One-shot Gemini. Joins all args into a single prompt and runs via `-p`.
-# Pipe text in to feed stdin. Use `^gemini` to bypass for flags or interactive.
+# One-shot Antigravity. Joins all args into a single prompt and runs via `-p`.
+# Pipe text in to feed stdin. Use `^agy` to bypass for flags or interactive.
 def i [...args: string] {
     let prompt = $args | str join " "
     let input = $in
     if $input == null {
-        ^gemini -p $prompt
+        ^agy -p $prompt
     } else {
-        $input | ^gemini -p $prompt
+        $input | ^agy -p $prompt
     }
 }
 
@@ -1178,7 +1180,6 @@ source ~/.dotfiles/nushell/themes/monokai-soda.nu
 def argc-generate [cmd] {
   bash ($env.HOME + /.dotfiles/argc-completions/scripts/generate.sh) $cmd | save -f ($env.HOME + "/.dotfiles/argc-custom-completions/" + $cmd + ".sh")
 }
-
 
 # Load intelli-shell
 source ~/.intelli-shell.nu
@@ -1200,7 +1201,7 @@ try {
 }
 
 
-# Anthropic/DeepSeek configuration
+# Claude w DeepSeek configuration
 $env.ANTHROPIC_BASE_URL = "https://api.deepseek.com/anthropic"
 $env.ANTHROPIC_AUTH_TOKEN = ($env | get -i DEEPSEEK_API_KEY | default "")
 $env.ANTHROPIC_MODEL = "deepseek-v4-flash"

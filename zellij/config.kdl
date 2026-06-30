@@ -671,11 +671,14 @@ themes {
         cyan "#81c8be"
         white "#b4befe"
     }
+    transparent {
+        transparent true
+    }
 }
 // Choose the theme that is specified in the themes section.
 // Default: default
 //
-theme "catppuccin-frappe-visible"
+theme "transparent"
 // The name of the default layout to load on startup
 // Default: "default"
 // (Requires restart)
