@@ -61,9 +61,6 @@
     ~/.gemini/settings.json:
       path: gemini/settings.json
       force: true
-    ~/.gemini/GEMINI.md:
-      path: gemini/GEMINI.md
-      force: true
     ~/.geminiignore:
       path: gemini/.geminiignore
       force: true
