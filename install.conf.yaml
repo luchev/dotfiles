@@ -37,39 +37,9 @@
     ~/.termux/termux.properties:
       path: termux.properties
       force: true
-    ~/.claude.json:
-      path: claude/claude.json
-      force: false
-    ~/.claude/settings.json:
-      path: claude/settings.json
-      force: true
-    ~/.claude/CLAUDE.md:
-      path: claude/CLAUDE.md
-      force: true
-    ~/.claude/settings.local.json:
-      path: claude/settings.local.json
-      force: true
-    ~/.claude/output-styles:
-      path: claude/output-styles
-      force: true
-    ~/.claude/skills:
-      path: claude/skills
-      force: true
-    ~/.claude/agents:
-      path: claude/agents
-      force: true
-    ~/.gemini/settings.json:
-      path: gemini/settings.json
-      force: true
-    ~/.geminiignore:
-      path: gemini/.geminiignore
-      force: true
-    ~/.gemini/policy.json:
-      path: gemini/policy.json
-      force: true
-    ~/.gemini/skills:
-      path: gemini/skills
-      force: true
+    # ── OpenCode ─────────────────────────────────────────────────────────────
+    # Replaces Claude Code and Gemini CLI (migrated July 2026).
+    # Skills were consolidated from claude/skills + gemini/skills → opencode/skills.
     ~/.config/opencode/opencode.jsonc:
       path: opencode/opencode.jsonc
       force: true
@@ -78,6 +48,12 @@
       force: true
     ~/.config/opencode/command:
       path: opencode/command
+      force: true
+    ~/.config/opencode/instructions.md:
+      path: opencode/instructions.md
+      force: true
+    ~/.config/opencode/skills:
+      path: opencode/skills
       force: true
 
 
@@ -103,7 +79,7 @@
           cargo install --locked atuin
       description: Install atuin (locked deps to avoid a broken transitive build)
       quiet: false
-    # tfil: PTY proxy that strips Claude Code/Ink's fake cursor so Ghostty's
+    # tfil: PTY proxy that strips AI coding agent's fake cursor so Ghostty's
     # cursor shader animates the real cursor. Author recommends --locked.
     - command: |
           cargo install --locked tfil
@@ -266,10 +242,7 @@
         ~/.dotfiles/nushell/sync-env-from-bitwarden.sh
       description: Sync env vars from Bitwarden to nushell config
       quiet: false
-    - command:
-        ~/.dotfiles/install-claude-agents.sh
-      description: Install Claude Code agents
-      quiet: false
+    # Removed: install-claude-agents.sh — agents migrated to opencode/skills/
     - command: |
         mkdir -p ~/.config/nushell
         touch ~/.config/nushell/local.nu ~/.config/nushell/local-env.nu

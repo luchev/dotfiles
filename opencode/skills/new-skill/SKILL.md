@@ -1,10 +1,10 @@
 ---
 name: new-skill
-description: Scaffold a new Claude Code skill following established conventions. Creates ~/.claude/skills/<name>/SKILL.md with correct frontmatter, allowedTools, argument parsing, zellij label calls, and step structure. Use when adding a skill.
+description: Scaffold a new OpenCode skill following established conventions. Creates ~/.config/opencode/skills/<name>/SKILL.md with correct frontmatter, allowedTools, argument parsing, zellij label calls, and step structure. Use when adding a skill.
 allowedTools:
   - Bash(test *)
   - Bash(mkdir *)
-  - Bash(bash ~/.dotfiles/claude/zellij-status.sh status *)
+  - Bash(bash ~/.dotfiles/opencode/zellij-status.sh status *)
   - Read
   - Write
   - AskUserQuestion
@@ -22,7 +22,7 @@ allowedTools:
 ## Step 1: Gather intent
 
 ```bash
-bash ~/.dotfiles/claude/zellij-status.sh status "creating skill $NAME"
+bash ~/.dotfiles/opencode/zellij-status.sh status "creating skill $NAME"
 ```
 
 If `DESCRIPTION` empty: ask for one-sentence description of what it does and when it triggers.
@@ -32,7 +32,7 @@ Ask (`AskUserQuestion`, batch): (1) Takes arguments? (2) How many steps/phases? 
 ## Step 2: Check for conflicts
 
 ```bash
-test -d ~/.claude/skills/$NAME
+test -d ~/.config/opencode/skills/$NAME
 ```
 
 If exists: read current SKILL.md and ask to overwrite. Stop if declined.
@@ -40,10 +40,10 @@ If exists: read current SKILL.md and ask to overwrite. Stop if declined.
 ## Step 3: Write the skill
 
 ```bash
-mkdir -p ~/.claude/skills/$NAME
+mkdir -p ~/.config/opencode/skills/$NAME
 ```
 
-Write `~/.claude/skills/$NAME/SKILL.md`:
+Write `~/.config/opencode/skills/$NAME/SKILL.md`:
 
 ### Frontmatter
 
@@ -61,7 +61,7 @@ allowedTools:
 | Capability | Entry |
 |---|---|
 | Git | `Bash(git *)` |
-| Zellij status | `Bash(bash ~/.dotfiles/claude/zellij-status.sh status *)` |
+| Zellij status | `Bash(bash ~/.dotfiles/opencode/zellij-status.sh status *)` |
 | mkdir | `Bash(mkdir *)` |
 | Specific cmds | `Bash(gh *)`, `Bash(npm *)`, `Bash(cargo *)`, etc. |
 | File ops | `Read`, `Write`, `Edit`, `Glob`, `Grep` |
@@ -90,7 +90,7 @@ Parse: `VAR` = extraction rule
 
 Zellij status (if multi-phase):
 ​```bash
-bash ~/.dotfiles/claude/zellij-status.sh status "verb context"
+bash ~/.dotfiles/opencode/zellij-status.sh status "verb context"
 ​```
 
 Commands and logic.
@@ -107,7 +107,7 @@ Done.
 
 **Steps:** sequential (`Step 1, 2, 3`). Two modes: prefix `S1/A1`. Phases: `R1` (Research), `P1` (Plan), `I1` (Implement).
 
-**Zellij status** (required for 3+ steps or long-running): call at each phase start. `bash ~/.dotfiles/claude/zellij-status.sh status "verb noun"`. No length limit — zellij truncates the pane title itself. Clear at end with `status ""`. For numeric counters use `progress N M "label"`.
+**Zellij status** (required for 3+ steps or long-running): call at each phase start. `bash ~/.dotfiles/opencode/zellij-status.sh status "verb noun"`. No length limit — zellij truncates the pane title itself. Clear at end with `status ""`. For numeric counters use `progress N M "label"`.
 
 **Arguments:** received as `$ARGUMENTS`. Parse into named vars. `AskUserQuestion` when required info missing.
 
@@ -120,7 +120,7 @@ Done.
 ## Step 4: Report
 
 ```
-Created ~/.claude/skills/$NAME/SKILL.md
+Created ~/.config/opencode/skills/$NAME/SKILL.md
 
 Invoke with:  /$NAME [args]
 ```

@@ -4,7 +4,7 @@ description: Generate a git commit message from branch changes and git history. 
 allowedTools:
   - Bash(git *)
   - Read
-  - Bash(bash ~/.dotfiles/claude/zellij-status.sh status *)
+  - Bash(bash ~/.dotfiles/opencode/zellij-status.sh status *)
 ---
 
 # /commit-msg — Generate Commit Message
@@ -23,7 +23,7 @@ Generates a commit message whose body also works as the PR description (e.g. `gh
 ## Step 1: Analyze changes
 
 ```bash
-bash ~/.dotfiles/claude/zellij-status.sh status "analyzing diff"
+bash ~/.dotfiles/opencode/zellij-status.sh status "analyzing diff"
 git diff @{u}...HEAD  # fallback: git diff origin/main...HEAD
 ```
 
@@ -51,7 +51,7 @@ If an issue ID is found (argument or `TICKET.md` first line), use it for the "wh
 ## Step 4: Write the commit message
 
 ```bash
-bash ~/.dotfiles/claude/zellij-status.sh status "drafting commit message"
+bash ~/.dotfiles/opencode/zellij-status.sh status "drafting commit message"
 ```
 
 **Golden rule: be as short as possible while including all meaningful information a reviewer needs.**
@@ -91,7 +91,7 @@ git log @{u}..HEAD --oneline 2>/dev/null | wc -l
 ## Step 6: Apply
 
 ```bash
-bash ~/.dotfiles/claude/zellij-status.sh status "committing"
+bash ~/.dotfiles/opencode/zellij-status.sh status "committing"
 git commit --amend -m "<message>"        # amend mode
 git commit --allow-empty -m "<message>"  # empty-commit mode
 ```
@@ -99,5 +99,5 @@ git commit --allow-empty -m "<message>"  # empty-commit mode
 Print: `Applied in <mode>. Commit: abc1234  <subject line>`
 
 ```bash
-bash ~/.dotfiles/claude/zellij-status.sh status ""
+bash ~/.dotfiles/opencode/zellij-status.sh status ""
 ```

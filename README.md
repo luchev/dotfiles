@@ -54,9 +54,10 @@ Create local overrides that won't be committed:
 - `~/.gitconfig.local` - Git local config
 - `~/.config/nushell/config.local.nu` - Nushell local config
 - `~/.zshrc.local` - Zsh local config
-- `~/.claude/settings.local.json` - Claude Code machine-specific settings
+- `~/.config/opencode/opencode.jsonc` - OpenCode local configuration
+- `~/.config/opencode/settings.json` - OpenCode machine-specific settings
 
-The global Claude Code behavioral guidelines live in `.claude/CLAUDE.md` and are symlinked to `~/.claude/CLAUDE.md` so they apply to every session.
+> **Migration note (July 2026):** This repo previously used Claude Code and Gemini CLI as AI coding assistants. Configs, skills, and behavioral guidelines have been consolidated into `opencode/`. See `opencode/instructions.md` for behavioral instructions.
 
 ## License
 

@@ -1,7 +1,7 @@
 # Dotfiles — Project Instructions
 
-This is the user's dotfiles repository, managed with dotbot. Global engineering
-principles already apply from `~/.claude/CLAUDE.md`; the note below adds the
-repo-specific environment and conventions.
+This is the user's dotfiles repository, managed with dotbot. Global behavioral
+instructions already apply from `opencode/instructions.md`; the note below adds
+the repo-specific environment and conventions for this project.
 
-@claude/notes/dotfiles-environment.md
+@opencode/instructions.md

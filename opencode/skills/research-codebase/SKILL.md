@@ -1,6 +1,6 @@
 ---
-name: research
-description: Research a task or GitHub issue by exploring the codebase and writing RESEARCH.md. Use when starting work on a task or when research needs to be re-run.
+name: research-codebase
+description: Deep codebase research for tasks or GitHub issues — explore code, write RESEARCH.md. Use when you need to understand a codebase for a specific task (complements the web-focused `research` skill). Use when starting work on a task or when research needs to be re-run.
 ---
 
 # /research — Codebase Research for a Task

@@ -1,10 +1,22 @@
-# Engineering Principles
+# OpenCode — Behavioral Instructions
 
-Shared behavioral baseline for AI coding assistants. Merge with project-specific instructions as needed.
+Global behavioral guidelines for all projects. Merge with project-specific instructions as needed.
+
+## Zellij pane topic
+
+When you've understood what a new session is about (typically after the first user prompt and any initial exploration), call:
+
+```
+bash ~/.dotfiles/opencode/zellij-status.sh topic "<short summary, ≤40 chars>"
+```
+
+The topic appears as the pane label fallback (e.g. `💤 · <topic>`) and persists across turns. Update it if the session's focus shifts substantially. Don't call it for trivial one-off tasks where the session will be short.
+
+## Engineering Principles
 
 **Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
 
-## 1. Think Before Coding
+### 1. Think Before Coding
 
 **Don't assume. Don't hide confusion. Surface tradeoffs.**
 
@@ -14,7 +26,7 @@ Before implementing:
 - If a simpler approach exists, say so. Push back when warranted.
 - If something is unclear, stop. Name what's confusing. Ask.
 
-## 2. Simplicity First
+### 2. Simplicity First
 
 **Minimum code that solves the problem. Nothing speculative.**
 
@@ -26,7 +38,7 @@ Before implementing:
 
 Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
 
-## 3. Surgical Changes
+### 3. Surgical Changes
 
 **Touch only what you must. Clean up only your own mess.**
 
@@ -42,7 +54,7 @@ When your changes create orphans:
 
 The test: Every changed line should trace directly to the user's request.
 
-## 4. Goal-Driven Execution
+### 4. Goal-Driven Execution
 
 **Define success criteria. Loop until verified.**
 
@@ -62,19 +74,19 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 
 **Empirical validation:** A task is not finished until behavioral correctness is confirmed. For bug fixes, reproduce the failure first. For features, define the test case before implementing.
 
-## 5. Security First
+### 5. Security First
 
 - Never introduce code that exposes, logs, or commits secrets or sensitive configuration.
 - Don't print credentials, tokens, or private paths into output that may be shared.
 - Treat anything sent to an external service as published — it may be cached or indexed.
 
-## 6. Efficiency
+### 6. Efficiency
 
 - Use `grep`/`glob` to locate points of interest; read only what's necessary to act accurately.
 - Batch independent tool calls in parallel to minimize turns.
 - Manage context deliberately — don't re-read files you just wrote.
 
-## 7. Communication
+### 7. Communication
 
 - Professional, direct, concise. Avoid conversational filler and excessive apologies.
 - Briefly state intent or strategy before executing tool calls.
@@ -83,3 +95,31 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 ---
 
 **These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
+
+## Dotfiles Environment
+
+Context for working in this dotfiles repository.
+
+### Environment
+
+- **AI coding assistant:** OpenCode (replaces Claude Code and Gemini CLI).
+- **Dotfiles manager:** [Dotbot](https://github.com/anishathalye/dotbot). Always update `install.conf.yaml` when adding or moving configuration files.
+- **Primary shell:** Nushell (`nu`). Prefer Nushell-native commands and syntax for scripting.
+- **Editor:** Neovim (`nvim`).
+- **Terminal:** WezTerm + Zellij.
+- **Key tools:** `argc` (completions), `atuin` (history), `starship` (prompt), `zoxide` (navigation), `carapace` (completions).
+- **Package managers:** `brew` (macOS), `cargo` (Rust), `npm` (Node).
+
+### Project Structure
+
+- `nushell/` — Nushell configuration.
+- `opencode/` — OpenCode configuration, skills, and behavioral instructions.
+- `nvim/` — Neovim configuration.
+- `argc-completions/` — custom shell completions.
+
+### Command Execution
+
+- When asked to "install" something, check `install.conf.yaml` first to see if it belongs in the automation.
+- Prefer non-interactive flags; interactive prompts don't work well in this environment.
+- Run sequential operations in order; don't chain dependent steps that may be backgrounded.
+- `config.nu` and other linked files are symlinks into this repo — edit the real target under `~/.dotfiles`, not the symlink.

@@ -96,12 +96,13 @@
   },
 
   // ── Instructions ─────────────────────────────────────────────────────────────
-  // Reuse your existing Claude system-prompt conventions
-  "instructions": ["~/.claude/CLAUDE.md"],
+  // Migrated from Claude Code (CLAUDE.md + engineering-principles.md)
+  "instructions": ["~/.config/opencode/instructions.md"],
 
   // ── Skills ───────────────────────────────────────────────────────────────────
+  // Migrated from ~/.claude/skills and ~/.gemini/skills into a unified set
   "skills": {
-    "paths": ["~/.claude/skills", "~/.gemini/skills"]
+    "paths": ["~/.config/opencode/skills"]
   },
 
   // ── Experimental ─────────────────────────────────────────────────────────────
