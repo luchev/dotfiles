@@ -1,37 +1,40 @@
 # Dotfiles
 
-Personal configuration files for a productive development environment across Linux and macOS.
+Personal configuration files managed with [chezmoi](https://www.chezmoi.io/).
 
 ## Features
 
 - **Shell**: Nushell with Zsh fallback
 - **Editor**: Neovim with custom configuration
-- **Terminal**: Alacritty, WezTerm, and Termux support
-- **Multiplexer**: Tmux and Zellij configurations
+- **Terminal**: WezTerm + Zellij (with Tmux as alternative)
 - **Prompt**: Starship cross-shell prompt
+- **AI Coding**: OpenCode (replaces Claude Code and Gemini CLI)
 - **Git**: Enhanced configuration with delta diff viewer and 60+ aliases
 - **Tools**: fd, bat, ripgrep, eza, zoxide, atuin, delta, and more
 
-## Installation
+## Prerequisites
 
-### Prerequisites
-
-- Git
+- [Git](https://git-scm.com/)
+- [chezmoi](https://www.chezmoi.io/install/)
 - Curl
-- Build tools (build-essential on Debian/Ubuntu, base-devel on Arch)
-- Python 3
+- Build tools
 
-### Install
+## Install
 
 ```bash
-git clone --recurse-submodules https://github.com/yourusername/dotfiles ~/.dotfiles
-cd ~/.dotfiles
-./install
+chezmoi init --apply https://github.com/yourusername/dotfiles.git
 ```
 
-The install script will:
+Or from a local copy:
+
+```bash
+git clone --recurse-submodules https://github.com/yourusername/dotfiles.git ~/.local/share/chezmoi
+chezmoi apply
+```
+
+chezmoi will:
 - Install Rust toolchain (if needed)
-- Symlink all configuration files
+- Create all configuration files
 - Install cargo packages (fd, bat, ripgrep, starship, atuin, zoxide, eza, delta, gitui, etc.)
 - Install essential CLI tools (fzf, jq, yq, direnv, htop, thefuck)
 - Install git addons (git-secrets, git-extras, git-stats, commitizen)
@@ -39,27 +42,44 @@ The install script will:
 - Setup shell integrations (zoxide, atuin)
 - Configure git-secrets globally to prevent committing secrets
 
+> **Note:** The software install scripts from the old dotbot setup are preserved in `.chezmoi/scripts/` — they can be run separately if needed.
+
 ## Updating
 
 ```bash
-cd ~/.dotfiles
+chezmoi update  # pulls latest and applies
+```
+
+Or manually:
+
+```bash
+cd ~/.local/share/chezmoi
 git pull --rebase --recurse-submodules
 git submodule update --init --recursive
-./install
+chezmoi apply
 ```
 
 ## Customization
 
 Create local overrides that won't be committed:
-- `~/.gitconfig.local` - Git local config
-- `~/.config/nushell/config.local.nu` - Nushell local config
-- `~/.zshrc.local` - Zsh local config
-- `~/.config/opencode/opencode.jsonc` - OpenCode local configuration
-- `~/.config/opencode/settings.json` - OpenCode machine-specific settings
+- `~/.gitconfig.local` — Git local config
+- `~/.config/nushell/local.nu` — Nushell local config
+- `~/.config/nushell/local-env.nu` — Nushell local env override
+- `~/.zshrc.local` — Zsh local config
+- `~/.config/opencode/opencode.jsonc` — OpenCode local configuration
+- `~/.config/opencode/settings.json` — OpenCode machine-specific settings
 
-> **Migration note (July 2026):** This repo previously used Claude Code and Gemini CLI as AI coding assistants. Configs, skills, and behavioral guidelines have been consolidated into `opencode/`. See `opencode/instructions.md` for behavioral instructions.
+## Migration from Dotbot
+
+This repo migrated from [dotbot](https://github.com/anishathalye/dotbot) to chezmoi in July 2026.
+
+Key changes:
+- Source directory: `~/.dotfiles` → `~/.local/share/chezmoi` (symlinked for backward compat)
+- File naming follows chezmoi conventions (`dot_zshrc`, `dot_config/nvim/`, etc.)
+- Old `install` script and `install.conf.yaml` replaced by chezmoi's declarative management
+- nushell dual-link (`.config/nushell/` + `Library/Application Support/nushell/`) handled via auto-symlink script
+- Full git history preserved
 
 ## License
 
 MIT License
-
