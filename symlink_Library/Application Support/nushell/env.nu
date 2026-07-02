@@ -1,1 +1,1 @@
-../../../.config/nushell/env.nu
+/Users/z/.config/nushell/env.nu
