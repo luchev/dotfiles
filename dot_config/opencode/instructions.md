@@ -7,7 +7,7 @@ Global behavioral guidelines for all projects. Merge with project-specific instr
 When you've understood what a new session is about (typically after the first user prompt and any initial exploration), call:
 
 ```
-bash ~/.dotfiles/opencode/zellij-status.sh topic "<short summary, ≤40 chars>"
+bash ~/.config/opencode/zellij-status.sh topic "<short summary, ≤40 chars>"
 ```
 
 The topic appears as the pane label fallback (e.g. `💤 · <topic>`) and persists across turns. Update it if the session's focus shifts substantially. Don't call it for trivial one-off tasks where the session will be short.
@@ -122,4 +122,4 @@ Context for working in this dotfiles repository.
 - When asked to "install" something, check `install.conf.yaml` first to see if it belongs in the automation.
 - Prefer non-interactive flags; interactive prompts don't work well in this environment.
 - Run sequential operations in order; don't chain dependent steps that may be backgrounded.
-- `config.nu` and other linked files are symlinks into this repo — edit the real target under `~/.dotfiles`, not the symlink.
+- `config.nu` and other linked files are managed by chezmoi — edit the source at `~/.local/share/chezmoi/` or use `chezmoi edit`.

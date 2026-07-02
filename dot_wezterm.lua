@@ -15,7 +15,7 @@ config.window_padding = {
 config.enable_tab_bar = false
 config.scrollback_lines = 10000
 config.term = 'xterm-256color'
-config.default_prog = { '/opt/homebrew/bin/nu', '--config', '~/.dotfiles/nushell/config.nu', '--env-config', '~/.dotfiles/nushell/env.nu' }
+config.default_prog = { '/opt/homebrew/bin/nu', '--config', '~/.config/nushell/config.nu', '--env-config', '~/.config/nushell/env.nu' }
 config.audible_bell = 'Disabled'
 config.status_update_interval = 5000
 

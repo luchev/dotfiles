@@ -1174,7 +1174,7 @@ def i [...args: string] {
 }
 
 # Theme
-source ~/.dotfiles/nushell/themes/monokai-soda.nu
+source ~/.config/nushell/themes/monokai-soda.nu
 
 # Generate a new argc-completions file for a new command
 def argc-generate [cmd] {

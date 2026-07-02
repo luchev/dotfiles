@@ -23,7 +23,7 @@
 	conflictstyle = zdiff3  # Show common ancestor in conflict markers (enhanced 3-way diff)
 [commit]
 	verbose = true  # Show diff in commit message editor
-	template = ~/.dotfiles/gitmessage  # Use commit message template
+	template = ~/.gitmessage  # Use commit message template (chezmoi-managed)
 [push]
 	default = simple  # Only push current branch to its upstream
 	autoSetupRemote = true  # Automatically create remote branch on first push
