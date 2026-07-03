@@ -17,7 +17,7 @@ window-padding-y = 6
 # --- Cursor warp trail shader (sahaj-b/ghostty-cursor-shaders) ---
 # custom-shader-animation = always keeps the trail from freezing on unfocus
 # with the default bar cursor.
-custom-shader = ~/.dotfiles/ghostty/shaders/cursor_warp.glsl
+custom-shader = ~/Library/Application Support/com.mitchellh.ghostty/shaders/cursor_warp.glsl
 custom-shader-animation = always
 
 # --- Behavior ---
@@ -26,7 +26,7 @@ term = xterm-256color
 scrollback-limit = 10000000
 
 # --- Shell ---
-command = /opt/homebrew/bin/nu --config ~/.dotfiles/nushell/config.nu --env-config ~/.dotfiles/nushell/env.nu
+command = /opt/homebrew/bin/nu --config ~/.config/nushell/config.nu --env-config ~/.config/nushell/env.nu
 
 # --- Bell ---
 bell-features = no-audio,no-system,attention,title
