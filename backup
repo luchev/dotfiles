@@ -2,7 +2,7 @@
 
 set -e
 
-BACKUP_DIR="${HOME}/.dotfiles/backups"
+BACKUP_DIR="${HOME}/.local/share/chezmoi/backups"
 BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Remove old backup if it exists

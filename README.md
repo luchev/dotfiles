@@ -32,17 +32,15 @@ git clone --recurse-submodules https://github.com/yourusername/dotfiles.git ~/.l
 chezmoi apply
 ```
 
-chezmoi will:
-- Install Rust toolchain (if needed)
+`chezmoi apply` will:
 - Create all configuration files
-- Install cargo packages (fd, bat, ripgrep, starship, atuin, zoxide, eza, delta, gitui, etc.)
-- Install essential CLI tools (fzf, jq, yq, direnv, htop, thefuck)
-- Install git addons (git-secrets, git-extras, git-stats, commitizen)
+- Install Rust toolchain and cargo packages (fd, bat, ripgrep, starship, atuin, zoxide, eza, delta, gitui, etc.)
+- Install essential CLI tools (fzf, jq, yq, direnv, htop, thefuck, git-extras)
+- Install git-secrets and configure it globally
 - Install intelli-shell (AI-powered command suggestions)
 - Setup shell integrations (zoxide, atuin)
-- Configure git-secrets globally to prevent committing secrets
 
-> **Note:** The software install scripts from the old dotbot setup are preserved in `.chezmoi/scripts/` — they can be run separately if needed.
+*(Tool installation runs via chezmoi's `run_once_*` scripts on first apply.)*
 
 ## Updating
 
