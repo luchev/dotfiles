@@ -5,7 +5,6 @@ description: >
   context into the conversation, then delete the file so it is not replayed
   again. Use at the start of a new conversation to pick up where you left off.
 allowedTools:
-  - Bash(bash ~/.config/opencode/zellij-status.sh status *)
   - Bash(ls ~/.config/opencode/sessions/)
   - Bash(rm ~/.config/opencode/sessions/*)
   - Read
@@ -37,10 +36,6 @@ If the file does not exist, print an error listing available sessions (run `ls ~
 
 ## Step 2: Read and print the session
 
-```bash
-bash ~/.config/opencode/zellij-status.sh status "restoring session"
-```
-
 Read `~/.config/opencode/sessions/<name>.md` and print its full contents verbatim into the conversation under a header:
 
 ```
@@ -58,10 +53,6 @@ rm ~/.config/opencode/sessions/<name>.md
 This prevents the same session from being accidentally replayed in a future `/restore` call.
 
 ## Step 4: Orient and prompt
-
-```bash
-bash ~/.config/opencode/zellij-status.sh status "<task from session>"
-```
 
 After printing the session, add:
 

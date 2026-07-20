@@ -1,10 +1,9 @@
 ---
 name: new-skill
-description: Scaffold a new OpenCode skill following established conventions. Creates ~/.config/opencode/skills/<name>/SKILL.md with correct frontmatter, allowedTools, argument parsing, zellij label calls, and step structure. Use when adding a skill.
+description: Scaffold a new OpenCode skill following established conventions. Creates ~/.config/opencode/skills/<name>/SKILL.md with correct frontmatter, allowedTools, argument parsing, and step structure. Use when adding a skill.
 allowedTools:
   - Bash(test *)
   - Bash(mkdir *)
-  - Bash(bash ~/.config/opencode/zellij-status.sh status *)
   - Read
   - Write
   - AskUserQuestion
@@ -20,10 +19,6 @@ allowedTools:
 `NAME` = first word (lowercase, hyphens). `DESCRIPTION` = remainder.
 
 ## Step 1: Gather intent
-
-```bash
-bash ~/.config/opencode/zellij-status.sh status "creating skill $NAME"
-```
 
 If `DESCRIPTION` empty: ask for one-sentence description of what it does and when it triggers.
 
@@ -61,7 +56,6 @@ allowedTools:
 | Capability | Entry |
 |---|---|
 | Git | `Bash(git *)` |
-| Zellij status | `Bash(bash ~/.config/opencode/zellij-status.sh status *)` |
 | mkdir | `Bash(mkdir *)` |
 | Specific cmds | `Bash(gh *)`, `Bash(npm *)`, `Bash(cargo *)`, etc. |
 | File ops | `Read`, `Write`, `Edit`, `Glob`, `Grep` |
@@ -88,11 +82,6 @@ Parse: `VAR` = extraction rule
 
 ## Step 1: Title
 
-Zellij status (if multi-phase):
-​```bash
-bash ~/.config/opencode/zellij-status.sh status "verb context"
-​```
-
 Commands and logic.
 
 ## Step N: Report
@@ -106,8 +95,6 @@ Done.
 ### Conventions
 
 **Steps:** sequential (`Step 1, 2, 3`). Two modes: prefix `S1/A1`. Phases: `R1` (Research), `P1` (Plan), `I1` (Implement).
-
-**Zellij status** (required for 3+ steps or long-running): call at each phase start. `bash ~/.config/opencode/zellij-status.sh status "verb noun"`. No length limit — zellij truncates the pane title itself. Clear at end with `status ""`. For numeric counters use `progress N M "label"`.
 
 **Arguments:** received as `$ARGUMENTS`. Parse into named vars. `AskUserQuestion` when required info missing.
 

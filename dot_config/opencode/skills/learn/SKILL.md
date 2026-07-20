@@ -6,7 +6,6 @@ description: >
   user approval. Use when the user says "what did we learn", "what should we
   remember", or at the end of a significant session.
 allowedTools:
-  - Bash(bash ~/.config/opencode/zellij-status.sh status *)
   - Bash(ls *)
   - Bash(grep *)
   - Read
@@ -25,10 +24,6 @@ Nothing is applied without explicit user approval.
 ---
 
 ## L1: Scan the session
-
-```bash
-bash ~/.config/opencode/zellij-status.sh status "extracting learnings"
-```
 
 Read the entire conversation history in context. Look specifically for:
 
@@ -99,10 +94,6 @@ Why now: <what happened in session that revealed the gap>
 ---
 
 ## L4: Present and stop
-
-```bash
-bash ~/.config/opencode/zellij-status.sh status ""
-```
 
 Print the full proposal under this header:
 

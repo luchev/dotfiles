@@ -6,7 +6,6 @@ description: >
   items to ~/.config/opencode/sessions/<name>.md. Use when you want to pause
   and resume later.
 allowedTools:
-  - Bash(bash ~/.config/opencode/zellij-status.sh status *)
   - Bash(date *)
   - Bash(git branch --show-current)
   - Bash(git log --oneline -5)
@@ -28,10 +27,6 @@ Capture everything needed to resume this session cold in a future conversation.
 - `<name>` — use this as the session file name (no spaces; dashes OK)
 
 ## Step 1: Determine session name
-
-```bash
-bash ~/.config/opencode/zellij-status.sh status "saving session"
-```
 
 If a name argument was given, use it. Otherwise, distill the session's task into
 3–5 keywords capturing *what* the work was, formatted as lowercase kebab-case,
@@ -97,10 +92,6 @@ Rules:
 - Keep the whole file under ~60 lines.
 
 ## Step 4: Confirm
-
-```bash
-bash ~/.config/opencode/zellij-status.sh status ""
-```
 
 Print:
 

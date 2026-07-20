@@ -4,7 +4,6 @@ description: Generate a git commit message from branch changes and git history. 
 allowedTools:
   - Bash(git *)
   - Read
-  - Bash(bash ~/.config/opencode/zellij-status.sh status *)
 ---
 
 # /commit-msg — Generate Commit Message
@@ -23,7 +22,6 @@ Generates a commit message whose body also works as the PR description (e.g. `gh
 ## Step 1: Analyze changes
 
 ```bash
-bash ~/.config/opencode/zellij-status.sh status "analyzing diff"
 git diff @{u}...HEAD  # fallback: git diff origin/main...HEAD
 ```
 
@@ -49,10 +47,6 @@ test -f TICKET.md && cat TICKET.md
 If an issue ID is found (argument or `TICKET.md` first line), use it for the "why" and reference it in the body. No external fetch — work from the local file and the diff.
 
 ## Step 4: Write the commit message
-
-```bash
-bash ~/.config/opencode/zellij-status.sh status "drafting commit message"
-```
 
 **Golden rule: be as short as possible while including all meaningful information a reviewer needs.**
 Every sentence must earn its place. Cut adjectives, cut restatements of the code, cut anything obvious from the diff.
@@ -91,13 +85,8 @@ git log @{u}..HEAD --oneline 2>/dev/null | wc -l
 ## Step 6: Apply
 
 ```bash
-bash ~/.config/opencode/zellij-status.sh status "committing"
 git commit --amend -m "<message>"        # amend mode
 git commit --allow-empty -m "<message>"  # empty-commit mode
 ```
 
 Print: `Applied in <mode>. Commit: abc1234  <subject line>`
-
-```bash
-bash ~/.config/opencode/zellij-status.sh status ""
-```

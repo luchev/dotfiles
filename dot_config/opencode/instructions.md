@@ -2,16 +2,6 @@
 
 Global behavioral guidelines for all projects. Merge with project-specific instructions as needed.
 
-## Zellij pane topic
-
-When you've understood what a new session is about (typically after the first user prompt and any initial exploration), call:
-
-```
-bash ~/.config/opencode/zellij-status.sh topic "<short summary, ≤40 chars>"
-```
-
-The topic appears as the pane label fallback (e.g. `💤 · <topic>`) and persists across turns. Update it if the session's focus shifts substantially. Don't call it for trivial one-off tasks where the session will be short.
-
 ## Engineering Principles
 
 **Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
