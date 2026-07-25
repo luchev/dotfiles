@@ -1020,12 +1020,14 @@ $env.ARGC_COMPLETIONS_ROOT = ($env.HOME + '/.dotfiles/argc-completions')
 # argc completions are bash scripts — must point to bash
 $env.ARGC_SHELL_PATH = (which bash | get path | to text | str trim)
 
+$env.ARGC_CUSTOM_COMPLETIONS = ($env.HOME + '/.dotfiles/argc-custom-completions')
+
 if ((uname | get kernel-name) == 'Darwin') {
-  $env.ARGC_COMPLETIONS_PATH = ($env.ARGC_COMPLETIONS_ROOT + '/completions/macos' + ':' + $env.ARGC_COMPLETIONS_ROOT + '/completions')
+  $env.ARGC_COMPLETIONS_PATH = ($env.ARGC_CUSTOM_COMPLETIONS + ':' + $env.ARGC_COMPLETIONS_ROOT + '/completions/macos' + ':' + $env.ARGC_COMPLETIONS_ROOT + '/completions')
 } else if ((uname | get kernel-name) == 'Linux') {
-  $env.ARGC_COMPLETIONS_PATH = ($env.ARGC_COMPLETIONS_ROOT + '/completions/linux' + ':' + $env.ARGC_COMPLETIONS_ROOT + '/completions')
+  $env.ARGC_COMPLETIONS_PATH = ($env.ARGC_CUSTOM_COMPLETIONS + ':' + $env.ARGC_COMPLETIONS_ROOT + '/completions/linux' + ':' + $env.ARGC_COMPLETIONS_ROOT + '/completions')
 } else {
-  $env.ARGC_COMPLETIONS_PATH = ($env.ARGC_COMPLETIONS_ROOT + '/completions/macos' + ':' + $env.ARGC_COMPLETIONS_ROOT + '/completions/linux' + ':' + $env.ARGC_COMPLETIONS_ROOT + '/completions')
+  $env.ARGC_COMPLETIONS_PATH = ($env.ARGC_CUSTOM_COMPLETIONS + ':' + $env.ARGC_COMPLETIONS_ROOT + '/completions/macos' + ':' + $env.ARGC_COMPLETIONS_ROOT + '/completions/linux' + ':' + $env.ARGC_COMPLETIONS_ROOT + '/completions')
 }
 
 # Setup zoxide
@@ -1201,7 +1203,7 @@ source ~/.config/nushell/themes/monokai-soda.nu
 
 # Generate a new argc-completions file for a new command
 def argc-generate [cmd] {
-  bash ($env.HOME + /.dotfiles/argc-completions/scripts/generate.sh) $cmd | save -f ($env.HOME + "/.dotfiles/argc-custom-completions/" + $cmd + ".sh")
+  bash ($env.ARGC_COMPLETIONS_ROOT + /scripts/generate.sh) $cmd | save -f ($env.ARGC_CUSTOM_COMPLETIONS + "/" + $cmd + ".sh")
 }
 
 # Load intelli-shell
