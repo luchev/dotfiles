@@ -139,15 +139,38 @@ let light_theme = {
 # External completer
 
 let argc_completer = {|spans|
+    # Resolve git aliases (e.g., sw -> switch) so argc gets the real subcommand.
+    # argc doesn't resolve git aliases itself, so it treats aliases as arguments.
+    let spans = if ($spans.0 == "git" and ($spans | length) >= 2) {
+        let maybe_alias = $spans.1
+        let alias_result = (do -i { ^git config --get $"alias.($maybe_alias)" } | complete)
+        let alias_val = if $alias_result.exit_code == 0 { $alias_result.stdout | str trim } else { "" }
+        if ($alias_val | is-not-empty) and not ($alias_val | str starts-with "!") {
+            $spans | upsert 1 ($alias_val | split row " " | first)
+        } else {
+            $spans
+        }
+    } else {
+        $spans
+    }
+
     let argc_completions = (argc --argc-compgen nushell "" ...$spans
-        | split row "\n"
+        | lines
         | each { |line| $line | split column "\t" value description }
         | flatten
         | get value)
 
-    let file_completions = (ls | get name)
-
-    ($argc_completions | append $file_completions | uniq)
+    if ($argc_completions | is-empty) {
+        # argc returned nothing (e.g. _choice_branch bash fn fails in Nushell)
+        # Provide branch names for switch/checkout, fall back to files otherwise
+        if ($spans.0 == "git" and ($spans | length) >= 3 and $spans.1 in ["switch", "checkout"]) {
+            git branch --all --format="%(refname:short)" | lines
+        } else {
+            ls | get name
+        }
+    } else {
+        $argc_completions
+    }
 }
 
 let zoxide_completer = {|spans|
@@ -994,8 +1017,8 @@ $env.PATH = ($env.PATH | split row (char esep)
 
 # argc-completions
 $env.ARGC_COMPLETIONS_ROOT = ($env.HOME + '/.dotfiles/argc-completions')
-# default is bash so we switch it to nu
-$env.ARGC_SHELL_PATH = (which nu | get path | to text | str trim)
+# argc completions are bash scripts — must point to bash
+$env.ARGC_SHELL_PATH = (which bash | get path | to text | str trim)
 
 if ((uname | get kernel-name) == 'Darwin') {
   $env.ARGC_COMPLETIONS_PATH = ($env.ARGC_COMPLETIONS_ROOT + '/completions/macos' + ':' + $env.ARGC_COMPLETIONS_ROOT + '/completions')
