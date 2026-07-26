@@ -1,10 +1,9 @@
 ---
 name: learn
 description: >
-  Analyze the current session to extract learnings — corrections, confirmed
-  patterns, new workflows — then propose targeted changes to skills for manual
-  user approval. Use when the user says "what did we learn", "what should we
-  remember", or at the end of a significant session.
+  Analyze the current session to extract learnings, auto-apply skill changes, and
+  append bullet-point summaries to the project's LEARNINGS.md. No user approval
+  needed — findings are applied immediately.
 allowedTools:
   - Bash(ls *)
   - Bash(grep *)
@@ -14,111 +13,104 @@ allowedTools:
   - Skill
   - Todowrite
   - Todoread
+  - Glob
 ---
 
-# /learn — Session Learning Extractor
+# /learn — Session Learning Extractor (auto-apply)
 
-Scan the session for what was learned, then propose concrete changes to skills.
-Nothing is applied without explicit user approval.
+Scan the session for learnings → extract bullet points (1 sentence each) → auto-apply skill changes → append to `docs/LEARNINGS.md` or `LEARNINGS.md`.
 
 ---
 
 ## L1: Scan the session
 
-Read the entire conversation history in context. Look specifically for:
+Read the entire conversation history. Look for:
 
 **Feedback signals (highest priority):**
 - Corrections: "no", "don't", "stop doing X", "that's wrong", "not like that"
-- Confirmations of non-obvious choices: "yes exactly", "perfect", "keep doing that", user accepting an unusual approach without pushback
+- Confirmations of non-obvious choices: "yes exactly", "perfect", "keep doing that"
 - Repeated corrections on the same topic (strong signal)
 
 **Workflow discoveries:**
 - Tools or commands the user showed you that you didn't already know
-- Patterns the user prefers for this repo/context (tool choices, naming, order of operations)
+- Patterns the user prefers for this repo/context
 - Things that worked unexpectedly well or poorly
 
 **New factual knowledge:**
-- Project-specific facts (IDs, team names, URLs, configurations)
-- Environmental constraints (which CLIs to use, which auth flows are needed)
+- Project-specific facts (IDs, configs, URLs)
+- Environmental constraints
 - Decisions made (architectural, process, priority)
 
 **Skill gaps:**
-- Tasks where you had to ask clarifying questions that a better skill/memory would have answered
+- Tasks where you had to ask clarifying questions that a better skill would have answered
 - Steps you got wrong that a richer skill description would have prevented
-- Missing skills: tasks you handled ad-hoc that recur often enough to warrant a skill
+- Tasks that recur often enough to warrant a skill
 
 ---
 
-## L2: Read current state
+## L2: Determine project root and learnings file path
+
+- If `docs/LEARNINGS.md` exists at workspace root → use that
+- Else if `LEARNINGS.md` exists at workspace root → use that
+- Else → use `LEARNINGS.md` at workspace root (will create)
+
+---
+
+## L3: Read current state
 
 ```bash
 ls ~/.config/opencode/skills/
 ```
 
-For any skills that were **used or triggered** in this session, read their SKILL.md to understand current content before proposing changes.
+For skills that were **used or triggered** this session, read their SKILL.md before proposing changes.
 
-If active todos exist, read them too to understand what's in progress.
-
----
-
-## L3: Build the proposal
-
-Classify every finding into one of these buckets. Only include findings that are **non-obvious**, **not already recorded**, and **likely to recur**:
-
-### Bucket A — Skill Improvements
-
-For each skill: name the file, state what specific line/section to change, and show the before/after. Only propose changes with a clear, session-grounded reason.
-
-Format:
-```
-[SKILL] ~/.config/opencode/skills/<name>/SKILL.md  (UPDATE)
-Section: <section name or line range>
-Reason: <what went wrong or what was confirmed>
-Before:
-  <current text>
-After:
-  <proposed text>
-```
-
-### Bucket B — New Skills Worth Creating
-
-Only if a clear, recurring task was handled ad-hoc and has no existing skill:
-
-```
-[NEW SKILL] /<name>
-Trigger: <when to invoke>
-What it does: <one paragraph>
-Why now: <what happened in session that revealed the gap>
-```
+If active todos exist, read them too.
 
 ---
 
-## L4: Present and stop
+## L4: Build and apply
 
-Print the full proposal under this header:
+### 4a — Compile learnings as bullet points
 
-```
-## /learn — Session Learnings
+Each bullet = 1 short sentence. Group by category (Corrections, Workflow, Facts, Decisions).
 
-### What we found
-<1–3 sentences summarizing the session's main theme and what signals surfaced>
+### 4b — Append to LEARNINGS.md
 
-### Proposed Changes
+Date-stamped section. If file doesn't exist, create it. Append format:
 
-<list all Bucket A, B items in order of impact — highest impact first>
+```markdown
+## 2026-07-25 — <session topic>
 
----
-To apply: tell me which items to apply (e.g. "apply A1, B2") or "apply all".
-Changes are NOT applied until you approve them explicitly.
+- <one short sentence per finding>
+- <...>
 ```
 
-**Stop here.** Wait for the user to approve specific items before making any changes.
+### 4c — Update skills (auto-apply)
+
+For each skill improvement found:
+- Edit the SKILL.md file directly (chezmoi source if managed, otherwise ~/.config/opencode/skills/)
+- Match surrounding file style
+- No approval needed — apply immediately
+
+### 4d — Update project CLAUDE.md if findings are project-level
+
+If learnings include project conventions, environment details, or standing instructions that belong in CLAUDE.md, append them to the relevant section.
 
 ---
 
-## L5: Apply approved changes (only after user approves)
+## L5: Print summary
 
-For each approved item:
+Print:
 
-- **Skill (update):** Edit only the approved section of the SKILL.md. Match surrounding style.
-- **New skill:** Create `~/.config/opencode/skills/<name>/SKILL.md` with the proposed content.
+```
+## /learn — Applied
+
+### Learnings written to docs/LEARNINGS.md
+<bullet list of what was written>
+
+### Skills updated
+<files changed>
+
+### Project CLAUDE.md updated
+<what changed, or "none">
+```

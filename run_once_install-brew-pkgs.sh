@@ -4,7 +4,7 @@
 # Preserves the original dotbot multi-package-manager approach.
 set -euo pipefail
 
-PACKAGES="fzf jq yq direnv htop"
+PACKAGES="fzf jq yq direnv htop btop"
 
 # Filter only missing packages
 MISSING=""

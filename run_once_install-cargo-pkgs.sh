@@ -55,7 +55,6 @@ install_crate trippy
 install_crate pueue
 install_crate gitui
 install_crate bandwhich
-install_crate procs
 install_crate navi
 install_crate tlrc
 install_crate git-delta

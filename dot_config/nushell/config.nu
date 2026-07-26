@@ -1130,6 +1130,7 @@ if (not (which ussh | is-empty)) and (not (which jira | is-empty)) {
 # Aliases
 alias v = nvim
 alias g = git
+alias k = kubectl
 alias e = eza --color=auto --icons=auto
 alias h = atuin
 alias s = fd
