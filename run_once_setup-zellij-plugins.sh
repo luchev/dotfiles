@@ -51,11 +51,13 @@ if [ ! -f "$PERMISSION_FILE" ]; then
     ReadApplicationState
     ChangeApplicationState
     RunCommands
+    MessageAndLaunchOtherPlugins
 }
 "${HOME}/.config/zellij/plugins/zjstatus-hints.wasm" {
     ReadApplicationState
     ChangeApplicationState
     RunCommands
+    MessageAndLaunchOtherPlugins
 }
 PERMS
     echo "✓ permission cache created at $PERMISSION_FILE"
