@@ -573,7 +573,6 @@ keybinds {
 // Plugin aliases - can be used to change the implementation of Zellij
 // changing these requires a restart to take effect
 plugins {
-    tab-bar location="zellij:tab-bar"
     strider location="zellij:strider"
     compact-bar location="zellij:compact-bar"
     session-manager location="zellij:session-manager"
@@ -585,7 +584,6 @@ plugins {
     }
     configuration location="zellij:configuration"
     plugin-manager location="zellij:plugin-manager"
-    status-bar location="zellij:status-bar"
     zjstatus location="file:~/.config/zellij/plugins/zjstatus.wasm" {
         // Source: https://github.com/merikan/.dotfiles/tree/main/config/zellij/themes/zjstatus
         // -- Catppuccin Mocha --
