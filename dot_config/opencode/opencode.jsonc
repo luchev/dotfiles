@@ -88,6 +88,10 @@
     // Subagent-tier work uses flash free, mirroring CLAUDE_CODE_SUBAGENT_MODEL
     // Sisyphus-Junior executes all `category`-based subagent tasks.
     "Sisyphus-Junior": { "model": "deepseek/deepseek-v4-flash" },
+    "explore": { "model": "deepseek/deepseek-v4-flash" },
+    "librarian": { "model": "deepseek/deepseek-v4-flash" },
+    "multimodal-looker": { "model": "deepseek/deepseek-v4-flash" },
+    "oracle": { "model": "deepseek/deepseek-v4-flash" },
     "title": { "model": "deepseek/deepseek-v4-flash" },
     "summary": { "model": "deepseek/deepseek-v4-flash" },
     "compaction": { "model": "deepseek/deepseek-v4-flash" }

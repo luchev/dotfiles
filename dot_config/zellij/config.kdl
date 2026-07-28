@@ -49,7 +49,14 @@ keybinds {
         bind "Alt k" "Alt Up" {
             MoveFocus "Up"
         }
-        bind "Alt f" {
+        bind "Alt e" {
+            LaunchOrFocusPlugin "session-manager" {
+                floating true
+                move_to_focused_tab true
+            }
+            SwitchToMode "Locked"
+        }
+        bind "Alt q" {
             ToggleFloatingPanes
         }
         bind "Alt m" {
@@ -64,8 +71,20 @@ keybinds {
         bind "Alt y" {
             CloseFocus
         }
+        bind "Alt w" {
+            LaunchOrFocusPlugin "file:~/.config/zellij/plugins/zellij-workspace.wasm" {
+                floating true
+                replace_current_session true
+            }
+        }
+        bind "Alt t" {
+            NewTab
+        }
         bind "Alt Tab" {
             GoToNextTab
+        }
+        bind "Alt b" {
+            GoToPreviousTab
         }
         bind "Ctrl s" {
             SwitchToMode "EnterSearch"
@@ -389,7 +408,7 @@ keybinds {
                 floating true
                 move_to_focused_tab true
             }
-            SwitchToMode "Normal"
+            SwitchToMode "Locked"
         }
         bind "c" {
             LaunchOrFocusPlugin "configuration" {

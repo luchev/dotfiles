@@ -9,6 +9,7 @@ PLUGIN_DIR="${HOME}/.config/zellij/plugins"
 CACHE_DIR="${HOME}/Library/Caches/org.Zellij-Contributors.Zellij"
 ZJSTATUS_URL="https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm"
 ZJSTATUS_HINTS_URL="https://github.com/b0o/zjstatus-hints/releases/latest/download/zjstatus-hints.wasm"
+WORKSPACE_URL="https://github.com/vdbulcke/zellij-workspace/releases/download/v0.3.0/zellij-workspace.wasm"
 
 mkdir -p "$PLUGIN_DIR"
 mkdir -p "$CACHE_DIR"
@@ -41,6 +42,20 @@ else
     echo "✓ zjstatus-hints.wasm already present"
 fi
 
+# Download zellij-workspace.wasm if missing
+if [ ! -f "${PLUGIN_DIR}/zellij-workspace.wasm" ]; then
+    echo "↓ Downloading zellij-workspace.wasm..."
+    curl -fsSL "$WORKSPACE_URL" -o "${PLUGIN_DIR}/zellij-workspace.wasm"
+    if file "${PLUGIN_DIR}/zellij-workspace.wasm" | grep -q WebAssembly; then
+        echo "✓ zellij-workspace.wasm installed ($(du -h "${PLUGIN_DIR}/zellij-workspace.wasm" | cut -f1))"
+    else
+        echo "✗ Downloaded zellij-workspace.wasm is not valid WebAssembly"
+        exit 1
+    fi
+else
+    echo "✓ zellij-workspace.wasm already present"
+fi
+
 # Create permission cache for locked-mode compatibility.
 # Key format is the raw absolute path (no "file:" prefix) because
 # RunPluginLocation::File(path).to_string() produces just the path.
@@ -58,6 +73,10 @@ if [ ! -f "$PERMISSION_FILE" ]; then
     ChangeApplicationState
     RunCommands
     MessageAndLaunchOtherPlugins
+}
+"${HOME}/.config/zellij/plugins/zellij-workspace.wasm" {
+    ReadApplicationState
+    ChangeApplicationState
 }
 PERMS
     echo "✓ permission cache created at $PERMISSION_FILE"
