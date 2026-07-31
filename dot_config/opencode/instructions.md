@@ -108,10 +108,12 @@ Context for working in this dotfiles repository.
 
 ### Project Structure
 
-- `nushell/` — Nushell configuration.
-- `opencode/` — OpenCode configuration, skills, and behavioral instructions.
-- `nvim/` — Neovim configuration.
-- `argc-completions/` — custom shell completions.
+- `dot_config/nushell/` — Nushell configuration.
+- `dot_config/opencode/` — OpenCode configuration, skills, and behavioral instructions.
+- `dot_config/nvim/` — Neovim configuration.
+- `dot_config/zellij/` — Zellij configuration.
+- `dot_claude/` — Claude Code configuration.
+- `argc-completions/` — custom shell completions (git submodule, chezmoi-ignored).
 
 ### Command Execution
 
