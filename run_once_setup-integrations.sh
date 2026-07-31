@@ -4,7 +4,7 @@
 # gitconfig include, and local config stubs.
 set -euo pipefail
 
-DOTFILES="${HOME}/.dotfiles"
+DOTFILES="${CHEZMOI_SOURCE_DIR:-${HOME}/.local/share/chezmoi}"
 
 # ── Zoxide nushell init ────────────────────────────────────────────────────
 if [ ! -f "${HOME}/.zoxide.nu" ]; then

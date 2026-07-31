@@ -3,7 +3,7 @@
 # Install intelli-shell (AI-powered command suggestions) and configure it.
 set -euo pipefail
 
-DOTFILES="${HOME}/.dotfiles"
+DOTFILES="${CHEZMOI_SOURCE_DIR:-${HOME}/.local/share/chezmoi}"
 
 # ── Install intelli-shell ──────────────────────────────────────────────────
 INTELLI_BIN_DIR=""
