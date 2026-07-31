@@ -139,6 +139,9 @@ secring.*
 .cargo/git/
 .rustup/downloads/
 
+# Locally-downloaded chezmoi binary
+bin/chezmoi
+
 # Backup directory
 .dotfiles-backup/
 
