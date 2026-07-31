@@ -94,10 +94,10 @@ git worktree remove ../repo-feature-name
 # Or delete directory and prune
 rm -rf ../repo-feature-name
 git worktree prune
-
-# Force remove (with uncommitted changes)
-git worktree remove --force ../repo-feature-name
 ```
+
+Never use `git worktree remove --force`. If removal is refused there are uncommitted
+changes - inspect them and let the user decide.
 
 ### Prune Worktrees
 

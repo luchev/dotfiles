@@ -63,7 +63,7 @@ git branch --set-upstream-to=main <child>
 REPO_ROOT=$(git -C "$WT_PATH" rev-parse --show-superproject-working-tree 2>/dev/null \
             || git -C "$WT_PATH" rev-parse --show-toplevel)
 cd "$REPO_ROOT"
-git worktree remove "$WT_PATH"   # --force if confirmed
+git worktree remove "$WT_PATH"
 git worktree prune
 git branch -d "$BRANCH"          # -D if squash-merged
 ```
@@ -119,7 +119,7 @@ For dirty merged/abandoned worktrees: show diff and ask separately. Do NOT remov
 ### A7: Remove
 
 ```bash
-git worktree remove <path>   # --force if git-internal files only or user confirmed
+git worktree remove <path>   # if this fails, report why - never force
 git worktree prune
 ```
 
