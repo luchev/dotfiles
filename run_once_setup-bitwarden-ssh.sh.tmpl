@@ -1,15 +1,25 @@
+{{- if env "CHEZMOI_BITWARDEN" -}}
 #!/usr/bin/env bash
-# chezmoi: run_once_setup-bitwarden-ssh.sh
-# Restore all SSH keys from Bitwarden on first chezmoi apply.
+# Restore all SSH keys from Bitwarden.
+#
+# Opt-in only. This template renders to an empty file unless CHEZMOI_BITWARDEN
+# is set, and chezmoi does not execute scripts that render to nothing:
+#   CHEZMOI_BITWARDEN=1 chezmoi apply
 set -euo pipefail
 
-DOTFILES="${HOME}/.dotfiles"
-SYNC_SCRIPT="${DOTFILES}/dot_config/nushell/sync-ssh-from-bitwarden.sh"
+SYNC_SCRIPT="${HOME}/.config/nushell/sync-ssh-from-bitwarden.sh"
 
-if [ -f "${SYNC_SCRIPT}" ]; then
-    echo "Restoring SSH keys from Bitwarden..."
-    bash "${SYNC_SCRIPT}" || echo "⚠ Bitwarden SSH key sync failed (pinentry may be required)"
-    echo "✓ Bitwarden SSH key sync done"
-else
-    echo "  Bitwarden SSH sync script not found; skipping"
+if ! command -v bw >/dev/null 2>&1; then
+    echo "bitwarden-cli (bw) is not installed; cannot restore SSH keys" >&2
+    exit 1
 fi
+
+if [ ! -f "${SYNC_SCRIPT}" ]; then
+    echo "sync script missing: ${SYNC_SCRIPT}" >&2
+    exit 1
+fi
+
+echo "Restoring SSH keys from Bitwarden..."
+bash "${SYNC_SCRIPT}"
+echo "✓ Bitwarden SSH key sync done"
+{{- end -}}

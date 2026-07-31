@@ -67,12 +67,42 @@ Create local overrides that won't be committed:
 - `~/.config/opencode/opencode.jsonc` — OpenCode local configuration
 - `~/.config/opencode/settings.json` — OpenCode machine-specific settings
 
+## Bitwarden (opt-in)
+
+Secrets are never synced by default. The two Bitwarden scripts are templates that
+render to nothing unless `CHEZMOI_BITWARDEN` is set, and chezmoi skips scripts that
+render empty.
+
+Prerequisites: the [`bw`](https://bitwarden.com/help/cli/) CLI installed and an
+unlocked vault:
+
+```bash
+export BW_SESSION=$(bw unlock --raw)
+```
+
+Restore SSH keys (`~/.ssh/*`, then `ssh-add`):
+
+```bash
+CHEZMOI_BITWARDEN=1 chezmoi apply
+```
+
+Also sync env vars into `~/.config-local.nu` — needs the UUID of the Bitwarden item
+holding them in its notes field:
+
+```bash
+CHEZMOI_BITWARDEN=1 BW_ENV_ITEM_UUID=<uuid> chezmoi apply
+```
+
+Enabled runs fail loudly (non-zero exit) if `bw` is missing, the vault is locked, or
+`BW_ENV_ITEM_UUID` is unset. The SSH script is `run_once_`, so it only re-runs if its
+contents change; force it with `chezmoi state delete-bucket --bucket=scriptState`.
+
 ## Migration from Dotbot
 
 This repo migrated from [dotbot](https://github.com/anishathalye/dotbot) to chezmoi in July 2026.
 
 Key changes:
-- Source directory: `~/.dotfiles` → `~/.local/share/chezmoi` (symlinked for backward compat)
+- Source directory: `~/.dotfiles` → `~/.local/share/chezmoi`
 - File naming follows chezmoi conventions (`dot_zshrc`, `dot_config/nvim/`, etc.)
 - Old `install` script and `install.conf.yaml` replaced by chezmoi's declarative management
 - nushell dual-link (`.config/nushell/` + `Library/Application Support/nushell/`) handled via auto-symlink script

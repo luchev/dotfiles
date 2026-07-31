@@ -1,16 +1,30 @@
+{{- if env "CHEZMOI_BITWARDEN" -}}
 #!/usr/bin/env bash
-# chezmoi: run_once_setup-bitwarden-env.sh
-# Sync environment variables from Bitwarden to nushell config.
-# This is sensitive infrastructure — only runs if the sync script exists.
+# Sync environment variables from Bitwarden into ~/.config-local.nu.
+#
+# Opt-in only. This template renders to an empty file unless CHEZMOI_BITWARDEN
+# is set, and chezmoi does not execute scripts that render to nothing:
+#   CHEZMOI_BITWARDEN=1 BW_ENV_ITEM_UUID=<uuid> chezmoi apply
 set -euo pipefail
 
-DOTFILES="${HOME}/.dotfiles"
-SYNC_SCRIPT="${DOTFILES}/dot_config/nushell/sync-env-from-bitwarden.sh"
+SYNC_SCRIPT="${HOME}/.config/nushell/sync-env-from-bitwarden.sh"
 
-if [ -f "${SYNC_SCRIPT}" ]; then
-    echo "Syncing env vars from Bitwarden..."
-    bash "${SYNC_SCRIPT}" || echo "⚠ Bitwarden env sync failed (pinentry may be required)"
-    echo "✓ Bitwarden env sync done"
-else
-    echo "  Bitwarden sync script not found at ${SYNC_SCRIPT}; skipping"
+if ! command -v bw >/dev/null 2>&1; then
+    echo "bitwarden-cli (bw) is not installed; cannot sync env vars" >&2
+    exit 1
 fi
+
+if [ -z "${BW_ENV_ITEM_UUID:-}" ]; then
+    echo "BW_ENV_ITEM_UUID is not set; cannot locate the env item in Bitwarden" >&2
+    exit 1
+fi
+
+if [ ! -f "${SYNC_SCRIPT}" ]; then
+    echo "sync script missing: ${SYNC_SCRIPT}" >&2
+    exit 1
+fi
+
+echo "Syncing env vars from Bitwarden..."
+bash "${SYNC_SCRIPT}"
+echo "✓ Bitwarden env sync done"
+{{- end -}}
