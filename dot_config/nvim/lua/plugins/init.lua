@@ -98,8 +98,10 @@ return {
             ["end"] = { args.line2, end_line:len() },
           }
         end
-        conform.format { async = true, lsp_format = "fallback", range = range }
-      end, { range = true })
+        local ft = args.fargs[1]
+        local formatters = ft and conform.formatters_by_ft[ft] or nil
+        conform.format { async = true, lsp_format = "fallback", range = range, formatters = formatters }
+      end, { nargs = "?", range = true, complete = function() return vim.tbl_keys(conform.formatters_by_ft) end })
     end,
   },
 

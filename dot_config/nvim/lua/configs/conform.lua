@@ -4,6 +4,7 @@ local options = {
     kdl = { "kdlfmt" },
     python = { "isort", "black" },
     rust = { "rustfmt", lsp_format = "fallback" },
+    json = { "prettierd", "prettier", stop_after_first = true },
     javascript = { "prettierd", "prettier", stop_after_first = true },
     typescript = { "prettierd", "prettier", stop_after_first = true },
     go = { "goimports-reviser", "gofumpt", "golines" },
