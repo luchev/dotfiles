@@ -1,3 +1,0 @@
-# List with details
-ls -l
-
