@@ -3,8 +3,6 @@
 # Install intelli-shell (AI-powered command suggestions) and configure it.
 set -euo pipefail
 
-DOTFILES="${CHEZMOI_SOURCE_DIR:-${HOME}/.local/share/chezmoi}"
-
 # ── Install intelli-shell ──────────────────────────────────────────────────
 INTELLI_BIN_DIR=""
 if command -v intelli-shell >/dev/null 2>&1; then
@@ -30,18 +28,6 @@ if command -v intelli-shell >/dev/null 2>&1; then
     intelli-shell tldr fetch 2>/dev/null || echo "⚠ tldr fetch failed (non-fatal)"
 else
     echo "⚠ Skipping tldr fetch (intelli-shell not found in PATH)"
-fi
-
-# ── Restore backup if exists ───────────────────────────────────────────────
-if command -v intelli-shell >/dev/null 2>&1; then
-    if [ -f "${DOTFILES}/backups/intelli-shell-user-commands.txt" ]; then
-        intelli-shell import --file "${DOTFILES}/backups/intelli-shell-user-commands.txt" 2>/dev/null ||
-            echo "⚠ intelli-shell backup restore failed (non-fatal)"
-    else
-        echo "  No intelli-shell backup to restore"
-    fi
-else
-    echo "  Skipping backup restore (intelli-shell not in PATH)"
 fi
 
 # ── Fix nushell compatibility ──────────────────────────────────────────────
