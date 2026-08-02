@@ -10,9 +10,6 @@
   //                              long-running processes as background sessions.
   //                              Tools: pty_spawn, pty_write, pty_read, pty_list, pty_kill
   //                              Slash: /pty-open-background-spy, /pty-show-server-url
-  // opencode-antigravity-auth:   Google Antigravity IDE OAuth — access Gemini 3 Pro
-  //                              and Claude 4.6 via your existing Antigravity (agy) credentials.
-  // opencode-gemini-auth:        Google Gemini OAuth — use your Gemini plan quota directly.
   // @tarquinen/opencode-dcp:     Dynamic Context Pruning — removes stale/duplicate tool
   //                              outputs from context in real-time without touching session
   //                              history. Cuts token usage 50-80% in long sessions.
@@ -26,8 +23,6 @@
   //                              breakdowns, visual charts, and subagent cost tracking.
   "plugin": [
     "opencode-pty",
-    "opencode-antigravity-auth",
-    "opencode-gemini-auth",
     "@tarquinen/opencode-dcp",
     "oh-my-openagent",
     "opencode-obsidian",
@@ -62,39 +57,38 @@
         "deepseek-v4-flash": {
           "name": "DeepSeek V4 Flash"
         },
+        // Flash Free — default model (current session)
+        "deepseek-v4-flash-free": {
+          "name": "DeepSeek V4 Flash Free"
+        },
 
       }
     }
   },
 
-  // Show all configured providers (deepseek, antigravity, gemini, auto-detected…)
-  // "enabled_providers": ["deepseek"],  // uncomment to hide everything else
+  // Only use subscribed providers; ignore all other auto-detected providers.
+  "enabled_providers": ["opencode-go", "opencode", "deepseek"],
 
   // ── Models ───────────────────────────────────────────────────────────────────
   // Primary model for main agents
-  "model": "deepseek/deepseek-v4-flash",
+  "model": "deepseek/deepseek-v4-flash-free",
   // Lightweight tasks (title generation, etc.)
-  "small_model": "deepseek/deepseek-v4-flash",
+  "small_model": "deepseek/deepseek-v4-flash-free",
 
   // ── Agents ───────────────────────────────────────────────────────────────────
   "agent": {
     "build": {
-      // Raise iteration cap for long tasks (default is low)
       "steps": 100,
-      // Subagents use deepseek-v4-flash (paid) because the native DeepSeek API
-      // doesn't recognize the "-free" model variant; the main thread stays free.
-      "model": "deepseek/deepseek-v4-flash"
+      "model": "deepseek/deepseek-v4-flash-free"
     },
-    // Subagent-tier work uses flash free, mirroring CLAUDE_CODE_SUBAGENT_MODEL
-    // Sisyphus-Junior executes all `category`-based subagent tasks.
-    "Sisyphus-Junior": { "model": "deepseek/deepseek-v4-flash" },
-    "explore": { "model": "deepseek/deepseek-v4-flash" },
-    "librarian": { "model": "deepseek/deepseek-v4-flash" },
-    "multimodal-looker": { "model": "deepseek/deepseek-v4-flash" },
-    "oracle": { "model": "deepseek/deepseek-v4-flash" },
-    "title": { "model": "deepseek/deepseek-v4-flash" },
-    "summary": { "model": "deepseek/deepseek-v4-flash" },
-    "compaction": { "model": "deepseek/deepseek-v4-flash" }
+    "Sisyphus-Junior": { "model": "deepseek/deepseek-v4-flash-free" },
+    "explore": { "model": "deepseek/deepseek-v4-flash-free" },
+    "librarian": { "model": "deepseek/deepseek-v4-flash-free" },
+    "multimodal-looker": { "model": "deepseek/deepseek-v4-flash-free" },
+    "oracle": { "model": "deepseek/deepseek-v4-flash-free" },
+    "title": { "model": "deepseek/deepseek-v4-flash-free" },
+    "summary": { "model": "deepseek/deepseek-v4-flash-free" },
+    "compaction": { "model": "deepseek/deepseek-v4-flash-free" }
   },
 
   // ── Permissions ───────────────────────────────────────────────────────────────
@@ -124,6 +118,26 @@
     "batch_tool": true
   },
 
+  // ── MCP servers ──────────────────────────────────────────────────────────────
+  "mcp": {
+    "gmail": {
+      "type": "remote",
+      "url": "https://gmailmcp.googleapis.com/mcp/v1",
+      "oauth": {
+        "clientId": "{env:GOOGLE_OAUTH_CLIENT_ID}",
+        "clientSecret": "{env:GOOGLE_OAUTH_CLIENT_SECRET}"
+      }
+    },
+    "calendar": {
+      "type": "remote",
+      "url": "https://calendarmcp.googleapis.com/mcp/v1",
+      "oauth": {
+        "clientId": "{env:GOOGLE_OAUTH_CLIENT_ID}",
+        "clientSecret": "{env:GOOGLE_OAUTH_CLIENT_SECRET}"
+      }
+    }
+  },
+
   // ── Misc ─────────────────────────────────────────────────────────────────────
   "autoupdate": "notify",   // show update notifications, don't auto-install
   "share": "disabled",      // disable session sharing
@@ -131,4 +145,3 @@
   "lsp": true,              // enable built-in LSP servers for code diagnostics
   "formatter": true         // auto-format files after edits (rustfmt, prettier…)
 }
-

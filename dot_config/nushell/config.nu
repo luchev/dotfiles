@@ -1148,6 +1148,9 @@ alias a = agy # antigravity
 alias ta = tmux a -t
 alias tn = tmux new -s
 
+# Remote codenomad server
+alias openremote = npx @neuralnomads/codenomad --password codenomad --host 0.0.0.0 --https false --http true --http-port 3000 --workspace-root ~/
+
 # Wrap aifx so Ghostty's cursor shader animates the real cursor: tfil strips
 # Claude Code/Ink's fake cursor and unhides the native one. Falls back to plain
 # aifx when tfil isn't installed.

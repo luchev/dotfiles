@@ -1,6 +1,18 @@
 {
   "plugin": [
     "oh-my-openagent",
-    "@tarquinen/opencode-dcp"
-  ]
+    "@tarquinen/opencode-dcp",
+    ["opencode-copy-message", {
+      "editor": "nvim",
+      "keybinds": {
+        "copy-message": "<leader>o",
+        "copy-message.nvim": "<leader>v",
+        "copy-message.popup": "<leader>p",
+        "copy-message.mouse": "<leader>m"
+      }
+    }]
+  ],
+  "keybinds": {
+    "session_copy": "<leader>C"
+  }
 }
