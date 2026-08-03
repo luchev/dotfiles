@@ -64,8 +64,12 @@ Create local overrides that won't be committed:
 - `~/.config/nushell/local.nu` — Nushell local config
 - `~/.config/nushell/local-env.nu` — Nushell local env override
 - `~/.zshrc.local` — Zsh local config
-- `~/.config/opencode/opencode.jsonc` — OpenCode local configuration
 - `~/.config/opencode/settings.json` — OpenCode machine-specific settings
+
+The OpenCode config (`~/.config/opencode/opencode.jsonc` and `rate-limit-fallback.json`)
+is **chezmoi-managed** (source `dot_config/opencode/`). To change it: edit the source
+files, then `chezmoi apply` to sync the target. Do not edit the live files directly
+or next `chezmoi apply` won't see them.
 
 ## Bitwarden (opt-in)
 
