@@ -21,13 +21,26 @@
   //                              session completion, and errors.
   // @ramtinj95/opencode-tokenscope: Token usage analysis with per-category
   //                              breakdowns, visual charts, and subagent cost tracking.
+  // opencode-mem:                Local persistent memory — Turso/libSQL vector DB,
+  //                              auto-capture, web UI at http://127.0.0.1:4747.
+  // opencode-browser:                 Browser automation via Browser MCP — control
+  //                              Chrome/Edge (click, type, screenshot, scrape).
+  //                              Requires the Browser MCP extension in Chrome.
+  //                              Speed-optimized prompt guidance for browser tools.
+  // @azumag/opencode-rate-limit-fallback: When the current model 429s / runs out
+  //                              of credits, abort and retry on the next credited
+  //                              model. Chain in rate-limit-fallback.json.
   "plugin": [
+    "@azumag/opencode-rate-limit-fallback",
     "opencode-pty",
     "@tarquinen/opencode-dcp",
     "oh-my-openagent",
     "opencode-obsidian",
     "opencode-notify",
-    "@ramtinj95/opencode-tokenscope"
+    "@ramtinj95/opencode-tokenscope",
+    "file:/Users/z/opencode-session-name",
+    "opencode-mem",
+    "opencode-browser"
   ],
 
   // ── Provider ─────────────────────────────────────────────────────────────────
@@ -71,24 +84,24 @@
 
   // ── Models ───────────────────────────────────────────────────────────────────
   // Primary model for main agents
-  "model": "deepseek/deepseek-v4-flash-free",
+  "model": "opencode/deepseek-v4-flash-free",
   // Lightweight tasks (title generation, etc.)
-  "small_model": "deepseek/deepseek-v4-flash-free",
+  "small_model": "opencode/deepseek-v4-flash-free",
 
   // ── Agents ───────────────────────────────────────────────────────────────────
   "agent": {
     "build": {
       "steps": 100,
-      "model": "deepseek/deepseek-v4-flash-free"
+      "model": "opencode/deepseek-v4-flash-free"
     },
-    "Sisyphus-Junior": { "model": "deepseek/deepseek-v4-flash-free" },
-    "explore": { "model": "deepseek/deepseek-v4-flash-free" },
-    "librarian": { "model": "deepseek/deepseek-v4-flash-free" },
-    "multimodal-looker": { "model": "deepseek/deepseek-v4-flash-free" },
-    "oracle": { "model": "deepseek/deepseek-v4-flash-free" },
-    "title": { "model": "deepseek/deepseek-v4-flash-free" },
-    "summary": { "model": "deepseek/deepseek-v4-flash-free" },
-    "compaction": { "model": "deepseek/deepseek-v4-flash-free" }
+    "Sisyphus-Junior": { "model": "opencode/deepseek-v4-flash-free" },
+    "explore": { "model": "opencode/deepseek-v4-flash-free" },
+    "librarian": { "model": "opencode/deepseek-v4-flash-free" },
+    "multimodal-looker": { "model": "opencode/deepseek-v4-flash-free" },
+    "oracle": { "model": "opencode/deepseek-v4-flash-free" },
+    "title": { "model": "opencode/deepseek-v4-flash-free" },
+    "summary": { "model": "opencode/deepseek-v4-flash-free" },
+    "compaction": { "model": "opencode/deepseek-v4-flash-free" }
   },
 
   // ── Permissions ───────────────────────────────────────────────────────────────
@@ -120,21 +133,15 @@
 
   // ── MCP servers ──────────────────────────────────────────────────────────────
   "mcp": {
-    "gmail": {
-      "type": "remote",
-      "url": "https://gmailmcp.googleapis.com/mcp/v1",
-      "oauth": {
-        "clientId": "{env:GOOGLE_OAUTH_CLIENT_ID}",
-        "clientSecret": "{env:GOOGLE_OAUTH_CLIENT_SECRET}"
-      }
+    "google": {
+      "type": "local",
+      "command": ["node", "/Users/z/tools/gemini-workspace/workspace-server/dist/index.js"]
     },
-    "calendar": {
-      "type": "remote",
-      "url": "https://calendarmcp.googleapis.com/mcp/v1",
-      "oauth": {
-        "clientId": "{env:GOOGLE_OAUTH_CLIENT_ID}",
-        "clientSecret": "{env:GOOGLE_OAUTH_CLIENT_SECRET}"
-      }
+    // Browser MCP — used by the opencode-browser plugin. Controls Chrome/Edge.
+    "browsermcp": {
+      "type": "local",
+      "command": ["npx", "-y", "@browsermcp/mcp@0.1.3"],
+      "enabled": true
     }
   },
 
