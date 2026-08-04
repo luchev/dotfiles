@@ -52,6 +52,14 @@
 - Run sequential operations in order; don't chain dependent steps that may be backgrounded.
 - `config.nu` and other linked files are managed by chezmoi — edit the source at `~/.local/share/chezmoi/` or use `chezmoi edit`.
 
+### MCP
+
+- All MCP servers are proxied through lazy-mcp (`list_servers`, `list_commands`,
+  `describe_commands`, `invoke_command`). Server config: `~/.config/lazy-mcp/servers.json`.
+- When using lazy-mcp's `invoke_command` tool: put only `server` and `command_name` at
+  the top level; put all downstream tool inputs inside `parameters`; never place
+  downstream tool fields beside `parameters`.
+
 ## Response Style
 
 - Caveman skill active every session, every response, at **ultra** intensity by default.

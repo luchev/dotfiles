@@ -132,15 +132,13 @@
   },
 
   // ── MCP servers ──────────────────────────────────────────────────────────────
+  // All MCP servers proxied through lazy-mcp — 4 meta-tools (~1.5k tokens) instead
+  // of 78 full schemas (~12-16k tokens). Downstream schemas load on demand.
+  // Server config: ~/.config/lazy-mcp/servers.json (chezmoi: dot_config/lazy-mcp/)
   "mcp": {
-    "google": {
+    "lazy-mcp": {
       "type": "local",
-      "command": ["node", "/Users/z/tools/gemini-workspace/workspace-server/dist/index.js"]
-    },
-    // Browser MCP — used by the opencode-browser plugin. Controls Chrome/Edge.
-    "browsermcp": {
-      "type": "local",
-      "command": ["npx", "-y", "@browsermcp/mcp@0.1.3"],
+      "command": ["npx", "lazy-mcp@latest"],
       "enabled": true
     }
   },

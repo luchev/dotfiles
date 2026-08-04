@@ -1,0 +1,15 @@
+{
+  "requestTimeout": 30000,
+  "servers": [
+    {
+      "name": "google",
+      "description": "Google Workspace: Gmail, Calendar, Drive, Docs, Sheets, Slides, Chat, People, Time",
+      "command": ["node", "/Users/z/tools/gemini-workspace/workspace-server/dist/index.js"]
+    },
+    {
+      "name": "browsermcp",
+      "description": "Browser automation via Browser MCP extension (Chrome/Edge)",
+      "command": ["npx", "-y", "@browsermcp/mcp@0.1.3"]
+    }
+  ]
+}
