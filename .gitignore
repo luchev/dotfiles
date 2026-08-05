@@ -139,8 +139,8 @@ secring.*
 .cargo/git/
 .rustup/downloads/
 
-# Locally-downloaded chezmoi binary
-bin/chezmoi
+# Locally-downloaded chezmoi binary (executable_ prefix keeps its +x on apply)
+bin/executable_chezmoi
 
 # Backup directory
 .dotfiles-backup/
@@ -151,3 +151,4 @@ NOTES.md
 TODO.local.md
 nvim/lazy-lock.json
 .mcp.json
+dot_gitconfig

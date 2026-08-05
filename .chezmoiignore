@@ -1,2 +1,12 @@
 argc-completions
 argc-custom-completions
+
+# Repo's own docs — not dotfiles. Without these they get applied to ~/README.md
+# and ~/CLAUDE.md, where CLAUDE.md's relative @import cannot resolve.
+# Anchored: unanchored patterns match at any depth and would swallow a skill's
+# own README.md.
+/README.md
+/CLAUDE.md
+
+# Machine-specific (holds a signingkey); managed by hand, not chezmoi.
+/.gitconfig
