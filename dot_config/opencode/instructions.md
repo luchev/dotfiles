@@ -67,6 +67,10 @@
 - When loading any skill, check the observation log for OPEN observations tagged to that
   skill and apply their insights to the current work, even if the skill file hasn't been
   updated yet.
+- Workspace folder is pinned to `~/.config/opencode/skill-observations/` — so
+  `log.md` and `cross-cutting-principles.md` live there. Never resolve it relative to the
+  current directory: `/wt-new` puts work in `.worktrees/`, which is torn down with the
+  checkout and would take the log with it.
 
 ## Response Style
 
