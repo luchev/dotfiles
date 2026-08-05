@@ -48,30 +48,66 @@ If an issue ID is found (argument or `TICKET.md` first line), use it for the "wh
 
 ## Step 4: Write the commit message
 
-**Golden rule: be as short as possible while including all meaningful information a reviewer needs.**
-Every sentence must earn its place. Cut adjectives, cut restatements of the code, cut anything obvious from the diff.
+**Golden rule: the reader is a busy reviewer who will also read the diff. Write only what the diff cannot tell them — mainly *why*.**
+
+**Hard budget — a message over this is a bug in the output:**
+- Body: **≤ 12 lines total**, including blank lines and headings.
+- Opening: **1–3 sentences**, no heading above it.
+- Bullets: **≤ 5**, one line each, ≤ 120 chars.
+- Total body ≤ ~120 words.
 
 **Subject:** ≤72 chars, imperative, no period, no issue prefix.
 
-**Body — prefer this compact form:**
+**Body — this shape, nothing else:**
 ```
-1–2 sentences max. What changed and why, in plain English.
+Why this change is needed, and what it does. 1-3 sentences.
 
-## Implementation
-Bullet points only. One line per non-obvious technical decision.
-Skip anything self-evident from the diff.
+- Non-obvious decision or gotcha (only if the diff doesn't show it)
+- Verified: <command that was run>
 
-## Issue
-<ISSUE-ID>   (omit this section if there is no associated issue)
+<ISSUE-ID>
+```
+Drop the bullet list entirely when there is nothing non-obvious. Drop the issue
+line when there is no issue. Headings (`## Intent`, `## Changes`, `## Test Plan`)
+are **not** used — the shape above is already scannable.
+
+**Never include:**
+- Evidence dumps: backtest tables, per-zone/per-host numbers, log excerpts, metric peaks. State the conclusion ("thresholds don't hold outside the OCI zones") and let the reviewer ask.
+- Historical narrative: what a previous PR/diff did, how the code got here, quotes from old descriptions. One clause max if it's the actual reason.
+- Follow-up work not in this change. That belongs in a ticket or the PR comments.
+- Justification of choices nobody disputed, or restatement of what a bullet already said.
+- Padding phrases ("This PR introduces…", "In order to…", "As part of…"), and the issue title verbatim.
+
+**Include:** the reason the change exists, and any decision a reviewer could
+reasonably get wrong on their own. Everything else is in the diff.
+
+> Step 2's "match the tone of recent commits" applies to vocabulary and
+> formatting only. Never inherit another commit's verbosity — this budget wins.
+
+### Step 4b: If the repo publishes with `arh` (Uber go-code)
+
+`arh` builds the PR description by parsing the commit message for **field labels**. An
+unlabelled prose body is silently discarded and the PR ships with only its subject line under
+`## Summary`. Keep everything above — the budget, the why-first opening, the bullets — but
+wrap it in the labels:
+
+```
+<subject>
+
+Summary:
+<the 1-3 sentence opening, then the bullets>
+
+Test Plan:
+<what was run to verify; omit the "- Verified:" bullet above when using this>
+
+Jira Issues: T3-<KEY>
 ```
 
-**Rules:**
-- Lead with what changed and why; merge motivation into the opening sentences unless it's non-obvious enough to warrant its own line.
-- Omit any section that adds no information beyond the diff itself.
-- No padding phrases ("This PR introduces…", "In order to…", "As part of…").
-- No restating the issue title verbatim.
-- `## Implementation` bullets: lead with the file/function, state the decision, stop.
-- If tests were run, add them as a bullet under `## Implementation` (e.g. `- Verified: \`npm test\` passes`).
+Use `Jira Issues: T3-<KEY>`, not a bare issue id — that exact field is what makes `arh` render
+a clickable link. Do not write literal `##` headings; `arh` adds them.
+
+Detect this case by the presence of `arh` in the repo's workflow (go-code) — elsewhere, use
+the unlabelled shape above.
 
 ## Step 5: Determine mode
 

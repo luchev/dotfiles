@@ -44,6 +44,7 @@ Worktree already exists:
 mkdir -p "$REPO_ROOT/.worktrees"
 git -C "$REPO_ROOT" fetch origin main
 git -C "$REPO_ROOT" worktree add -b "$BRANCH" "$WT_DIR" origin/main
+git -C "$WT_DIR" branch --set-upstream-to=main "$BRANCH"
 ```
 
 **Stacked on upstream:**
