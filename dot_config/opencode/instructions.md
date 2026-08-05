@@ -60,6 +60,14 @@
   the top level; put all downstream tool inputs inside `parameters`; never place
   downstream tool fields beside `parameters`.
 
+## Skill Observation
+
+- At the start of any task-oriented session — any interaction where you will use tools
+  and produce deliverables — invoke the `task-observer` skill before beginning work.
+- When loading any skill, check the observation log for OPEN observations tagged to that
+  skill and apply their insights to the current work, even if the skill file hasn't been
+  updated yet.
+
 ## Response Style
 
 - Caveman skill active every session, every response, at **ultra** intensity by default.
