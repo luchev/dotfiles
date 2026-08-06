@@ -58,6 +58,28 @@ Use this command when:
 
 **Exit criteria**: You can reproduce the bug reliably
 
+#### Multi-component systems: instrument the boundaries first
+
+When the failure crosses components — CI → build → sign, API → service → DB,
+shell → script → binary — do not guess which one is at fault. Add logging at
+every boundary, run once, and let the evidence name the layer.
+
+For each boundary, log what enters, what exits, and whether config and
+environment actually propagated:
+
+```bash
+# Layer 1: workflow
+echo "IDENTITY: ${IDENTITY:+SET}${IDENTITY:-UNSET}"
+# Layer 2: build script
+env | grep IDENTITY || echo "IDENTITY absent from environment"
+# Layer 3: signing
+security find-identity -v
+```
+
+One run tells you the layer where the value stopped being right. Investigate
+only that layer. Guessing across layers is how a session burns an hour fixing
+a component that was working.
+
 ### Phase 2: Isolate the Location
 
 **Goal**: Find exactly where the bug occurs
@@ -121,6 +143,10 @@ Use this command when:
    - Are there similar patterns elsewhere?
    - Is this a systemic issue?
    - Could the same bug exist in other places?
+
+5. **Trace backward to the source**: when the error surfaces deep in a call
+   chain, the place it appears is rarely the place it originates. See
+   [root-cause-tracing.md](root-cause-tracing.md).
 
 **Exit criteria**: You understand the root cause, not just the symptom
 

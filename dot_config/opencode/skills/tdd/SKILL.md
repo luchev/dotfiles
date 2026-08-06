@@ -51,6 +51,10 @@ test('calculateTotal should sum item prices', () => {
 - Tests real code (avoid mocks when possible)
 - Is the simplest test that could fail
 
+A test that cannot fail for a real bug is worse than no test — it reports
+health it never checked. Before writing the body, name the break this test
+catches. See [writing-good-tests.md](writing-good-tests.md).
+
 ### 🔍 Verify RED: Watch It Fail
 
 Run the test and confirm:
@@ -147,6 +151,8 @@ Before marking work complete:
 - [ ] Tests use real code, not just mocks
 - [ ] Edge cases covered
 - [ ] Error conditions tested
+- [ ] Any test you did not watch fail has been mutation-checked
+      ([writing-good-tests.md](writing-good-tests.md))
 
 ## When Stuck
 

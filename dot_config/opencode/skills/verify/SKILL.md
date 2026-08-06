@@ -11,6 +11,63 @@ description: >
 
 **Description**: Comprehensive verification before completing development work to ensure quality and correctness.
 
+## The Iron Law
+
+```
+NO COMPLETION CLAIM WITHOUT FRESH EVIDENCE
+```
+
+If you have not run the command in this message, you cannot say it passes.
+Violating the letter of this rule is violating its spirit — a paraphrase, an
+implication, or an expression of satisfaction all count as the claim.
+
+## The Gate Function
+
+Before any status claim:
+
+1. **Identify** — what command proves this?
+2. **Run** — the full command, fresh, not a subset
+3. **Read** — full output, exit code, failure count
+4. **Compare** — does the output actually confirm the claim?
+5. **Then** state the claim *with* the evidence
+
+Skipping a step is not verifying, it is asserting.
+
+## What Counts as Evidence
+
+| Claim | Evidence | Not evidence |
+|---|---|---|
+| Tests pass | Test output, 0 failures | An earlier run, "should pass" |
+| Linter clean | Linter output, 0 errors | A partial check, one file |
+| Build succeeds | Build exit 0 | Linter passing — it does not compile |
+| Bug fixed | The original symptom retested | The code changed |
+| Regression test works | Red-green proven: revert fix → test fails → restore → passes | The test passes once |
+| Subagent finished | The diff on disk | The agent's report |
+| Data imported | Reading it back through a consumer's path | The importer's "imported: N" |
+| Requirements met | Line-by-line against the plan | Tests passing |
+
+## Red Flags — Stop
+
+- "should", "probably", "seems to", "looks right"
+- Satisfaction before evidence — "Great!", "Perfect!", "Done!"
+- About to commit, push, or open a PR without a fresh run
+- Taking a subagent's or an API's word for its own success
+- Partial verification standing in for the whole
+- "Just this once" / wanting the work to be over
+
+## Rationalizations
+
+| Excuse | Reality |
+|---|---|
+| "Should work now" | Run it. |
+| "I am confident" | Confidence is not evidence. |
+| "Just this once" | No exceptions — the exception is where the bug ships. |
+| "The linter passed" | The linter does not compile or execute anything. |
+| "The agent said success" | Verify independently, on disk. |
+| "It exited 0" | Exit 0 means the process ended, not that it did the thing. |
+| "Partial check is enough" | Partial proves the part you checked. |
+| "Different words, so the rule does not apply" | Spirit over letter. |
+
 ## When to Use
 
 Use this command:

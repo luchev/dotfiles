@@ -11,6 +11,14 @@ description: Clean up worktrees and branches. Without args, cleans only the curr
 - `branch-name` — single mode: target a specific branch
 - `all` — full mode
 
+## Ownership Rule
+
+Only remove worktrees this setup created — those whose path is under
+`.worktrees/` or `worktrees/`. Anything else in `git worktree list` belongs to
+the host environment (an IDE, a sandbox, a session harness) and is left alone
+even when its branch is merged. Report it instead:
+`"<path> is merged but externally managed — leaving in place."`
+
 ---
 
 ## Single Mode
@@ -44,7 +52,7 @@ gh pr view --head "$BRANCH" --json state,mergedAt \
 git -C "$WT_PATH" status --short
 ```
 
-Ignore git-internal files: `AUTO_MERGE`, `COMMIT_EDITMSG`, `FETCH_HEAD`, `HEAD`, `MERGE_RR`, `ORIG_HEAD`, `commondir`, `gitdir`, `index`, `index.lock`, `logs/`. If real changes remain, ask to force-remove.
+Ignore git-internal files: `AUTO_MERGE`, `COMMIT_EDITMSG`, `FETCH_HEAD`, `HEAD`, `MERGE_RR`, `ORIG_HEAD`, `commondir`, `gitdir`, `index`, `index.lock`, `logs/`. If real changes remain, show the diff and stop — do not remove. Removal of a dirty worktree is a data-loss action: it happens only after the user, having seen the diff, asks for it in so many words.
 
 ### S4: Re-point stacked children
 
@@ -137,3 +145,15 @@ Cleaned up N worktree(s):
   - /path (branch: name) — worktree removed, local branch deleted
   - /path (branch: name) — ... re-pointed child → grandparent
 ```
+
+## Common Rationalizations
+
+| Excuse | Reality |
+|---|---|
+| "The PR is up, so the worktree is clutter" | Review feedback gets fixed in that worktree. It stays until the work lands. |
+| "This other worktree looks stale, clean it too" | Only `.worktrees/`/`worktrees/` paths are ours. The rest belong to the host. |
+| "`git log HEAD ^origin/main` is empty, obviously merged" | It is also empty for a branch that never had commits. Check the PR state too. |
+| "The uncommitted changes are probably junk" | Show the diff and stop. You do not know what is in it. |
+| "`git worktree remove` failed, so force it" | A failing remove means state you have not accounted for. Diagnose it. |
+| "Delete the remote branch too, it is merged" | Never. Remote branch deletion is the forge's job or the user's. |
+| "The child branch will find its own parent" | It will not. Re-point children before deleting the parent, or the stack breaks. |
