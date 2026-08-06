@@ -51,7 +51,7 @@
     ~/.config/opencode/tui.json: config/opencode/tui.json
     ~/.config/opencode/statusline-command.sh: config/opencode/statusline-command.sh
     ~/.config/opencode/command: config/opencode/command
-    ~/.config/opencode/prompts: config/opencode/prompts
+    ~/.config/opencode/prompts/verify.txt: config/opencode/prompts/verify.txt
     ~/.config/opencode/skills: config/opencode/skills
     # opencode.jsonc is machine-dependent (personal vs work) → linked in shell:
 
@@ -61,12 +61,15 @@
     ~/.claude/rules: claude/rules
 
     # ── misc dot dirs ────────────────────────────────────────────────────
-    ~/.omo: omo
+    # ~/.omo holds opencode runtime (session state, cached binaries); link only
+    # the tracked config file, leave the rest of the dir alone.
+    ~/.omo/omo.jsonc: omo/omo.jsonc
     ~/.pi: pi
     ~/.termux: termux
 
-    # ── ghostty (macOS Application Support) ──────────────────────────────
-    ~/Library/Application Support/com.mitchellh.ghostty: Library/Application Support/com.mitchellh.ghostty
+    # ── ghostty (macOS Application Support); granular to keep config.ghostty ─
+    ~/Library/Application Support/com.mitchellh.ghostty/config: Library/Application Support/com.mitchellh.ghostty/config
+    ~/Library/Application Support/com.mitchellh.ghostty/shaders: Library/Application Support/com.mitchellh.ghostty/shaders
 
     # ── ~/bin scripts (individual: ~/bin holds unmanaged tools too) ──────
     ~/bin/claude-mem-refresh-token.sh: bin/claude-mem-refresh-token.sh
