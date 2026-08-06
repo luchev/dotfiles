@@ -1142,7 +1142,6 @@ alias zj = zellij
 alias rg = rg --color=auto
 alias rgc = rg --color=always
 alias diff = diff --color=auto
-alias a = agy # antigravity
 
 # Tmux aliases
 alias ta = tmux a -t
@@ -1190,15 +1189,15 @@ def fk [] {
     }
 }
 
-# One-shot Antigravity. Joins all args into a single prompt and runs via `-p`.
-# Pipe text in to feed stdin. Use `^agy` to bypass for flags or interactive.
-def i [...args: string] {
+# One-shot OpenCode. Joins all args into a single prompt and runs via `run`.
+# Pipe text in to feed stdin. Use `^opencode` to bypass for flags or interactive.
+def o [...args: string] {
     let prompt = $args | str join " "
     let input = $in
     if $input == null {
-        ^agy -p $prompt
+        ^opencode run $prompt
     } else {
-        $input | ^agy -p $prompt
+        $input | ^opencode run $prompt
     }
 }
 
