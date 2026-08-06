@@ -128,7 +128,7 @@ npm test
 
 **Required before**: `/plan` - Must have a written plan
 **Required after**: `/verify` - Final verification before completion
-**Optional**: `/worktree` - Use git worktrees for parallel work
+**Optional**: `/wt-new` - Isolate the work in its own worktree
 
 ## Error Recovery
 

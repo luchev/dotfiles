@@ -14,7 +14,7 @@ by claude-mem during normal work are never touched.
 
 Usage:
     mem-migrate.py            # import everything not already present
-    mem-migrate.py go-code    # only batches whose label matches the argument
+    mem-migrate.py <label>    # only batches whose label matches the argument
 """
 import json, os, re, time, urllib.request, glob, sys, sqlite3
 

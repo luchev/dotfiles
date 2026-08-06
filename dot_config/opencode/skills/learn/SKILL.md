@@ -52,7 +52,7 @@ Only these get loaded. Anything written elsewhere is lost.
 | Observation log | `~/.config/opencode/skill-observations/log.md` | read by `task-observer` at session start |
 
 Memory dirs are **per project and do not see each other**. Pick by directory name
-(`-home-user-go-code` for `/home/user/go-code`, `-home-user--local-share-chezmoi` for the
+(`-home-user-myrepo` for `/home/user/myrepo`, `-home-user--local-share-chezmoi` for the
 dotfiles repo):
 
 ```bash
@@ -64,7 +64,7 @@ paying for, not a mistake. Keep the second copy short and point both at the same
 
 **Do not write a `LEARNINGS.md`.** Nothing reads it. Earlier versions of this skill wrote
 one at "workspace root", which here is either a dead file in `$HOME` or a stray untracked
-file in the shared Uber monorepo. If one exists, fold its contents into memory (screening
+file in a shared repo. If one exists, fold its contents into memory (screening
 per 4a) and ask the user before deleting it.
 
 ---
@@ -164,7 +164,7 @@ belongs in `~/.config/opencode/instructions.md` (chezmoi source
 memory. Editing a hard rule changes behaviour everywhere: confirm the new wording with the
 user before writing it.
 
-**Do not edit a CLAUDE.md that is checked into a shared repo** (e.g. `go-code/CLAUDE.md`) —
+**Do not edit a CLAUDE.md that is checked into a shared repo** —
 that is a change other engineers own. Put it in memory and tell the user instead.
 
 ---

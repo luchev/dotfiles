@@ -62,3 +62,9 @@ Worktree created:
   Branch:   $BRANCH
   Upstream: $UPSTREAM_BRANCH   ← or "origin/main"
 ```
+
+## Troubleshooting
+
+`fatal: '<branch>' is already checked out` — git allows a branch in exactly one
+worktree. Either branch from it (`-b new-name <branch>`) or check it out
+detached (`--detach <branch>`) if you only need to read the tree.

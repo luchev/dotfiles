@@ -1076,8 +1076,8 @@ const local_env = (
 source $local_env
 
 do --env {
-    # Work-only: prefer the SSH agent injected into zsh (e.g. ussh on devpod),
-    # so nushell shares the same certs without needing its own agent.
+    # Prefer an SSH agent injected into zsh, so nushell shares the same certs
+    # without needing its own agent.
     let agent_sock_file = ($env.HOME | path join ".ssh/agent_sock")
     if ($agent_sock_file | path exists) {
         let sock = (open $agent_sock_file | str trim)

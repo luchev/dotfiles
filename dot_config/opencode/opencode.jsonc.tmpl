@@ -1,11 +1,11 @@
 {{- /*
   Work machines (detected by the presence of ~/.dotfiles-work) get their
-  provider, model, agent and skill config from aifx via
+  provider, model, agent and skill config from
   ~/.config/opencode/opencode.json, which dotfiles-work version-controls.
 
   OpenCode merges both files and .jsonc is applied LAST, so anything set here
   wins outright — the machine-specific blocks below have to be omitted rather
-  than overridden, or the personal DeepSeek setup would shadow Uber's.
+  than overridden, or the personal DeepSeek setup would shadow the work one.
 */ -}}
 {{- $work := stat (joinPath .chezmoi.homeDir ".dotfiles-work") -}}
 {
@@ -133,8 +133,8 @@
 {{ if not $work }}
   // ── Skills ───────────────────────────────────────────────────────────────────
   // Migrated from ~/.claude/skills and ~/.gemini/skills into a unified set.
-  // On work machines this path is instead listed in the aifx-owned
-  // opencode.json, alongside the aifx skill prefixes.
+  // On work machines this path is instead listed in the work-owned
+  // opencode.json, alongside its skill prefixes.
   "skills": {
     "paths": ["~/.config/opencode/skills"]
   },

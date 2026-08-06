@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # chezmoi modify_ script for ~/.claude/settings.json.
 #
-# aifx owns most of this file (apiKeyHelper, env, enabledPlugins, otel*,
-# extraKnownMarketplaces) and rewrites it whenever it updates. Managing the
-# whole file would mean chezmoi and aifx clobbering each other on every run, so
+# An external provisioning tool owns most of this file (apiKeyHelper, env,
+# enabledPlugins, otel*, extraKnownMarketplaces) and rewrites it whenever it
+# updates. Managing the whole file would mean the two clobbering each other, so
 # this merges in only the keys that are genuinely personal and leaves the rest
 # of the existing file untouched.
 #
@@ -59,8 +59,8 @@ printf '%s' "$current" | jq \
 | .permissions.defaultMode            = "auto"
 | .permissions.additionalDirectories  = [$home]
 
-  # Union rather than replace: aifx and per-project prompts add entries here
-  # too, and losing them would mean re-approving everything.
+  # Union rather than replace: external tooling and per-project prompts add
+  # entries here too, and losing them would mean re-approving everything.
 | .permissions.allow = ((.permissions.allow // []) + $allow | unique)
 
   # Drop any previous copy of this hook before re-adding, so repeated
