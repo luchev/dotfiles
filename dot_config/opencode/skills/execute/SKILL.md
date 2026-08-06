@@ -18,6 +18,10 @@ Use this command to:
 - Implement features with structured review points
 - Work through multi-step implementations systematically
 
+For a long plan whose tasks are mostly independent, use `/delegate` instead —
+it runs each task in a fresh subagent so the plan's size does not consume this
+session's context.
+
 ## Prerequisites
 
 - A written plan must exist (created with `/plan`)

@@ -37,3 +37,7 @@ argc-custom-completions
 # Otherwise leave any existing file alone — rendering the template without the
 # variable would silently blank a working config.
 {{ if not (env "NPM_REGISTRY_URL") }}/.bunfig.toml{{ end }}
+
+# Python bytecode from running bin/ scripts in place. Git ignores it, but
+# chezmoi does not read .gitignore — without this it gets applied to ~/bin/.
+bin/__pycache__
