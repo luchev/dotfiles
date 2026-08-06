@@ -51,14 +51,6 @@ else
     echo "  Skipping argc completions (argc binary not found)"
 fi
 
-# ── Global gitconfig include (chezmoi manages ~/.gitconfig directly now; this
-#    is a safety net for systems where gitconfig was previously managed by dotbot) ──
-if [ -f "${HOME}/.gitconfig" ] && [ ! -L "${HOME}/.gitconfig" ]; then
-    if ! grep -q 'chezmoi\|\.local/share/chezmoi' "${HOME}/.gitconfig" 2>/dev/null; then
-        echo "  Manual .gitconfig not managed by chezmoi; leaving as-is"
-    fi
-fi
-
 # ── Local config stubs ─────────────────────────────────────────────────────
 mkdir -p "${HOME}/.config/nushell"
 touch "${HOME}/.config/nushell/local.nu" "${HOME}/.config/nushell/local-env.nu"
