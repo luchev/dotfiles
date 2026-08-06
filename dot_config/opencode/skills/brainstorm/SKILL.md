@@ -28,7 +28,22 @@ Use this command before:
 - Identify constraints and dependencies
 
 ### 2. Ask Clarifying Questions
-Ask questions one at a time to understand:
+
+**Find the facts yourself.** Anything discoverable from the repo, the git history,
+the docs, or the web is your job — dispatch a subagent. Only ask the user for what
+lives in their head: intent, priorities, constraints they haven't written down.
+Asking them to go look something up is offloading your work.
+
+**Batch by frontier, not one at a time.** Compute the *frontier* — every question
+whose answer does not depend on another unresolved question — and ask that whole
+set in one numbered round, each with your recommended default so the user can
+reply "1, 3, defaults elsewhere". Recompute the frontier from the answers and ask
+the next round. Stop when the frontier is empty.
+
+Questions behind an unresolved dependency stay unasked. Asking "which database?"
+before "does this need to persist at all?" wastes a round and anchors the answer.
+
+Cover, across rounds:
 - Purpose: Why are we building this?
 - Constraints: What are the technical/business limitations?
 - Success criteria: How will we know it's done right?
