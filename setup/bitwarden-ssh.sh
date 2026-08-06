@@ -1,11 +1,11 @@
-{{- if env "CHEZMOI_BITWARDEN" -}}
 #!/usr/bin/env bash
 # Restore all SSH keys from Bitwarden.
 #
-# Opt-in only. This template renders to an empty file unless CHEZMOI_BITWARDEN
-# is set, and chezmoi does not execute scripts that render to nothing:
-#   CHEZMOI_BITWARDEN=1 chezmoi apply
+# Opt-in only: no-ops unless DOTBOT_BITWARDEN is set.
+#   DOTBOT_BITWARDEN=1 ./install
 set -euo pipefail
+
+[ -n "${DOTBOT_BITWARDEN:-}" ] || { echo "skip Bitwarden SSH (set DOTBOT_BITWARDEN=1)"; exit 0; }
 
 SYNC_SCRIPT="${HOME}/.config/nushell/sync-ssh-from-bitwarden.sh"
 
@@ -22,4 +22,3 @@ fi
 echo "Restoring SSH keys from Bitwarden..."
 bash "${SYNC_SCRIPT}"
 echo "✓ Bitwarden SSH key sync done"
-{{- end -}}

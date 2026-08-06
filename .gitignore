@@ -152,3 +152,8 @@ TODO.local.md
 nvim/lazy-lock.json
 .mcp.json
 dot_gitconfig
+
+# Generated skill bundles: installed by setup/packages/ into the symlinked
+# skills dir (which points back into this repo), regenerated not committed.
+config/opencode/skills/graphify/
+config/opencode/skills/impeccable/

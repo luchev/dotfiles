@@ -3,7 +3,7 @@
 # Install git addons: git-secrets, git-extras, git-stats, commitizen.
 set -euo pipefail
 
-DOTFILES="${CHEZMOI_SOURCE_DIR:-${HOME}/.local/share/chezmoi}"
+DOTFILES="${DOTFILES:-${HOME}/.dotfiles}"
 
 # ── git-secrets ────────────────────────────────────────────────────────────
 if ! command -v git-secrets >/dev/null 2>&1; then

@@ -2,3 +2,6 @@
 	path = argc-completions
 	url = https://github.com/sigoden/argc-completions
 	ignore = all
+[submodule "dotbot"]
+	path = dotbot
+	url = https://github.com/anishathalye/dotbot

@@ -1,11 +1,11 @@
-{{- if env "CHEZMOI_BITWARDEN" -}}
 #!/usr/bin/env bash
 # Sync environment variables from Bitwarden into ~/.config-local.nu.
 #
-# Opt-in only. This template renders to an empty file unless CHEZMOI_BITWARDEN
-# is set, and chezmoi does not execute scripts that render to nothing:
-#   CHEZMOI_BITWARDEN=1 BW_ENV_ITEM_UUID=<uuid> chezmoi apply
+# Opt-in only: no-ops unless DOTBOT_BITWARDEN is set.
+#   DOTBOT_BITWARDEN=1 BW_ENV_ITEM_UUID=<uuid> ./install
 set -euo pipefail
+
+[ -n "${DOTBOT_BITWARDEN:-}" ] || { echo "skip Bitwarden env (set DOTBOT_BITWARDEN=1)"; exit 0; }
 
 SYNC_SCRIPT="${HOME}/.config/nushell/sync-env-from-bitwarden.sh"
 
@@ -27,4 +27,3 @@ fi
 echo "Syncing env vars from Bitwarden..."
 bash "${SYNC_SCRIPT}"
 echo "✓ Bitwarden env sync done"
-{{- end -}}

@@ -1,0 +1,44 @@
+# dotbot config for package installation — run via ./install --packages.
+# Separate from install.conf.yaml so a normal `./install` stays fast; these
+# steps hit the network and package managers. Each script is idempotent.
+
+- shell:
+    - command: setup/packages/rust.sh
+      description: Install/update Rust toolchain
+      stdout: true
+      stderr: true
+    - command: setup/packages/cargo.sh
+      description: Install cargo CLI tools
+      stdout: true
+      stderr: true
+    - command: setup/packages/brew.sh
+      description: Install essential CLI tools (brew/apt/pacman)
+      stdout: true
+      stderr: true
+    - command: setup/packages/npm.sh
+      description: Install global npm packages
+      stdout: true
+    - command: setup/packages/python.sh
+      description: Install Python CLI tools (thefuck, headroom, graphify)
+      stdout: true
+      stderr: true
+    - command: setup/packages/git-addons.sh
+      description: Install git-secrets, git-extras, git-stats, commitizen
+      stdout: true
+      stderr: true
+    - command: setup/packages/claude-mem.sh
+      description: Install claude-mem + token refresh cron
+      stdout: true
+      stderr: true
+    - command: setup/packages/impeccable.sh
+      description: Install impeccable skill for Claude Code + opencode
+      stdout: true
+      stderr: true
+    - command: setup/packages/intellishell.sh
+      description: Install intelli-shell + tldr data
+      stdout: true
+      stderr: true
+    - command: setup/packages/zellij-plugins.sh
+      description: Download zjstatus / zellij-workspace plugins
+      stdout: true
+      stderr: true
