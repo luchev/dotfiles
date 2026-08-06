@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# chezmoi: run_once_install-cargo-pkgs.sh
 # Install all cargo packages from the old dotbot setup.
 # Split into individual cargo install calls so a failure in one
 # doesn't abort the others.

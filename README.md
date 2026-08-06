@@ -1,6 +1,6 @@
 # Dotfiles
 
-Personal configuration files managed with [chezmoi](https://www.chezmoi.io/).
+Personal configuration files managed with [dotbot](https://github.com/anishathalye/dotbot).
 
 ## Features
 
@@ -15,70 +15,74 @@ Personal configuration files managed with [chezmoi](https://www.chezmoi.io/).
 ## Prerequisites
 
 - [Git](https://git-scm.com/)
-- [chezmoi](https://www.chezmoi.io/install/)
+- Python 3 (dotbot runtime)
 - Curl
 - Build tools
 
 ## Install
 
 ```bash
-chezmoi init --apply https://github.com/yourusername/dotfiles.git
+git clone --recurse-submodules https://github.com/yourusername/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
+./install
 ```
 
-Or from a local copy:
+`./install` symlinks every config into `$HOME` and runs the core setup steps
+(claude settings merge, cross-symlinks, nushell dual-link, zellij workspace,
+shell integrations). It does **not** install packages.
+
+To also install packages (Rust toolchain, cargo/brew/npm/python tools,
+git addons, claude-mem, impeccable, intelli-shell, zellij plugins):
 
 ```bash
-git clone --recurse-submodules https://github.com/yourusername/dotfiles.git ~/.local/share/chezmoi
-chezmoi apply
+./install --packages
 ```
 
-`chezmoi apply` will:
-- Create all configuration files
-- Install Rust toolchain and cargo packages (fd, bat, ripgrep, starship, atuin, zoxide, eza, delta, gitui, etc.)
-- Install essential CLI tools (fzf, jq, yq, direnv, htop, thefuck, git-extras)
-- Install git-secrets and configure it globally
-- Install intelli-shell (AI-powered command suggestions)
-- Setup shell integrations (zoxide, atuin)
-
-*(Tool installation runs via chezmoi's `run_once_*` scripts on first apply.)*
+Each installer is idempotent and skips what is already present.
 
 ## Updating
 
 ```bash
-chezmoi update  # pulls latest and applies
-```
-
-Or manually:
-
-```bash
-cd ~/.local/share/chezmoi
+cd ~/.dotfiles
 git pull --rebase --recurse-submodules
 git submodule update --init --recursive
-chezmoi apply
+./install
 ```
+
+Because targets are symlinks into this repo, editing a file here updates the live
+config immediately — `./install` is only needed to add new files or relink.
 
 ## Customization
 
 Create local overrides that won't be committed:
-- `~/.gitconfig.local` — Git local config
 - `~/.config/nushell/local.nu` — Nushell local config
 - `~/.config/nushell/local-env.nu` — Nushell local env override
-- `~/.zshrc.local` — Zsh local config
-- `~/.config/opencode/settings.json` — OpenCode machine-specific settings
+- `~/.config-local.nu` — local secrets / env (sourced by config.nu, untracked)
 
-The OpenCode config (`~/.config/opencode/opencode.jsonc` and `rate-limit-fallback.json`)
-is **chezmoi-managed** (source `dot_config/opencode/`). To change it: edit the source
-files, then `chezmoi apply` to sync the target. Do not edit the live files directly
-or next `chezmoi apply` won't see them.
+The OpenCode config picks a variant by machine: work machines (those with a
+`~/.dotfiles-work` checkout) get `config/opencode/opencode.work.jsonc`, everyone
+else gets `config/opencode/opencode.jsonc`. `setup/link-opencode-jsonc.sh` links
+the right one.
+
+`~/.claude/settings.json` is **not** symlinked — an external tool owns most of it,
+so `setup/merge-claude-settings.sh` merges in only the personal keys on each apply.
+
+### Private npm registry (opt-in)
+
+`~/.bunfig.toml` is generated only when a registry URL is supplied at apply time:
+
+```bash
+NPM_REGISTRY_URL=https://registry.example.com/ ./install
+```
+
+Credentials come from `$NPM_REGISTRY_USER` / `$NPM_REGISTRY_PASS` (set in
+`~/.config-local.nu`) and are interpolated by bun at runtime, not written to disk.
 
 ## Bitwarden (opt-in)
 
-Secrets are never synced by default. The two Bitwarden scripts are templates that
-render to nothing unless `CHEZMOI_BITWARDEN` is set, and chezmoi skips scripts that
-render empty.
-
-Prerequisites: the [`bw`](https://bitwarden.com/help/cli/) CLI installed and an
-unlocked vault:
+Secrets are never synced by default. The Bitwarden steps no-op unless
+`DOTBOT_BITWARDEN` is set. Prerequisites: the [`bw`](https://bitwarden.com/help/cli/)
+CLI installed and an unlocked vault:
 
 ```bash
 export BW_SESSION=$(bw unlock --raw)
@@ -87,30 +91,28 @@ export BW_SESSION=$(bw unlock --raw)
 Restore SSH keys (`~/.ssh/*`, then `ssh-add`):
 
 ```bash
-CHEZMOI_BITWARDEN=1 chezmoi apply
+DOTBOT_BITWARDEN=1 ./install
 ```
 
 Also sync env vars into `~/.config-local.nu` — needs the UUID of the Bitwarden item
 holding them in its notes field:
 
 ```bash
-CHEZMOI_BITWARDEN=1 BW_ENV_ITEM_UUID=<uuid> chezmoi apply
+DOTBOT_BITWARDEN=1 BW_ENV_ITEM_UUID=<uuid> ./install
 ```
 
 Enabled runs fail loudly (non-zero exit) if `bw` is missing, the vault is locked, or
-`BW_ENV_ITEM_UUID` is unset. The SSH script is `run_once_`, so it only re-runs if its
-contents change; force it with `chezmoi state delete-bucket --bucket=scriptState`.
+`BW_ENV_ITEM_UUID` is unset.
 
-## Migration from Dotbot
+## Layout
 
-This repo migrated from [dotbot](https://github.com/anishathalye/dotbot) to chezmoi in July 2026.
-
-Key changes:
-- Source directory: `~/.dotfiles` → `~/.local/share/chezmoi`
-- File naming follows chezmoi conventions (`dot_zshrc`, `dot_config/nvim/`, etc.)
-- Old `install` script and `install.conf.yaml` replaced by chezmoi's declarative management
-- nushell dual-link (`.config/nushell/` + `Library/Application Support/nushell/`) handled via auto-symlink script
-- Full git history preserved
+- `config/` — `~/.config/` contents (nushell, nvim, opencode, zellij, lazy-mcp, …)
+- `claude/` — `~/.claude/` (hooks, rules, output-styles)
+- `Library/` — macOS `~/Library/Application Support/` (ghostty)
+- `bin/` — scripts linked into `~/bin`
+- `setup/` — shell steps run by `./install`; `setup/packages/` are opt-in installers
+- `install.conf.yaml` / `install.packages.yaml` — dotbot configs
+- `dotbot/`, `argc-completions/` — git submodules
 
 ## License
 

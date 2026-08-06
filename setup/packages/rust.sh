@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# chezmoi: run_once_install-rust.sh
 # Install Rust toolchain if missing, set up proxy binaries, then update.
 set -euo pipefail
 

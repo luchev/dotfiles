@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# chezmoi: run_once_install-intellishell.sh
 # Install intelli-shell (AI-powered command suggestions) and configure it.
 set -euo pipefail
 

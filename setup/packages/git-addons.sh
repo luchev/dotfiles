@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# chezmoi: run_once_install-git-addons.sh
 # Install git addons: git-secrets, git-extras, git-stats, commitizen.
 set -euo pipefail
 

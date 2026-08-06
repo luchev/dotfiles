@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# chezmoi: run_after_claude-mem-token.sh
 # Provision the claude-mem gateway credential after every apply.
 #
 # This is what makes a fresh machine work: the token cannot live in this repo

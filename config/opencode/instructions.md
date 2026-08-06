@@ -46,26 +46,29 @@ A success banner, exit 0, or an API's own "imported: N" is not evidence — insp
 
 ## Dotfiles Environment
 
-- **Manager:** chezmoi (source at `~/.local/share/chezmoi/`). Edit source or use `chezmoi edit`.
+- **Manager:** dotbot (repo at `~/.dotfiles/`). Symlinks the repo into `$HOME`.
+  Edit files in the repo directly (targets are symlinks, so edits are live); run
+  `./install` to add/relink. `./install --packages` also runs the installers.
 - **Shell:** Nushell (`nu`). Prefer nu-native commands.
 - **Tools:** `argc` (completions), `atuin` (history), `starship` (prompt), `zoxide` (navigation), `carapace` (completions).
 - **Packages:** `brew` (macOS), `cargo` (Rust), `npm`.
 
 ### Structure
 
-- `dot_config/nushell/` — Nushell configuration.
-- `dot_config/opencode/` — OpenCode configuration, skills, and behavioral instructions.
-- `dot_config/nvim/` — Neovim configuration.
-- `dot_config/zellij/` — Zellij configuration.
-- `dot_claude/` — Claude Code configuration.
-- `argc-completions/` — custom shell completions (git submodule, chezmoi-ignored).
+- `config/nushell/` — Nushell configuration.
+- `config/opencode/` — OpenCode configuration, skills, and behavioral instructions.
+- `config/nvim/` — Neovim configuration.
+- `config/zellij/` — Zellij configuration.
+- `claude/` — Claude Code configuration.
+- `setup/` — shell steps run by `./install`; `setup/packages/` are opt-in installers.
+- `argc-completions/` — custom shell completions (git submodule).
 
 ### Command Execution
 
-- When asked to "install" something, check the `run_once_*.sh` / `run_after_*.sh` scripts first to see if it belongs in automation.
+- When asked to "install" something, check `setup/packages/*.sh` first to see if it belongs in automation.
 - Prefer non-interactive flags; interactive prompts don't work well in this environment.
 - Run sequential operations in order; don't chain dependent steps that may be backgrounded.
-- `config.nu` and other linked files are managed by chezmoi — edit the source at `~/.local/share/chezmoi/` or use `chezmoi edit`.
+- Files under the repo are symlinked into `$HOME`, so editing the repo file edits the live config directly. Run `./install` after adding new files or links.
 
 ### MCP
 

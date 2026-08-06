@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# chezmoi: run_once_install-npm-pkgs.sh
 # Install global npm packages.
 set -euo pipefail
 

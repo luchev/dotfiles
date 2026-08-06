@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# chezmoi: run_always_gen-zellij-workspace.sh
 # Generate .zellij-workspace listing all layout files.
 set -euo pipefail
 

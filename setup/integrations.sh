@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# chezmoi: run_once_setup-integrations.sh
 # Setup shell integrations: zoxide, atuin, pueue daemon, argc completions,
 # gitconfig include, and local config stubs.
 set -euo pipefail

@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# chezmoi: run_once_install-impeccable.sh
 # Install impeccable (frontend design language + anti-pattern detector) for
 # Claude Code and opencode.
 #
@@ -13,7 +12,7 @@
 #     keeps this independent of undocumented flags.
 #
 # ~/.claude/skills is a symlink to ~/.config/opencode/skills, so one copy there
-# serves both agents. The generated dir is chezmoi-ignored and reinstalled here.
+# serves both agents. The generated dir is gitignored and reinstalled here.
 set -euo pipefail
 
 SKILL_DIR="${HOME}/.config/opencode/skills/impeccable"

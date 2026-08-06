@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# chezmoi: run_once_install-claude-mem.sh
 # Install claude-mem (shared memory store for Claude Code + opencode) and the
 # cron job that keeps its LLM gateway credential alive.
 #
@@ -21,8 +20,8 @@ else
     echo "✓ claude-mem already installed"
 fi
 
-# Gateway tokens are typically short-lived. chezmoi apply refreshes one
-# (run_after_claude-mem-token.sh), but a machine can go days between applies.
+# Gateway tokens are typically short-lived. ./install refreshes one
+# (setup/claude-mem-token.sh), but a machine can go days between applies.
 # The refresh script no-ops unless a gateway config exists, so installing the
 # cron job unconditionally is harmless.
 REFRESH="${HOME}/bin/claude-mem-refresh-token.sh"

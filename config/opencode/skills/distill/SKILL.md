@@ -5,7 +5,7 @@ description: >
   tracked config — skills, global instructions, rules. Runs the opposite direction
   from /learn. Use when memory has grown large, when the same correction keeps
   recurring, or when the user asks to consolidate memory into how they work.
-allowed-tools: Bash(ls:*), Bash(grep:*), Bash(wc:*), Bash(readlink:*), Bash(git:*), Bash(gh repo view:*), Bash(chezmoi managed:*), Bash(chezmoi diff:*), Bash(chezmoi source-path:*), Read, Write, Edit, Glob, AskUserQuestion
+allowed-tools: Bash(ls:*), Bash(grep:*), Bash(wc:*), Bash(readlink:*), Bash(git:*), Bash(gh repo view:*), Read, Write, Edit, Glob, AskUserQuestion
 ---
 
 # /distill — Memory to Config Promoter
@@ -76,7 +76,7 @@ Runs before any write to a tracked file. Not a caveat, a gate.
 Resolve the destination repo's visibility first:
 
 ```bash
-git -C ~/.local/share/chezmoi remote -v
+git -C ~/.dotfiles remote -v
 gh repo view <owner/repo> --json visibility,isPrivate
 ```
 
@@ -102,16 +102,16 @@ claim.
 
 ## D5: Resolve where each file is really edited
 
-Every destination in D3 is a chezmoi source path, never the `~/.config/` or
-`~/.claude/` target. Editing a target means the next `chezmoi apply` reverts it.
+Destinations in D3 live in the `~/.dotfiles` repo. Targets under `~/.config/`
+and `~/.claude/` are symlinks into that repo, so editing either the repo file or
+the target edits the same bytes — there is no separate apply step.
 
-Follow the **L3 resolution procedure in `learn/SKILL.md`**. Two additions:
+Follow the **L3 resolution procedure in `learn/SKILL.md`**. One caveat:
 
-- `chezmoi diff` requires the **absolute target path**. Given a source-relative
-  path it reports `not managed`, which looks identical to a clean result.
-- Third-party installers write to targets through symlinks. If a tool was
-  installed since the last distill, diff source against target before editing so
-  its changes are propagated rather than clobbered.
+- A few surfaces are **cross-symlinks or work-repo symlinks** (e.g.
+  `~/.claude/CLAUDE.md` → opencode `instructions.md`; work skills →
+  `~/.dotfiles-work/`). `readlink` the target and edit the real file it lands on,
+  not the link.
 
 ## D6: Propose, then write
 
@@ -122,7 +122,7 @@ session finding is cheap to undo and a standing rule is not.
 For each promotion show: the lesson, its evidence (which projects, how many
 occurrences), the destination file, and the exact diff. Get approval. Then:
 
-- Write to the chezmoi source.
+- Write to the repo file (targets are symlinks into `~/.dotfiles`).
 - Match the surrounding file's style and density.
 - If a promoted instruction tells a skill to run a command, add that command to
   the skill's `allowed-tools` — an instruction the skill cannot execute is not a
@@ -133,7 +133,7 @@ occurrences), the destination file, and the exact diff. Get approval. Then:
 Verify before reporting done:
 
 ```bash
-chezmoi diff ~/.config/opencode/instructions.md   # absolute path
+git -C ~/.dotfiles diff -- config/opencode/instructions.md
 ```
 
 ## D7: Summary

@@ -1,5 +1,4 @@
 #!/bin/bash
-# chezmoi: dot_config/nushell/sync-ssh-from-bitwarden.sh
 # Restore ALL SSH keys from Bitwarden SSH Key items (type 5).
 # Iterates every SSH key item in the vault and writes to ~/.ssh/<name>.
 

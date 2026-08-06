@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# chezmoi: run_once_setup-zellij-plugins.sh
 # Download zjstatus and zjstatus-hints plugins for Zellij,
 # create the plugin dir and permission cache so they work out of the box
 # with locked mode.

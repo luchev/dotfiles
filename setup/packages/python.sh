@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# chezmoi: run_once_install-python-pkgs.sh
 # Install Python-based CLI tools (thefuck, headroom).
 set -euo pipefail
 

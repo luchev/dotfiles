@@ -1012,15 +1012,15 @@ $env.PATH = ($env.PATH | split row (char esep)
   | prepend '/opt/uber/bin/'
   | prepend '~/.cargo/bin/'
   | prepend '~/.bun/bin/'
-  | prepend '~/.local/share/chezmoi/argc-completions/bin'
+  | prepend '~/.dotfiles/argc-completions/bin'
   | prepend '~/.bin/')
 
 # argc-completions
-$env.ARGC_COMPLETIONS_ROOT = ($env.HOME + '/.local/share/chezmoi/argc-completions')
+$env.ARGC_COMPLETIONS_ROOT = ($env.HOME + '/.dotfiles/argc-completions')
 # argc completions are bash scripts — must point to bash
 $env.ARGC_SHELL_PATH = (which bash | get path | to text | str trim)
 
-$env.ARGC_CUSTOM_COMPLETIONS = ($env.HOME + '/.local/share/chezmoi/argc-custom-completions')
+$env.ARGC_CUSTOM_COMPLETIONS = ($env.HOME + '/.dotfiles/argc-custom-completions')
 
 if ((uname | get kernel-name) == 'Darwin') {
   $env.ARGC_COMPLETIONS_PATH = ($env.ARGC_CUSTOM_COMPLETIONS + ':' + $env.ARGC_COMPLETIONS_ROOT + '/completions/macos' + ':' + $env.ARGC_COMPLETIONS_ROOT + '/completions')

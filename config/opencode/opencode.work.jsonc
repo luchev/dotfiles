@@ -69,7 +69,7 @@
   // ── MCP servers ──────────────────────────────────────────────────────────────
   // All MCP servers proxied through lazy-mcp — 4 meta-tools (~1.5k tokens) instead
   // of 78 full schemas (~12-16k tokens). Downstream schemas load on demand.
-  // Server config: ~/.config/lazy-mcp/servers.json (chezmoi: dot_config/lazy-mcp/)
+  // Server config: ~/.config/lazy-mcp/servers.json (repo: config/lazy-mcp/)
   "mcp": {
     "lazy-mcp": {
       "type": "local",

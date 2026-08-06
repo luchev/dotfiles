@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# chezmoi: run_once_install-brew-pkgs.sh
 # Install essential CLI tools via the system package manager.
 # Preserves the original dotbot multi-package-manager approach.
 set -euo pipefail

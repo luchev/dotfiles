@@ -4,7 +4,7 @@ description: >
   Analyze the current session to extract learnings, auto-apply skill changes, and
   write durable findings into the auto-loaded memory directory. No user approval
   needed — findings are applied immediately.
-allowed-tools: Bash(ls:*), Bash(grep:*), Bash(readlink:*), Bash(chezmoi managed:*), Bash(chezmoi diff:*), Bash(chezmoi apply:*), Read, Write, Edit, Skill, Glob
+allowed-tools: Bash(ls:*), Bash(grep:*), Bash(readlink:*), Bash(git:*), Read, Write, Edit, Skill, Glob
 ---
 
 # /learn — Session Learning Extractor (auto-apply)
@@ -52,7 +52,7 @@ Only these get loaded. Anything written elsewhere is lost.
 | Observation log | `~/.config/opencode/skill-observations/log.md` | read by `task-observer` at session start |
 
 Memory dirs are **per project and do not see each other**. Pick by directory name
-(`-home-user-myrepo` for `/home/user/myrepo`, `-home-user--local-share-chezmoi` for the
+(`-home-user-myrepo` for `/home/user/myrepo`, `-home-user--dotfiles` for the
 dotfiles repo):
 
 ```bash
@@ -71,12 +71,12 @@ per 4a) and ask the user before deleting it.
 
 ## L3: Resolve where each file is really edited
 
-Three of the surfaces above are symlinks or chezmoi targets. Editing the target instead of
-the source means the next `chezmoi apply` silently reverts your change. Resolve before
-editing:
+The `~/.config/opencode/` and `~/.claude/` surfaces are symlinks into the
+`~/.dotfiles` repo (or the work repo). Editing through the symlink edits the
+real repo file — there is no apply step — but resolve first so you commit the
+change in the right repo and don't edit a cross-symlink in place:
 
 ```bash
-chezmoi managed | grep -E 'opencode/(skills|instructions)'
 for d in ~/.config/opencode/skills/*/; do
   t=$(readlink "${d%/}"); [ -n "$t" ] && echo "$(basename "$d") -> $t"
 done
@@ -84,9 +84,9 @@ done
 
 Three origins, three edit locations:
 
-- **chezmoi-managed** (most personal skills, plus `instructions.md`) — edit
-  `~/.local/share/chezmoi/dot_config/opencode/...`, then
-  `chezmoi apply <target-path>` and check `chezmoi diff` shows only your change.
+- **dotbot-managed** (most personal skills, plus `instructions.md`) — edit the
+  file under `~/.dotfiles/config/opencode/...` (the target symlinks to it), then
+  `git -C ~/.dotfiles diff` to confirm only your change.
 - **work dotfiles** (symlinks into `~/.dotfiles-work/claude/skills/`, e.g. `babysit-pr`,
   `gh-status`, `jira`, the `ucsd-*` family) — edit the file under `~/.dotfiles-work/`;
   it is a separate repo with its own commits.
@@ -148,8 +148,9 @@ ordering that matters — belong in the relevant SKILL.md, not in memory. A skil
 when it runs, so that is where the fix takes effect.
 
 For each skill improvement found:
-- Edit at the origin resolved in L3 — chezmoi source, `~/.dotfiles-work/`, or the plain
-  directory. Never edit a chezmoi target in `~/.config/`; the next apply reverts it.
+- Edit at the origin resolved in L3 — the `~/.dotfiles` repo file, `~/.dotfiles-work/`,
+  or the plain directory. Targets in `~/.config/` are symlinks into those repos, so edit
+  the repo file (or the symlink, same bytes) — just not a cross-symlink in place.
 - If the new instruction tells the skill to run a command, add that command to the skill's
   `allowedTools` in the frontmatter. A step the skill is not permitted to execute is not a
   fix.
@@ -159,8 +160,8 @@ For each skill improvement found:
 ### 4d — Update global instructions or rules if the finding is standing behaviour
 
 A correction that applies across projects — a changed hard rule, a workflow preference —
-belongs in `~/.config/opencode/instructions.md` (chezmoi source
-`dot_config/opencode/instructions.md`) or `~/.claude/rules/*.md`, not in one project's
+belongs in `~/.config/opencode/instructions.md` (dotbot repo file
+`config/opencode/instructions.md`) or `~/.claude/rules/*.md`, not in one project's
 memory. Editing a hard rule changes behaviour everywhere: confirm the new wording with the
 user before writing it.
 
