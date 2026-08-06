@@ -3,10 +3,7 @@ name: list
 description: >
   List all saved sessions in ~/.config/opencode/sessions/ with their task and
   save date. Use to see what work has been saved and can be restored.
-allowedTools:
-  - Bash(ls ~/.config/opencode/sessions/)
-  - Bash(grep *)
-  - Read
+allowed-tools: Bash(ls ~/.config/opencode/sessions/), Bash(grep:*), Read
 ---
 
 # /list — List Saved Sessions

@@ -1,6 +1,6 @@
 ---
 name: wt-new
-description: Create a new git worktree for feature development. Accepts a name or branch, with an optional upstream branch for stacked work. Creates worktree at $REPO_ROOT/.worktrees/<name>.
+description: Create a new git worktree for feature development. Accepts a name or branch, with an optional upstream branch for stacked work. Creates the worktree under $REPO_ROOT/.worktrees/ named after the argument.
 ---
 
 # /wt-new — Create a New Worktree

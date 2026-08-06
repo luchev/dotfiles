@@ -3,18 +3,9 @@ name: save
 description: >
   Save the current session context to a file so it can be restored in a future
   conversation. Writes a snapshot of task, progress, key decisions, and open
-  items to ~/.config/opencode/sessions/<name>.md. Use when you want to pause
-  and resume later.
-allowedTools:
-  - Bash(date *)
-  - Bash(git branch --show-current)
-  - Bash(git log --oneline -5)
-  - Bash(ls ~/.config/opencode/sessions/)
-  - Bash(mkdir -p ~/.config/opencode/sessions)
-  - Read
-  - Write
-  - Todowrite
-  - Todoread
+  items to a named file under ~/.config/opencode/sessions/. Use when you want
+  to pause and resume later.
+allowed-tools: Bash(date:*), Bash(git branch:*), Bash(git log:*), Bash(ls ~/.config/opencode/sessions/), Bash(mkdir:*), Read, Write
 ---
 
 # /save — Save Session Context

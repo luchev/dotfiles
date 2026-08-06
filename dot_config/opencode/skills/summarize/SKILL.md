@@ -1,8 +1,7 @@
 ---
 name: summarize
 description: Print a concise session summary — task, progress, outstanding items, PR status, and key notes.
-allowedTools:
-  - TaskList
+allowed-tools: TaskList
 ---
 
 # Session Summary

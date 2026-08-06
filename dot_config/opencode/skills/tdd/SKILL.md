@@ -53,7 +53,7 @@ test('calculateTotal should sum item prices', () => {
 
 A test that cannot fail for a real bug is worse than no test — it reports
 health it never checked. Before writing the body, name the break this test
-catches. See [writing-good-tests.md](writing-good-tests.md).
+catches. See [writing-good-tests.md](references/writing-good-tests.md).
 
 ### 🔍 Verify RED: Watch It Fail
 
@@ -152,7 +152,7 @@ Before marking work complete:
 - [ ] Edge cases covered
 - [ ] Error conditions tested
 - [ ] Any test you did not watch fail has been mutation-checked
-      ([writing-good-tests.md](writing-good-tests.md))
+      ([writing-good-tests.md](references/writing-good-tests.md))
 
 ## When Stuck
 

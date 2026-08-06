@@ -5,21 +5,7 @@ description: >
   tracked config — skills, global instructions, rules. Runs the opposite direction
   from /learn. Use when memory has grown large, when the same correction keeps
   recurring, or when the user asks to consolidate memory into how they work.
-allowedTools:
-  - Bash(ls *)
-  - Bash(grep *)
-  - Bash(wc *)
-  - Bash(readlink *)
-  - Bash(git -C * remote*)
-  - Bash(gh repo view*)
-  - Bash(chezmoi managed*)
-  - Bash(chezmoi diff*)
-  - Bash(chezmoi source-path*)
-  - Read
-  - Write
-  - Edit
-  - Glob
-  - AskUserQuestion
+allowed-tools: Bash(ls:*), Bash(grep:*), Bash(wc:*), Bash(readlink:*), Bash(git:*), Bash(gh repo view:*), Bash(chezmoi managed:*), Bash(chezmoi diff:*), Bash(chezmoi source-path:*), Read, Write, Edit, Glob, AskUserQuestion
 ---
 
 # /distill — Memory to Config Promoter

@@ -4,20 +4,7 @@ description: >
   Analyze the current session to extract learnings, auto-apply skill changes, and
   write durable findings into the auto-loaded memory directory. No user approval
   needed — findings are applied immediately.
-allowedTools:
-  - Bash(ls *)
-  - Bash(grep *)
-  - Bash(readlink *)
-  - Bash(chezmoi managed*)
-  - Bash(chezmoi diff*)
-  - Bash(chezmoi apply*)
-  - Read
-  - Write
-  - Edit
-  - Skill
-  - Todowrite
-  - Todoread
-  - Glob
+allowed-tools: Bash(ls:*), Bash(grep:*), Bash(readlink:*), Bash(chezmoi managed:*), Bash(chezmoi diff:*), Bash(chezmoi apply:*), Read, Write, Edit, Skill, Glob
 ---
 
 # /learn — Session Learning Extractor (auto-apply)

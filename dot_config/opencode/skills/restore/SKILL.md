@@ -1,13 +1,11 @@
 ---
 name: restore
 description: >
-  Restore a saved session from ~/.config/opencode/sessions/<name>.md, print its
-  context into the conversation, then delete the file so it is not replayed
-  again. Use at the start of a new conversation to pick up where you left off.
-allowedTools:
-  - Bash(ls ~/.config/opencode/sessions/)
-  - Bash(rm ~/.config/opencode/sessions/*)
-  - Read
+  Restore a saved session from a named file under ~/.config/opencode/sessions/,
+  print its context into the conversation, then delete the file so it is not
+  replayed again. Use at the start of a new conversation to pick up where you
+  left off.
+allowed-tools: Bash(ls ~/.config/opencode/sessions/), Bash(rm ~/.config/opencode/sessions/:*), Read
 ---
 
 # /restore — Restore Saved Session

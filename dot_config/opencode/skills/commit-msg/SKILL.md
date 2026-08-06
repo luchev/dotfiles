@@ -1,9 +1,7 @@
 ---
 name: commit-msg
 description: Generate a git commit message from branch changes and git history. The body doubles as a PR description (works directly with `gh pr create`). Amends the latest commit or creates an empty placeholder. Does not push or publish.
-allowedTools:
-  - Bash(git *)
-  - Read
+allowed-tools: Bash(git:*), Read
 ---
 
 # /commit-msg — Generate Commit Message

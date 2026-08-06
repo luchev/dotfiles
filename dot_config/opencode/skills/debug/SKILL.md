@@ -84,6 +84,19 @@ a component that was working.
 
 **Goal**: Find exactly where the bug occurs
 
+**Write the hypotheses down first.** Before adding a single log line, list 3-5
+candidate causes ranked by likelihood, each phrased so it can be killed by an
+observation: "if the cache key omits the tenant id, then requests from two
+tenants return the same row." A hypothesis that no experiment can falsify is a
+guess wearing a lab coat — discard it and think again.
+
+Then instrument in ranked order, cheapest discriminating test first. Stop as soon
+as one survives and the rest are dead.
+
+**Tag every temporary probe** with a unique marker — `[DEBUG-a4f2]`, a fresh
+suffix per session. Cleanup at the end is then `grep -rn 'DEBUG-a4f2'` instead of
+memory, and a probe that escapes into a commit is greppable later.
+
 1. **Use binary search**:
    - Add logging/breakpoints at midpoint
    - Narrow down to smaller sections
@@ -146,7 +159,7 @@ a component that was working.
 
 5. **Trace backward to the source**: when the error surfaces deep in a call
    chain, the place it appears is rarely the place it originates. See
-   [root-cause-tracing.md](root-cause-tracing.md).
+   [root-cause-tracing.md](references/root-cause-tracing.md).
 
 **Exit criteria**: You understand the root cause, not just the symptom
 
@@ -248,6 +261,14 @@ disappear on demand by toggling it.
    ```
 
 **Exit criteria**: Bug fixed, tests pass, no regressions
+
+7. **Remove the probes**: `grep -rn 'DEBUG-<tag>'` and delete every hit. A
+   surviving probe is a log line nobody can explain in six months.
+
+8. **Record the hypothesis that survived** in the commit message — the cause, not
+   just the change. "Cache key omitted the tenant id, so two tenants shared a row"
+   tells the next person why this code looks the way it does; "fix cache bug"
+   sends them back through all five phases.
 
 ## Debugging Tools
 
