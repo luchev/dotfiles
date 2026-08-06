@@ -21,6 +21,14 @@ Use this command:
 
 ## Plan Structure
 
+### Choosing the approach
+
+If `/brainstorm` did not already settle the design and more than one structure is
+plausible, resolve it before writing tasks: spawn 2-3 subagents on the same requirements
+with different mandated stances (`minimal-change`, `clean-architecture`, `pragmatic`),
+compare what comes back, recommend one, and get the user's pick. Do not write a task
+breakdown against an approach the user has not chosen.
+
 ### Header
 ```markdown
 # [Feature Name]

@@ -51,6 +51,21 @@ allowedTools:
 ---
 ```
 
+**Validate before writing:**
+
+| Field | Rule |
+|---|---|
+| `name` | kebab-case, `^[a-z0-9]+(-[a-z0-9]+)*$`, matches directory name |
+| `description` | ≤ 1024 chars, no angle brackets |
+| keys | only `name`, `description`, `allowedTools`, `license`, `metadata` |
+
+**Write descriptions pushy.** Claude undertriggers skills — a neutral description means
+the skill never loads. State the trigger phrases verbatim and instruct activation:
+"Use this whenever the user mentions X, even if they don't explicitly ask for it."
+
+- Weak: `Formats Go test tables.`
+- Strong: `Formats Go test tables. Use whenever the user says "table test", "fix this test", or edits a _test.go file with a tests slice, even if they don't ask for formatting.`
+
 **allowedTools** (include only what's used):
 
 | Capability | Entry |
@@ -93,6 +108,18 @@ Done.
 ```
 
 ### Conventions
+
+**Voice:** body is imperative/infinitive — "Parse the frontmatter", never "You should parse".
+Frontmatter `description` is third-person — "Use when the user says…", describing the skill
+from outside.
+
+**Size:** SKILL.md body under 500 lines. Past that, move detail into `references/<topic>.md`
+and link it — the body is always loaded, references are read on demand. Any reference file
+over 300 lines gets a table of contents at the top.
+
+**Domain variants:** one SKILL.md holding workflow + variant selection, one
+`references/<variant>.md` per domain (`aws.md`, `gcp.md`). Avoids loading all variants
+to use one.
 
 **Steps:** sequential (`Step 1, 2, 3`). Two modes: prefix `S1/A1`. Phases: `R1` (Research), `P1` (Plan), `I1` (Implement).
 

@@ -41,6 +41,16 @@ Present 2-3 different approaches with:
 - Your recommendation with reasoning
 - Resource/complexity estimates
 
+For non-trivial designs, generate these in parallel rather than sequentially: spawn one
+subagent per approach, all given the *same* problem statement but a different mandated
+stance — e.g. `minimal-change` (smallest diff to existing code), `clean-architecture`
+(right structure, ignore migration cost), `pragmatic` (ship this quarter). Forcing distinct
+stances produces genuine alternatives; splitting by file or component just produces the
+same answer three times.
+
+Read the returned proposals yourself and write the comparison — do not paste subagent
+output through to the user.
+
 ### 4. Present Design Incrementally
 Get approval for each major section:
 - Architecture overview

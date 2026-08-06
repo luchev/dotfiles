@@ -72,6 +72,9 @@ description: Check or fix Go coding conventions. Use when the user says "lint", 
 **E7.** Error context must not start with "failed to" — it stacks redundantly. Use `"open store: %w"` not `"failed to open store: %w"`
 **E8.** Never `panic` in production — return `error`. In tests use `t.Fatal`/`t.FailNow` not `panic`.
 **EH1.** Export `IsXxxErr(err error) bool` helpers alongside custom types — `func IsNotFoundErr(err error) bool { var e *NotFoundError; return errors.As(err, &e) }`. Callers must not type-assert directly.
+**E9.** No silent failure — an `if err != nil` branch must return, wrap, or log. Empty branches and bare `continue`/`break` on error swallow the cause.
+**E10.** A fallback path must record why it was taken — `if err != nil { log(...); return defaultCfg }` not `if err != nil { return defaultCfg }`. A default that looks identical to a success is undebuggable.
+**E11.** Retry loops return the last real error, not a synthesized one — `return fmt.Errorf("after %d attempts: %w", n, lastErr)` not `errors.New("retries exhausted")`.
 
 ---
 
@@ -85,6 +88,8 @@ description: Check or fix Go coding conventions. Use when the user says "lint", 
 **I6.** Zero value of a type should be usable without initialization where possible
 **I7.** Don't embed types in exported structs — leaks implementation details. Use a named field + delegate methods: `type ConcreteList struct { list *AbstractList }` not `struct { *AbstractList }`
 **I8.** Embedded types must be at the TOP of the struct field list, with an empty line before regular fields.
+**I9.** Enforce invariants in the constructor, not in a doc comment — if `New` can return an invalid value, the invariant does not exist. `func NewPort(n int) (Port, error)` not `// n must be 1-65535`.
+**I10.** A type whose validity depends on a field must not export that field for writing — an exported mutable field lets callers break the invariant after construction.
 
 ---
 
@@ -137,6 +142,16 @@ description: Check or fix Go coding conventions. Use when the user says "lint", 
 **T3.** Test case struct name field is always `name` or `msg` — never `testName`, `description`, `scenario`
 **T4.** Table test inputs use `give` prefix, expected outputs use `want` prefix — `{give: "foo", want: "bar"}` not `{input: "foo", expected: "bar"}`
 **T5.** No conditional logic inside a table test loop body (`if tt.shouldCallX`, mock branching) — split complex scenarios into separate `Test...` functions.
+**T6.** Every test must correspond to a regression it would catch. If deleting a line of production code leaves the suite green, that line is untested — line coverage over the branch does not count.
+
+---
+
+### Comments
+
+**CM1.** Comments state why, never what — `// second write is required; the device latches on the falling edge` not `// write twice`.
+**CM2.** A comment that contradicts the code is a defect, not a style issue. Verify every claim in a comment against the code it sits on; fix or delete.
+**CM3.** Delete comments that restate the identifier — `// UserID is the user ID` adds nothing. Exported symbols still need doc comments, but the comment must add information.
+**CM4.** Don't comment values that will drift — restating a constant, a field list, or a call site in prose guarantees rot. Reference the symbol instead.
 
 ---
 

@@ -313,6 +313,28 @@ export function createUser(data: UserCreateData): Promise<User> {
 ```
 ```
 
+## Confidence Filter
+
+Score every candidate finding before reporting it. Report only those at **80 or above**.
+
+| Score | Meaning |
+|---|---|
+| 100 | Certain defect. Traced the failing path in the code; can state concrete inputs and the wrong result. |
+| 75 | Very likely wrong, but one assumption is unverified (a callee's behaviour, a config value). |
+| 50 | Suspicious. Could be correct depending on context not read. |
+| 25 | Style preference or speculation dressed as a bug. |
+| 0 | No evidence — pattern-matched on a name or a shape. |
+
+Rules:
+- Score against the code, not the diff. A line that looks wrong in isolation and is
+  correct in context is a 25, not a 75.
+- To claim 100, write the failure scenario first: inputs → wrong output. If it can't
+  be written, the finding isn't 100.
+- Nitpicks and praise are exempt from the filter — they aren't defect claims. Everything
+  under Blocking and Strong Suggestions is subject to it.
+- Discard sub-80 findings silently. Listing "possible issues" with low confidence shifts
+  verification onto the reader and is what makes reviews ignorable.
+
 ## Review Comment Types
 
 ### 1. Blocking Issues (Must Fix)
