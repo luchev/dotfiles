@@ -125,7 +125,7 @@ occurrences), the destination file, and the exact diff. Get approval. Then:
 - Write to the chezmoi source.
 - Match the surrounding file's style and density.
 - If a promoted instruction tells a skill to run a command, add that command to
-  the skill's `allowedTools` — an instruction the skill cannot execute is not a
+  the skill's `allowed-tools` — an instruction the skill cannot execute is not a
   fix.
 - Leave the source memory file in place. Add a line noting it was promoted and
   where, so the next distill does not re-propose it.
