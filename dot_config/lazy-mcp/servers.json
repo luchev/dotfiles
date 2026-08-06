@@ -10,6 +10,11 @@
       "name": "browsermcp",
       "description": "Browser automation via Browser MCP extension (Chrome/Edge)",
       "command": ["npx", "-y", "@browsermcp/mcp@0.1.3"]
+    },
+    {
+      "name": "playwright",
+      "description": "Headless browser: open a URL, screenshot it, resize, scroll, click. Use when asked to look at a running UI. Launches its own browser, unlike browsermcp which drives an existing one through a Chrome extension.",
+      "command": ["npx", "-y", "@playwright/mcp@latest", "--headless", "--isolated"]
     }
   ]
 }
