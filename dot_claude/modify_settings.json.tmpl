@@ -79,4 +79,17 @@ printf '%s' "$current" | jq \
           ))
         }]
       }])
+
+  # Hard-block the destructive git/chezmoi forms that rules/ only bans in prose.
+  # Same drop-then-re-add shape as above to stay idempotent.
+| .hooks.PreToolUse = ((.hooks.PreToolUse // [])
+    | map(select((.hooks[0].command // "") | test("block-dangerous-git") | not))
+    + [{
+        matcher: "Bash",
+        hooks: [{
+          type: "command",
+          timeout: 5,
+          command: ($home + "/.claude/hooks/block-dangerous-git.sh")
+        }]
+      }])
 '
