@@ -23,3 +23,7 @@ argc-custom-completions
 
 # Repo docs — reference material, never applied to $HOME.
 /docs
+
+# Local secrets (registry credentials, Bitwarden-synced env). Sourced by
+# config.nu, deliberately outside this repo — it is public.
+/.config-local.nu
