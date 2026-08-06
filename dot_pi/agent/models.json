@@ -1,0 +1,19 @@
+{
+  "providers": {
+    "opencode-zen": {
+      "baseUrl": "https://opencode.ai/zen/v1",
+      "api": "openai-completions",
+      "apiKey": "public",
+      "models": [
+        {
+          "id": "deepseek-v4-flash-free",
+          "name": "DeepSeek V4 Flash (Free)",
+          "reasoning": true,
+          "compat": {
+            "thinkingFormat": "deepseek"
+          }
+        }
+      ]
+    }
+  }
+}
