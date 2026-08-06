@@ -102,9 +102,3 @@
     - command: setup/bunfig.sh
       description: Generate ~/.bunfig.toml (only if NPM_REGISTRY_URL set)
       stdout: true
-    - command: setup/bitwarden-ssh.sh
-      description: Restore SSH keys from Bitwarden (only if DOTBOT_BITWARDEN set)
-      stdout: true
-    - command: setup/bitwarden-env.sh
-      description: Sync env from Bitwarden (only if DOTBOT_BITWARDEN set)
-      stdout: true

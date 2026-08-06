@@ -2,11 +2,13 @@
 # Bootstrap dotfiles with dotbot.
 #   ./install               link dotfiles + run core setup
 #   ./install --packages    also install packages (setup/packages/*)
-# Any extra args are forwarded to dotbot.
+#   ./install --bitwarden   also restore SSH keys + env from Bitwarden
+# Flags combine. Any other args are forwarded to dotbot.
 set -e
 
 CONFIG="install.conf.yaml"
 PACKAGES_CONFIG="install.packages.yaml"
+BITWARDEN_CONFIG="install.bitwarden.yaml"
 DOTBOT_DIR="dotbot"
 DOTBOT_BIN="bin/dotbot"
 BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -15,16 +17,19 @@ cd "${BASEDIR}"
 git -C "${BASEDIR}" submodule update --init --recursive
 
 run_packages=0
+run_bitwarden=0
 args=()
 for a in "$@"; do
     case "$a" in
         --packages) run_packages=1 ;;
+        --bitwarden) run_bitwarden=1 ;;
         *) args+=("$a") ;;
     esac
 done
 
-"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG}" "${args[@]}"
+dotbot() { "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "$1" "${args[@]}"; }
 
-if [ "${run_packages}" -eq 1 ]; then
-    "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${PACKAGES_CONFIG}" "${args[@]}"
-fi
+dotbot "${CONFIG}"
+[ "${run_packages}" -eq 1 ] && dotbot "${PACKAGES_CONFIG}"
+[ "${run_bitwarden}" -eq 1 ] && dotbot "${BITWARDEN_CONFIG}"
+

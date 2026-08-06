@@ -1,0 +1,14 @@
+# dotbot config for Bitwarden secret restore — run via ./install --bitwarden.
+# Opt-in only (never part of a normal ./install). Needs the `bw` CLI and an
+# unlocked vault (export BW_SESSION=$(bw unlock --raw)); the env sync also needs
+# BW_ENV_ITEM_UUID. Both steps fail loudly if a prerequisite is missing.
+
+- shell:
+    - command: setup/bitwarden-ssh.sh
+      description: Restore SSH keys from Bitwarden
+      stdout: true
+      stderr: true
+    - command: setup/bitwarden-env.sh
+      description: Sync env vars from Bitwarden into ~/.config-local.nu
+      stdout: true
+      stderr: true

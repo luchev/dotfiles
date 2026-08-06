@@ -80,28 +80,23 @@ Credentials come from `$NPM_REGISTRY_USER` / `$NPM_REGISTRY_PASS` (set in
 
 ## Bitwarden (opt-in)
 
-Secrets are never synced by default. The Bitwarden steps no-op unless
-`DOTBOT_BITWARDEN` is set. Prerequisites: the [`bw`](https://bitwarden.com/help/cli/)
-CLI installed and an unlocked vault:
+Secrets are never synced by default. Pass `--bitwarden` to restore them.
+Prerequisites: the [`bw`](https://bitwarden.com/help/cli/) CLI installed and an
+unlocked vault:
 
 ```bash
 export BW_SESSION=$(bw unlock --raw)
 ```
 
-Restore SSH keys (`~/.ssh/*`, then `ssh-add`):
+Restore SSH keys (`~/.ssh/*`, then `ssh-add`) and sync env vars into
+`~/.config-local.nu` (the env sync needs the UUID of the Bitwarden item holding
+them in its notes field):
 
 ```bash
-DOTBOT_BITWARDEN=1 ./install
+BW_ENV_ITEM_UUID=<uuid> ./install --bitwarden
 ```
 
-Also sync env vars into `~/.config-local.nu` — needs the UUID of the Bitwarden item
-holding them in its notes field:
-
-```bash
-DOTBOT_BITWARDEN=1 BW_ENV_ITEM_UUID=<uuid> ./install
-```
-
-Enabled runs fail loudly (non-zero exit) if `bw` is missing, the vault is locked, or
+Both steps fail loudly (non-zero exit) if `bw` is missing, the vault is locked, or
 `BW_ENV_ITEM_UUID` is unset.
 
 ## Layout
@@ -111,7 +106,7 @@ Enabled runs fail loudly (non-zero exit) if `bw` is missing, the vault is locked
 - `Library/` — macOS `~/Library/Application Support/` (ghostty)
 - `bin/` — scripts linked into `~/bin`
 - `setup/` — shell steps run by `./install`; `setup/packages/` are opt-in installers
-- `install.conf.yaml` / `install.packages.yaml` — dotbot configs
+- `install.conf.yaml` / `install.packages.yaml` / `install.bitwarden.yaml` — dotbot configs
 - `dotbot/`, `argc-completions/` — git submodules
 
 ## License

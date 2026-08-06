@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
-# Restore all SSH keys from Bitwarden.
-#
-# Opt-in only: no-ops unless DOTBOT_BITWARDEN is set.
-#   DOTBOT_BITWARDEN=1 ./install
+# Restore all SSH keys from Bitwarden. Run via: ./install --bitwarden
 set -euo pipefail
-
-[ -n "${DOTBOT_BITWARDEN:-}" ] || { echo "skip Bitwarden SSH (set DOTBOT_BITWARDEN=1)"; exit 0; }
 
 SYNC_SCRIPT="${HOME}/.config/nushell/sync-ssh-from-bitwarden.sh"
 
