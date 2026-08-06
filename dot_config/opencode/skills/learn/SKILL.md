@@ -7,6 +7,10 @@ description: >
 allowedTools:
   - Bash(ls *)
   - Bash(grep *)
+  - Bash(readlink *)
+  - Bash(chezmoi managed*)
+  - Bash(chezmoi diff*)
+  - Bash(chezmoi apply*)
   - Read
   - Write
   - Edit
@@ -48,36 +52,67 @@ Read the entire conversation history. Look for:
 
 ---
 
-## L2: Find the memory directory
+## L2: Know the surfaces that are actually read
 
-Durable learnings go in the project's memory directory — `MEMORY.md` plus one file per
-fact — because that is what gets loaded into context at the start of every session.
+Only these get loaded. Anything written elsewhere is lost.
+
+| Surface | Path | Loaded when |
+|---|---|---|
+| Project memory | `~/.claude/projects/<project>/memory/MEMORY.md` + one file per fact | every session in that project |
+| Global instructions | `~/.claude/CLAUDE.md` → symlink → `~/.config/opencode/instructions.md` | every session, all projects |
+| Global rules | `~/.claude/rules/*.md` | every session, all projects |
+| Skills | `~/.config/opencode/skills/<name>/SKILL.md` (`~/.claude/skills` is a symlink to the same dir) | when that skill runs |
+| Observation log | `~/.config/opencode/skill-observations/log.md` | read by `task-observer` at session start |
+
+Memory dirs are **per project and do not see each other**. Pick by directory name
+(`-home-user-go-code` for `/home/user/go-code`, `-home-user--local-share-chezmoi` for the
+dotfiles repo):
 
 ```bash
 ls ~/.claude/projects/*/memory/MEMORY.md
 ```
 
-Pick the one whose directory name matches the repo you are working in (e.g.
-`-home-user-go-code` for `/home/user/go-code`).
+A fact needed in two projects has to be written in both — that is duplication worth
+paying for, not a mistake. Keep the second copy short and point both at the same wording.
 
-**Do not write a `LEARNINGS.md`.** Nothing reads it, so anything put there is lost. Earlier
-versions of this skill wrote to `LEARNINGS.md` at "workspace root", which here is either a
-dead file in `$HOME` or a stray untracked file in the shared Uber monorepo. If a
-`LEARNINGS.md` already exists, fold its contents into memory and delete it.
+**Do not write a `LEARNINGS.md`.** Nothing reads it. Earlier versions of this skill wrote
+one at "workspace root", which here is either a dead file in `$HOME` or a stray untracked
+file in the shared Uber monorepo. If one exists, fold its contents into memory (screening
+per 4a) and ask the user before deleting it.
 
 ---
 
-## L3: Read current state
+## L3: Resolve where each file is really edited
+
+Three of the surfaces above are symlinks or chezmoi targets. Editing the target instead of
+the source means the next `chezmoi apply` silently reverts your change. Resolve before
+editing:
 
 ```bash
-ls ~/.config/opencode/skills/
+chezmoi managed | grep -E 'opencode/(skills|instructions)'
+for d in ~/.config/opencode/skills/*/; do
+  t=$(readlink "${d%/}"); [ -n "$t" ] && echo "$(basename "$d") -> $t"
+done
+```
+
+Three origins, three edit locations:
+
+- **chezmoi-managed** (most personal skills, plus `instructions.md`) — edit
+  `~/.local/share/chezmoi/dot_config/opencode/...`, then
+  `chezmoi apply <target-path>` and check `chezmoi diff` shows only your change.
+- **work dotfiles** (symlinks into `~/.dotfiles-work/claude/skills/`, e.g. `babysit-pr`,
+  `gh-status`, `jira`, the `ucsd-*` family) — edit the file under `~/.dotfiles-work/`;
+  it is a separate repo with its own commits.
+- **unmanaged** — edit `~/.config/opencode/skills/<name>/SKILL.md` directly.
+
+Then read current state before writing anything:
+
+```bash
 cat ~/.claude/projects/<project>/memory/MEMORY.md
 ```
 
-For skills that were **used or triggered** this session, read their SKILL.md before proposing changes.
-
-Read `MEMORY.md` before writing anything — most sessions rediscover things already recorded.
-If active todos exist, read them too.
+For skills **used or triggered** this session, read their SKILL.md. Most sessions
+rediscover things already recorded. If active todos exist, read them too.
 
 ---
 
@@ -90,6 +125,12 @@ Keep only findings that will change behaviour in a *future* session. Drop:
 - anything the repo already records — code structure, git history, CLAUDE.md
 - status that will be stale next week (PR numbers mid-flight, current CI state)
 - procedure that belongs inside a specific skill (put it in that skill, see 4c)
+
+**Screen anything you are migrating from a dead surface** (a stray `LEARNINGS.md`, old
+notes) against the standing hard rules in `instructions.md`. Migration is not
+transcription: a line that was never checked against current rules must be dropped, not
+promoted. Moving it onto a loaded surface gives bad advice more authority than it had
+while nothing was reading it.
 
 ### 4b — Write memory files
 
@@ -120,14 +161,21 @@ ordering that matters — belong in the relevant SKILL.md, not in memory. A skil
 when it runs, so that is where the fix takes effect.
 
 For each skill improvement found:
-- Edit the SKILL.md file directly (chezmoi source if managed, otherwise ~/.config/opencode/skills/)
-- Note that `~/.claude/skills` is a symlink to `~/.config/opencode/skills` — same files, edit once
+- Edit at the origin resolved in L3 — chezmoi source, `~/.dotfiles-work/`, or the plain
+  directory. Never edit a chezmoi target in `~/.config/`; the next apply reverts it.
+- If the new instruction tells the skill to run a command, add that command to the skill's
+  `allowedTools` in the frontmatter. A step the skill is not permitted to execute is not a
+  fix.
 - Match surrounding file style
 - No approval needed — apply immediately
 
-### 4d — Update project CLAUDE.md if findings are project-level
+### 4d — Update global instructions or rules if the finding is standing behaviour
 
-If learnings include project conventions, environment details, or standing instructions that belong in CLAUDE.md, append them to the relevant section.
+A correction that applies across projects — a changed hard rule, a workflow preference —
+belongs in `~/.config/opencode/instructions.md` (chezmoi source
+`dot_config/opencode/instructions.md`) or `~/.claude/rules/*.md`, not in one project's
+memory. Editing a hard rule changes behaviour everywhere: confirm the new wording with the
+user before writing it.
 
 **Do not edit a CLAUDE.md that is checked into a shared repo** (e.g. `go-code/CLAUDE.md`) —
 that is a change other engineers own. Put it in memory and tell the user instead.
@@ -145,8 +193,8 @@ Print:
 <file — one-line gist, per memory added or updated>
 
 ### Skills updated
-<files changed>
+<files changed, with the origin each was edited at>
 
-### Project CLAUDE.md updated
+### Global instructions / rules updated
 <what changed, or "none">
 ```
