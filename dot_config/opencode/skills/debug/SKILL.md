@@ -150,6 +150,22 @@ a component that was working.
 
 **Exit criteria**: You understand the root cause, not just the symptom
 
+**Confidence gate.** Score the root-cause hypothesis before designing a fix. Same
+rubric as `/review` — proceed only at 80 or above.
+
+| Score | Meaning |
+|---|---|
+| 100 | The cause explains every observed symptom, and you can predict a *new* observation from it that then holds. |
+| 75 | Explains the symptom, but one link in the chain is inferred rather than observed. |
+| 50 | Plausible and consistent with the evidence, also consistent with two other causes you haven't ruled out. |
+| 25 | The code near the failure looks wrong. No causal chain to the symptom. |
+| 0 | Pattern-matched on the error text. |
+
+Below 80, go back to Phase 2 — do not fix. A fix built on a 50 changes behaviour,
+the symptom disappears for an unrelated reason, and the real bug ships. The
+cheapest discriminator: if the cause is real, you can make the bug appear and
+disappear on demand by toggling it.
+
 ### Phase 4: Design the Fix
 
 **Goal**: Plan the minimal, correct fix

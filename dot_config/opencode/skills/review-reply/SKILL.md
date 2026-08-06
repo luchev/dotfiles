@@ -39,6 +39,21 @@ A reviewer sees the diff, not the codebase. Before acting on any item:
 Cannot verify? Say so and ask: `"Can't verify this without <X> — investigate,
 or proceed as suggested?"`
 
+**Score each item before acting.** Same rubric as `/review`, pointed the other
+way — the score is how confident you are that *the reviewer is right*.
+
+| Score | Meaning | Action |
+|---|---|---|
+| 100 | Verified against the codebase: the failing case, caller, or test is real. | Implement. |
+| 75 | Almost certainly right, one unchecked assumption. | Check it, then implement. |
+| 50 | Depends on context the reviewer may not have, or that you don't. | Ask before touching. |
+| 25 | Preference, or general-case advice that doesn't hold here. | Push back with evidence. |
+| 0 | Contradicted by the code. | Push back, cite the contradiction. |
+
+Never implement on a score you haven't formed. Silently complying with a wrong
+review comment is worse than pushing back and being overruled: it lands a
+regression with a reviewer's approval on it.
+
 **YAGNI check.** When a reviewer asks for a feature to be "done properly",
 grep for real usage first. Unused → propose deleting it instead of building it out.
 
