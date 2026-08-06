@@ -8,12 +8,19 @@
 
 ## Hard Rules
 
-- **NEVER use `--force`.** Not `git push --force` or `--force-with-lease`, not
-  `chezmoi apply --force`, not `git worktree remove --force`, not `git checkout -f`,
-  not `git clean -f`. No forced overwrite of any kind, ever.
-- If a command only succeeds with `--force`, that is a signal something else is wrong.
-  Stop, diagnose the underlying cause, and fix that instead. If forcing is genuinely
-  the only option, explain why and let the user run it themselves.
+- **Force pushes: `--force-with-lease` first, always.** Where a force push is genuinely
+  needed (amend, rebase, restack on your own branch), use
+  `git push --force-with-lease`. Never reach for bare `--force` / `-f` as the opening move.
+- **If `--force-with-lease` fails, stop and confirm with the user before force pushing.**
+  A "stale info" or rejected lease means the remote moved — that is the safety catch
+  working. Diagnose first (`git fetch`, compare remote SHA, check for a concurrent
+  push or a rewritten stack parent). Report what you found, then ask before running
+  `git push --force`. Never escalate silently.
+- **Every other `--force` stays banned.** Not `chezmoi apply --force`, not
+  `git worktree remove --force`, not `git checkout -f`, not `git clean -f`. For these,
+  a command that only succeeds with `--force` signals something else is wrong: stop,
+  diagnose the underlying cause, and fix that instead. If forcing is genuinely the only
+  option, explain why and let the user run it themselves.
 
 ## Engineering Principles
 
