@@ -1119,14 +1119,6 @@ $env.ZELLIJ_CONFIG_DIR = $env.HOME + '/.config/zellij'
 # Intelli-shell keybind configuration
 $env.INTELLI_SEARCH_HOTKEY = "control char_k"
 
-# Set JIRA_API_TOKEN if ussh and jira are available
-if (not (which ussh | is-empty)) and (not (which jira | is-empty)) {
-    let result = (usso -ussh t3 -print | complete)
-    if $result.exit_code == 0 {
-        $env.JIRA_API_TOKEN = ($result.stdout | str trim)
-    }
-}
-
 # Aliases
 alias v = nvim
 alias g = git
@@ -1149,17 +1141,6 @@ alias tn = tmux new -s
 
 # Remote codenomad server
 alias openremote = npx @neuralnomads/codenomad --password codenomad --host 0.0.0.0 --https false --http true --http-port 3000 --workspace-root ~/
-
-# Wrap aifx so Ghostty's cursor shader animates the real cursor: tfil strips
-# Claude Code/Ink's fake cursor and unhides the native one. Falls back to plain
-# aifx when tfil isn't installed.
-def --wrapped aifx [...args] {
-  if (which tfil | is-not-empty) {
-    tfil --strip-ink-fake-cursor aifx ...$args
-  } else {
-    ^aifx ...$args
-  }
-}
 
 # ── Local / work overrides (kept outside this repo) ───────────────────────────
 const local_config = (

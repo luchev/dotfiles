@@ -84,12 +84,12 @@ reasonably get wrong on their own. Everything else is in the diff.
 > Step 2's "match the tone of recent commits" applies to vocabulary and
 > formatting only. Never inherit another commit's verbosity — this budget wins.
 
-### Step 4b: If the repo publishes with `arh` (Uber go-code)
+### Step 4b: If the repo's publish tooling parses field labels
 
-`arh` builds the PR description by parsing the commit message for **field labels**. An
-unlabelled prose body is silently discarded and the PR ships with only its subject line under
-`## Summary`. Keep everything above — the budget, the why-first opening, the bullets — but
-wrap it in the labels:
+Some publish tooling builds the PR description by parsing the commit message for **field
+labels** rather than taking the body verbatim. Under that tooling an unlabelled prose body
+is silently discarded and the PR ships with only its subject line. Keep everything above —
+the budget, the why-first opening, the bullets — but wrap it in the labels:
 
 ```
 <subject>
@@ -100,14 +100,14 @@ Summary:
 Test Plan:
 <what was run to verify; omit the "- Verified:" bullet above when using this>
 
-Jira Issues: T3-<KEY>
+Issues: <TRACKER-KEY>
 ```
 
-Use `Jira Issues: T3-<KEY>`, not a bare issue id — that exact field is what makes `arh` render
-a clickable link. Do not write literal `##` headings; `arh` adds them.
+Use the tracker's fully-qualified key, not a bare id — the field is usually what makes the
+reference render as a link. Do not write literal `##` headings; this tooling adds them.
 
-Detect this case by the presence of `arh` in the repo's workflow (go-code) — elsewhere, use
-the unlabelled shape above.
+Detect this case from the repo's own publish workflow and conventions; the exact label
+names are per-tool. Elsewhere, use the unlabelled shape above.
 
 ## Step 5: Determine mode
 

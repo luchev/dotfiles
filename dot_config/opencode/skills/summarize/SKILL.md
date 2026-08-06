@@ -32,7 +32,7 @@ Print **only** this block — keep each line to one sentence max:
 Rules:
 - Omit the **Notes** line entirely if there's nothing notable.
 - Omit the **Issue** line if no ticket is associated with this session.
-- **Always write PR links as full clickable URLs** (`https://github.com/example-org/go-code/pull/210348`), never a bare `#210348` or `PR 210348`. This applies to every PR mentioned, including ones referenced only in passing. Same for Jira: full `https://tracker.internal.example/browse/KEY` URLs, not bare keys.
+- **Always write PR links as full clickable URLs** (`https://github.com/<org>/<repo>/pull/<N>`), never a bare `#<N>` or `PR <N>`. This applies to every PR mentioned, including ones referenced only in passing. Same for tickets: full issue-tracker URLs, not bare keys.
 - If several PRs are in play, list each on its own `**PR:**` sub-bullet with its full URL and status, rather than crowding them onto one line.
 - Use `[x]` for done, `[ ]` for not done.
 - Infer everything from the conversation history and task list — no git or shell calls.

@@ -9,9 +9,9 @@ No arguments. Detects the current GitHub user automatically.
 
 If any `gh` call fails with `organization has blocked access by this application`
 or `forbids access via a personal access token (classic)`, that is an org-policy
-block on the credential, not a missing scope. Run `arh auth` to mint uSSO-backed
-credentials and retry. Do **not** run `gh auth login` — it restores the blocked
-GitHub CLI OAuth token.
+block on the credential, not a missing scope. Use the org's own SSO-backed auth
+helper to mint credentials and retry. Do **not** run `gh auth login` — it restores
+the blocked GitHub CLI OAuth token.
 
 ---
 
