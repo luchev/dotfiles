@@ -38,6 +38,7 @@
 **Surgical changes.** Touch only what you must. Match existing style. Don't "improve" adjacent code. Clean up orphans your changes create. Don't touch pre-existing dead code.
 
 **Goal-driven. Verify everything.** Define success criteria before starting. For bug fixes: reproduce → isolate → root cause → fix → verify. For features: test case first. A task is not done until behavioral correctness is confirmed with evidence.
+A success banner, exit 0, or an API's own "imported: N" is not evidence — inspect the artifact through the path a real consumer uses. Verify a correlation before presenting it as a finding, and read the implementation before asserting semantics from names, comments, or metadata.
 
 **Security first.** Never expose, log, or commit secrets. Treat anything sent to an external service as published.
 
