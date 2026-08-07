@@ -1,4 +1,10 @@
 return {
+  -- Disable NvChad's LuaSnip stack. cmp uses native vim.snippet.expand
+  -- (Neovim built-in), so LuaSnip and its snippet library are unused.
+  { "L3MON4D3/LuaSnip", enabled = false },
+  { "rafamadriz/friendly-snippets", enabled = false },
+  { "saadparwaiz1/cmp_luasnip", enabled = false },
+
   {
     -- File type icons for nvim plugins
     "nvim-tree/nvim-web-devicons",
