@@ -3,13 +3,14 @@
 #   ./install               link dotfiles + run core setup
 #   ./install --packages    also install packages (setup/packages/*)
 #   ./install --bitwarden   also restore SSH keys + env from Bitwarden
+#   ./install --all         packages + bitwarden
 # Flags combine. Any other args are forwarded to dotbot.
 set -e
 
 CONFIG="install.conf.yaml"
 PACKAGES_CONFIG="install.packages.yaml"
 BITWARDEN_CONFIG="install.bitwarden.yaml"
-DOTBOT_DIR="dotbot"
+DOTBOT_DIR=".dotbot"
 DOTBOT_BIN="bin/dotbot"
 BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -23,6 +24,7 @@ for a in "$@"; do
     case "$a" in
         --packages) run_packages=1 ;;
         --bitwarden) run_bitwarden=1 ;;
+        --all) run_packages=1; run_bitwarden=1 ;;
         *) args+=("$a") ;;
     esac
 done
