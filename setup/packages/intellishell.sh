@@ -32,8 +32,12 @@ fi
 # ── Fix nushell compatibility ──────────────────────────────────────────────
 INTELLI_NU="${HOME}/.local/share/nushell/vendor/autoload/intelli-shell.nu"
 if [ -f "$INTELLI_NU" ]; then
-    # Fix incompatibility with newer nushell versions
-    sed -i '' 's/commandline edit --replace \$command_out --accept/commandline edit --replace $command_out/' "$INTELLI_NU" 2>/dev/null || true
+    # Fix incompatibility with newer nushell versions (BSD sed needs `-i ''`, GNU sed rejects it)
+    if sed --version 2>/dev/null | grep -q GNU; then
+        sed -i 's/commandline edit --replace \$command_out --accept/commandline edit --replace $command_out/' "$INTELLI_NU" 2>/dev/null || true
+    else
+        sed -i '' 's/commandline edit --replace \$command_out --accept/commandline edit --replace $command_out/' "$INTELLI_NU" 2>/dev/null || true
+    fi
 fi
 
 echo "✓ intelli-shell setup done"

@@ -34,7 +34,7 @@
     "@azumag/opencode-rate-limit-fallback",
     "opencode-pty",
     "@tarquinen/opencode-dcp",
-    "oh-my-openagent",
+    "oh-my-openagent@latest",
     "opencode-obsidian",
     "opencode-notify",
     "@ramtinj95/opencode-tokenscope",

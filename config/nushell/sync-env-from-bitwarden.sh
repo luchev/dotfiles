@@ -37,8 +37,13 @@ echo "$NOTES" | while IFS= read -r line; do
         
         # Check if exists
         if grep -q "\$env.$KEY =" "$ENV_FILE"; then
-            # Update
-            sed -i '' "s|.*\$env.$KEY =.*|$ENTRY|" "$ENV_FILE"
+            # Update (escape & and \ for sed replacement; BSD sed needs `-i ''`, GNU sed rejects it)
+            REPL=$(printf '%s\n' "$ENTRY" | sed 's/[\\&]/\\&/g')
+            if sed --version 2>/dev/null | grep -q GNU; then
+                sed -i "s|.*\$env.$KEY =.*|$REPL|" "$ENV_FILE"
+            else
+                sed -i '' "s|.*\$env.$KEY =.*|$REPL|" "$ENV_FILE"
+            fi
             echo "Updated: $KEY"
         else
             # Append
