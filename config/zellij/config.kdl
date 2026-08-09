@@ -32,6 +32,9 @@ keybinds {
         bind "s" {
             SwitchToMode "Scroll"
         }
+        bind "v" {
+            SwitchToMode "Scroll"
+        }
     }
     locked {
         bind "Ctrl q" {
@@ -703,6 +706,7 @@ plugins {
 }
 // Plugins to load in the background when a new session starts
 load_plugins {
+    "zellij:link"
     zjstatus
     zjstatus-hints
 }
