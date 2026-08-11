@@ -1,6 +1,5 @@
 {
   "plugin": [
-    "oh-my-openagent",
     "@tarquinen/opencode-dcp",
     ["opencode-copy-message", {
       "editor": "nvim",
@@ -10,7 +9,8 @@
         "copy-message.popup": "<leader>p",
         "copy-message.mouse": "<leader>m"
       }
-    }]
+    }],
+    "https://github.com/luchev/opencode-session-surf"
   ],
   "keybinds": {
     "session_copy": "<leader>C"
