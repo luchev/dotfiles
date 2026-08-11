@@ -38,7 +38,7 @@
     "opencode-obsidian",
     "opencode-notify",
     "@ramtinj95/opencode-tokenscope",
-    "file:/Users/z/opencode-session-name",
+    "opencode-auto-name",
     "opencode-mem",
     "opencode-browser"
   ],
@@ -100,8 +100,7 @@
     "multimodal-looker": { "model": "opencode/deepseek-v4-flash-free" },
     "oracle": { "model": "opencode/deepseek-v4-flash-free" },
     "title": { "model": "opencode/deepseek-v4-flash-free" },
-    "summary": { "model": "opencode/deepseek-v4-flash-free" },
-    "compaction": { "model": "opencode/deepseek-v4-flash-free" }
+    "summary": { "model": "opencode/deepseek-v4-flash-free" }
   },
   // ── Permissions ───────────────────────────────────────────────────────────────
   // Allow all tools without prompts — matches the broad allow-list in
