@@ -1,7 +1,7 @@
 {
   "enabled": true,
   "fallbackMode": "cycle",
-  "cooldownMs": 60000,
+  "cooldownMs": 10000,
   "fallbackModels": [
     { "providerID": "opencode-go", "modelID": "deepseek-v4-flash" }
   ]
