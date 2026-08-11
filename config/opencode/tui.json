@@ -1,16 +1,26 @@
 {
   "plugin": [
     "@tarquinen/opencode-dcp",
-    ["opencode-copy-message", {
-      "editor": "nvim",
-      "keybinds": {
-        "copy-message": "<leader>o",
-        "copy-message.nvim": "<leader>v",
-        "copy-message.popup": "<leader>p",
-        "copy-message.mouse": "<leader>m"
+    [
+      "opencode-copy-message",
+      {
+        "editor": "nvim",
+        "keybinds": {
+          "copy-message": "<leader>o",
+          "copy-message.nvim": "<leader>v",
+          "copy-message.popup": "<leader>p",
+          "copy-message.mouse": "<leader>m"
+        }
       }
-    }],
-    "https://github.com/luchev/opencode-session-surf"
+    ],
+    [
+      "file:///Users/z/opencode-session-surf/index.tsx",
+      {
+        "spinner": "sparkle",
+        "waiting": "question",
+        "marker": "arrow"
+      }
+    ]
   ],
   "keybinds": {
     "session_copy": "<leader>C"
