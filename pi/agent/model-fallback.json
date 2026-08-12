@@ -1,0 +1,12 @@
+{
+  "enabled": true,
+  "fallbackMode": "advance",
+  "cooldownMs": 60000,
+  "statusCodes": [429, 503, 529],
+  "triggerOn": "rate-limit",
+  "chain": [
+    "opencode-go/deepseek-v4-flash",
+    "opencode-go/deepseek-v4-pro",
+    "opencode-go/glm-5.2"
+  ]
+}

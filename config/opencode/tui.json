@@ -16,9 +16,7 @@
     [
       "file:///Users/z/opencode-session-surf/index.tsx",
       {
-        "spinner": "sparkle",
-        "waiting": "question",
-        "marker": "arrow"
+        "preset": "ping"
       }
     ]
   ],

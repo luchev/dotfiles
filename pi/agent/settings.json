@@ -1,0 +1,11 @@
+{
+  "lastChangelogVersion": "0.84.0",
+  "theme": "dark",
+  "defaultProvider": "opencode-go",
+  "defaultModel": "deepseek-v4-flash",
+  "enabledModels": [
+    "opencode-zen/deepseek-v4-flash-free",
+    "opencode-go/deepseek-v4-flash"
+  ],
+  "defaultThinkingLevel": "high"
+}
