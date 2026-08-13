@@ -101,6 +101,11 @@ Never dispatch two implementers in parallel — they conflict.
 
 Record the agent's identity; rounds 1-3 resume it.
 
+After a free-tier model retry, background task IDs (`bg_...`) can 404. Collect
+agent output with the continuation session (`task(task_id="ses_...")`) or
+`session_read` instead — never re-dispatch fresh to re-ask a question the
+session already answered.
+
 ### 2. Handle the report
 
 The implementer writes its full report to the report file and returns only:
