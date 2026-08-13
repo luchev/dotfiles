@@ -35,6 +35,9 @@
   //                              external editor.
   // opencode-session-surf:      Session surfing — browse/search past sessions
   //                              from the TUI (github.com/luchev/opencode-session-surf).
+  //                              NOTE: loaded from local checkout via tui.json,
+  //                              not from the registry — keep out of the array
+  //                              below while testing local changes.
   "plugin": [
     "@azumag/opencode-rate-limit-fallback",
     "opencode-pty",
@@ -44,7 +47,6 @@
     "opencode-notify",
     "@ramtinj95/opencode-tokenscope",
     "opencode-copy-message",
-    "opencode-session-surf",
     "opencode-mem",
     "opencode-browser"
   ],
