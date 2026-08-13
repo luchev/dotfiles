@@ -1,10 +1,10 @@
 ---
-name: go
+name: do
 description: Universal feature-work driver — research → plan → implement → verify → PR, distilled from long production use. Use whenever the user says "let's go on N", "go N", "work on issue N", "let's work on N", "do N", "implement N", "next task", "what's next", or hands you a task/issue to build, even if they don't say "skill". Works in any repo: discovers the repo's own test/lint/build gates and docs conventions instead of assuming a stack. Encodes the working contract: TDD (test first), GitHub-issue tracking, docs kept in sync, conventional commits, PR with screenshot for UI, standing rule commit+PR always / merge only on explicit user order. Supports worktrees or plain branches.
 allowed-tools: Bash(git:*), Bash(gh:*), Bash(npm:*), Bash(npx:*), Bash(cargo:*), Bash(go:*), Bash(uv:*), Bash(tsx:*), Bash(node:*), Bash(python:*), Bash(make:*), Read, Write, Edit, Glob, Grep, Agent, Skill, TaskCreate, TaskUpdate, TaskList
 ---
 
-# /go — Universal Feature-Work Driver
+# /do — Universal Feature-Work Driver
 
 Research → plan → implement → verify → PR, distilled from how this workflow
 has been run in production. Repo-agnostic: it discovers each repo's own gates
