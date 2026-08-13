@@ -157,3 +157,8 @@ dot_gitconfig
 # skills dir (which points back into this repo), regenerated not committed.
 config/opencode/skills/graphify/
 config/opencode/skills/impeccable/
+
+# pi local state (auth key, regenerable caches, sessions)
+pi/agent/auth.json
+pi/agent/models-store.json
+pi/agent/sessions/

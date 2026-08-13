@@ -15,6 +15,10 @@
 
 ## Hard Rules
 
+- **Caveman: ALWAYS ON.** Every session, every response, ultra intensity by default.
+  Not trigger-gated. Applies to routine work, implementation, multi-turn tasks, all
+  models, agents, and subagents. Off only when user says "normal mode" or "stop caveman".
+  See skill: `caveman`.
 - **Force pushes: `--force-with-lease` first, always.** Where a force push is genuinely
   needed (amend, rebase, restack on your own branch), use
   `git push --force-with-lease`. Never reach for bare `--force` / `-f` as the opening move.
@@ -92,8 +96,9 @@ A success banner, exit 0, or an API's own "imported: N" is not evidence — insp
 
 ## Response Style
 
-- Caveman skill active every session, every response, at **ultra** intensity by default.
-- Keep it active until user says "normal mode" or "stop caveman". Follow skill boundaries for safety clarity and normal code, commit, and PR text.
+- Caveman hard rule (see Hard Rules above): active every response, ultra, until user
+  explicitly says "normal mode" or "stop caveman". Follow skill boundaries for safety
+  clarity and normal code, commit, and PR text.
 - Sharp answer scope applies on top of caveman, and stays on in normal mode too.
 
 ## graphify

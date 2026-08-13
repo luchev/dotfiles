@@ -20,9 +20,7 @@
     [
       "file://{env:HOME}/opencode-session-surf/index.tsx",
       {
-        "marker": "arrow",
-        "spinner": "sparkle",
-        "waiting": "question"
+        "preset": "ping"
       }
     ]
   ]

@@ -30,6 +30,14 @@
   // @azumag/opencode-rate-limit-fallback: When the current model 429s / runs out
   //                              of credits, abort and retry on the next credited
   //                              model. Chain in rate-limit-fallback.json.
+  // opencode-copy-message:      Copy messages from the opencode TUI — last
+  //                              message, any message, transcript popup, or
+  //                              external editor.
+  // opencode-session-surf:      Session surfing — browse/search past sessions
+  //                              from the TUI (github.com/luchev/opencode-session-surf).
+  //                              NOTE: loaded from local checkout via tui.json,
+  //                              not from the registry — keep out of the array
+  //                              below while testing local changes.
   "plugin": [
     "@azumag/opencode-rate-limit-fallback",
     "opencode-pty",
@@ -38,7 +46,7 @@
     "opencode-obsidian",
     "opencode-notify",
     "@ramtinj95/opencode-tokenscope",
-    "opencode-auto-name",
+    "opencode-copy-message",
     "opencode-mem",
     "opencode-browser"
   ],
