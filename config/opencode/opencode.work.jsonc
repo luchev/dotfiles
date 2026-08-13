@@ -38,11 +38,31 @@
     "opencode-obsidian",
     "opencode-notify",
     "@ramtinj95/opencode-tokenscope",
-    "file:/Users/z/opencode-session-name",
     "opencode-mem",
     "opencode-browser"
   ],
 
+
+  // ── Providers ─────────────────────────────────────────────────────────────────
+  // cursor-shim: routes inference to the local cursor-shim (bin/cursor-shim), an
+  // OpenAI-compatible HTTP server that shells out to the SSO-authed `cursor-agent`
+  // CLI so inference bills the Cursor subscription instead of Claude/genai tokens.
+  // Start the shim first:  nohup python3 ~/.local/bin/cursor-shim &  (port 8788)
+  "provider": {
+    "cursor-shim": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Cursor (via CLI)",
+      // timeout/chunkTimeout raised: cursor-agent injects ~10k tokens of its own
+      // context and takes 18-60s/call, far past opencode's default HTTP timeout.
+      "options": { "baseURL": "http://127.0.0.1:8788/v1", "timeout": 180000, "chunkTimeout": 120000 },
+      "models": {
+        "composer-2.5": { "name": "Composer 2.5 (Cursor)" },
+        "claude-opus-5-thinking-high": { "name": "Claude Opus 5 thinking (Cursor)" },
+        "claude-sonnet-5-thinking-high": { "name": "Claude Sonnet 5 thinking (Cursor)" },
+        "gpt-5.6-sol-high": { "name": "GPT-5.6 Sol (Cursor)" }
+      }
+    }
+  },
 
   // ── Permissions ───────────────────────────────────────────────────────────────
   // Allow all tools without prompts — matches the broad allow-list in

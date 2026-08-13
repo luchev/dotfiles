@@ -1,4 +1,8 @@
 {
+  "$schema": "https://opencode.ai/tui.json",
+  "keybinds": {
+    "session_copy": "\u003cleader\u003eC"
+  },
   "plugin": [
     "@tarquinen/opencode-dcp",
     [
@@ -6,23 +10,20 @@
       {
         "editor": "nvim",
         "keybinds": {
-          "copy-message": "<leader>o",
-          "copy-message.nvim": "<leader>v",
-          "copy-message.popup": "<leader>p",
-          "copy-message.mouse": "<leader>m"
+          "copy-message": "\u003cleader\u003eo",
+          "copy-message.mouse": "\u003cleader\u003em",
+          "copy-message.nvim": "\u003cleader\u003ev",
+          "copy-message.popup": "\u003cleader\u003ep"
         }
       }
     ],
     [
-      "file:///Users/z/opencode-session-surf/index.tsx",
+      "file://{env:HOME}/opencode-session-surf/index.tsx",
       {
+        "marker": "arrow",
         "spinner": "sparkle",
-        "waiting": "question",
-        "marker": "arrow"
+        "waiting": "question"
       }
     ]
-  ],
-  "keybinds": {
-    "session_copy": "<leader>C"
-  }
+  ]
 }
