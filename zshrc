@@ -7,7 +7,7 @@ source ${ZDOTDIR:-~}/.antidote/antidote.zsh
 antidote load ${ZDOTDIR:-$HOME}/.zsh_plugins.txt
 
 # PATH
-export PATH=/opt/homebrew/bin:/opt/homebrew/opt/openjdk@17/bin:$HOME/.local/bin/diff-so-fancy:$HOME/.cargo/bin:$HOME/.local/bin:${KREW_ROOT:-$HOME/.krew}/bin:$PATH
+export PATH=/opt/homebrew/bin:/opt/homebrew/opt/openjdk@17/bin:$HOME/.local/bin/diff-so-fancy:$HOME/.cargo/bin:$HOME/.local/bin:${KREW_ROOT:-$HOME/.krew}/bin:$HOME/.bin:$PATH
 
 # Language settings for Mac
 export LANGUAGE=en_US.UTF-8

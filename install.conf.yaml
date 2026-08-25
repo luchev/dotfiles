@@ -75,6 +75,9 @@
     ~/bin/claude-mem-refresh-token.sh: bin/claude-mem-refresh-token.sh
     ~/bin/mem-migrate.py: bin/mem-migrate.py
 
+    # ── ~/.bin (on PATH in both zshrc and config.nu) ─────────────────────
+    ~/.bin/ralph: bin/ralph
+
 - shell:
     - command: setup/merge-claude-settings.sh
       description: Merge personal keys into ~/.claude/settings.json
