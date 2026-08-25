@@ -1013,7 +1013,8 @@ $env.PATH = ($env.PATH | split row (char esep)
   | prepend '~/.cargo/bin/'
   | prepend '~/.bun/bin/'
   | prepend '~/.dotfiles/argc-completions/bin'
-  | prepend '~/.bin/')
+  | prepend '~/.bin/'
+  | prepend '~/.local/bin/')
 
 # argc-completions
 $env.ARGC_COMPLETIONS_ROOT = ($env.HOME + '/.dotfiles/argc-completions')

@@ -48,7 +48,9 @@
     # ── opencode (granular: leaves node_modules, agents, opencode.json …) ─
     ~/.config/opencode/instructions.md: config/opencode/instructions.md
     ~/.config/opencode/dcp.jsonc: config/opencode/dcp.jsonc
-    ~/.config/opencode/tui.json: config/opencode/tui.json
+    # tui.json: NOT symlinked — aifx agent run overwrites it on every launch.
+    # Personal plugins (session-surf, copy-message) are injected by the opencode
+    # shim in ~/.dotfiles-work/bin/opencode after aifx writes its enforced config.
     ~/.config/opencode/statusline-command.sh: config/opencode/statusline-command.sh
     ~/.config/opencode/command: config/opencode/command
     ~/.config/opencode/prompts/verify.txt: config/opencode/prompts/verify.txt
