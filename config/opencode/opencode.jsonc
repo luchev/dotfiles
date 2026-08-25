@@ -93,8 +93,9 @@
   // ── Models ───────────────────────────────────────────────────────────────────
   // Primary model for main agents
   "model": "opencode/deepseek-v4-flash-free",
-  // Lightweight tasks (title generation, etc.)
-  "small_model": "opencode/deepseek-v4-flash-free",
+  // Lightweight tasks (title generation, etc.) — free gateway models, chained
+  // via rate-limit-fallback.json when one dies or rate-limits.
+  "small_model": "opencode/hy3-free",
 
   // ── Agents ───────────────────────────────────────────────────────────────────
   "agent": {
@@ -107,8 +108,8 @@
     "librarian": { "model": "opencode/deepseek-v4-flash-free" },
     "multimodal-looker": { "model": "opencode/deepseek-v4-flash-free" },
     "oracle": { "model": "opencode/deepseek-v4-flash-free" },
-    "title": { "model": "opencode/deepseek-v4-flash-free" },
-    "summary": { "model": "opencode/deepseek-v4-flash-free" }
+    "title": { "model": "opencode/hy3-free" },
+    "summary": { "model": "opencode/hy3-free" }
   },
   // ── Permissions ───────────────────────────────────────────────────────────────
   // Allow all tools without prompts — matches the broad allow-list in
