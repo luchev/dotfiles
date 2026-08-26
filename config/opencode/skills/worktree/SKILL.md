@@ -94,10 +94,10 @@ git worktree remove ../repo-feature-name
 # Or delete directory and prune
 rm -rf ../repo-feature-name
 git worktree prune
-
-# Force remove (with uncommitted changes)
-git worktree remove --force ../repo-feature-name
 ```
+
+Never use `git worktree remove --force`. If removal is refused there are uncommitted
+changes - inspect them and let the user decide.
 
 ### Prune Worktrees
 
@@ -238,28 +238,6 @@ code --diff ~/projects/myapp/src/feature.ts ~/projects/myapp-compare/src/feature
 # Clean up
 git worktree remove ../myapp-compare
 ```
-
-## Worktrees for parallel background agents
-
-When several agents/subagents work the same repo concurrently, worktrees keep them from
-clobbering each other — but there are non-obvious hazards:
-
-- **The base is stale by default.** A newly created worktree branches from
-  `origin/<default-branch>`, which is *behind* any local commits you haven't pushed. An agent
-  that branches while work sits unpushed on local `main` will build on an old base (and can
-  emit spurious failures, e.g. a type error because a just-added enum value is missing).
-  **First step in every worktree agent:** sync to the current local base —
-  `git merge --ff-only main` (or `git rebase main`) — then verify expected files exist
-  (e.g. `ls path/added/by/recent/work`) before doing anything. Don't assume the base is current.
-- **Commit safely under concurrency.** Stage ONLY your own explicit paths — never
-  `git add -A` / `git add .`: it sweeps up other agents' in-progress files and secrets. Confirm
-  `git check-ignore .env` before committing. Retry on `.git/index.lock` (another agent is
-  mid-commit) — wait a few seconds and try again.
-- **One branch per agent; merge back sequentially.** Merge finished agent branches into the
-  base one at a time. Expect append-conflicts in shared docs (FEATURES/CHANGELOG/work logs) —
-  resolve by keeping both sides and renumbering.
-- **Keep risky/large output on its branch for review** (big rewrites, research/POCs) rather
-  than auto-merging into the base.
 
 ## Worktree Best Practices
 
