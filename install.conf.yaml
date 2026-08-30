@@ -25,7 +25,7 @@
 
     # ── ~/.config single files ───────────────────────────────────────────
     ~/.config/starship.toml: config/starship.toml
-    ~/.config/opencode/rate-limit-fallback.json: config/opencode/rate-limit-fallback.json
+    ~/.opencode/rate-limit-fallback.json: config/opencode/rate-limit-fallback.json
 
     # ── nvim (whole dir; nvim writes lazy-lock.json back into the repo) ──
     ~/.config/nvim: config/nvim
