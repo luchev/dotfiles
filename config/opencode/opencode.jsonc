@@ -91,25 +91,24 @@
   "enabled_providers": ["opencode-go", "opencode", "deepseek"],
 
   // ── Models ───────────────────────────────────────────────────────────────────
-  // Primary model for main agents
-  "model": "opencode/deepseek-v4-flash-free",
-  // Lightweight tasks (title generation, etc.) — free gateway models, chained
-  // via rate-limit-fallback.json when one dies or rate-limits.
-  "small_model": "opencode/hy3-free",
+  // Primary model for main agents — muse-spark via opencode zen (free)
+  "model": "opencode/muse-spark-1.2-contributor-free",
+  // Lightweight tasks (title generation, etc.) — same model for consistency
+  "small_model": "opencode/muse-spark-1.2-contributor-free",
 
   // ── Agents ───────────────────────────────────────────────────────────────────
   "agent": {
     "build": {
       "steps": 100,
-      "model": "opencode/deepseek-v4-flash-free"
+      "model": "opencode/muse-spark-1.2-contributor-free"
     },
-    "Sisyphus-Junior": { "model": "opencode/deepseek-v4-flash-free" },
-    "explore": { "model": "opencode/deepseek-v4-flash-free" },
-    "librarian": { "model": "opencode/deepseek-v4-flash-free" },
-    "multimodal-looker": { "model": "opencode/deepseek-v4-flash-free" },
-    "oracle": { "model": "opencode/deepseek-v4-flash-free" },
-    "title": { "model": "opencode/hy3-free" },
-    "summary": { "model": "opencode/hy3-free" }
+    "Sisyphus-Junior": { "model": "opencode/muse-spark-1.2-contributor-free" },
+    "explore": { "model": "opencode/muse-spark-1.2-contributor-free" },
+    "librarian": { "model": "opencode/muse-spark-1.2-contributor-free" },
+    "multimodal-looker": { "model": "opencode/muse-spark-1.2-contributor-free" },
+    "oracle": { "model": "opencode/muse-spark-1.2-contributor-free" },
+    "title": { "model": "opencode/muse-spark-1.2-contributor-free" },
+    "summary": { "model": "opencode/muse-spark-1.2-contributor-free" }
   },
   // ── Permissions ───────────────────────────────────────────────────────────────
   // Allow all tools without prompts — matches the broad allow-list in

@@ -3,12 +3,6 @@
   "fallbackMode": "cycle",
   "cooldownMs": 10000,
   "fallbackModels": [
-    { "providerID": "opencode", "modelID": "hy3-free" },
-    { "providerID": "opencode", "modelID": "mimo-v2.5-free" },
-    { "providerID": "opencode", "modelID": "nemotron-3.5-lightning-free" },
-    { "providerID": "opencode", "modelID": "nemotron-3-ultra-free" },
-    { "providerID": "opencode", "modelID": "muse-spark-1.2-contributor-free" },
-    { "providerID": "opencode", "modelID": "x-preview-f-free" },
-    { "providerID": "opencode-go", "modelID": "deepseek-v4-flash" }
+    { "providerID": "opencode", "modelID": "muse-spark-1.2-contributor-free" }
   ]
 }
