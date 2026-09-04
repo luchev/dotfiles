@@ -35,9 +35,16 @@
   //                              external editor.
   // opencode-session-surf:      Session surfing — browse/search past sessions
   //                              from the TUI (github.com/luchev/opencode-session-surf).
-  //                              NOTE: loaded from local checkout via tui.json,
-  //                              not from the registry — keep out of the array
-  //                              below while testing local changes.
+  //                              NOTE: TUI-only plugin — declared in tui.json,
+  //                              not in this array. Still pinned to a local
+  //                              checkout because the published package is broken:
+  //                              0.1.3-0.1.7 set exports["./tui"] to ./index.tsx
+  //                              but ship files:["dist"], so index.tsx is absent
+  //                              from the tarball and the import fails. 0.1.2 is
+  //                              the last good release (./tui -> ./dist/index.js)
+  //                              but predates `preset`. unpm.uberinternal.com also
+  //                              mirrors only <=0.1.3. Move to the registry once a
+  //                              fixed release is published AND mirrored.
   "plugin": [
     "@azumag/opencode-rate-limit-fallback",
     "opencode-pty",

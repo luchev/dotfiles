@@ -1,10 +1,10 @@
 ---
-name: watch-pr
+name: loop-watch-pr
 description: Spawn a background agent that watches a GitHub PR until it lands — polls CI, re-triggers infra flakes, fixes what it safely can, and pings you for a restamp or a genuine failure. Use when the user says "monitor this PR", "watch PR N until it lands", "babysit my PR", or "keep an eye on CI for N".
 allowed-tools: Bash(cd:*), Bash(gh:*), Bash(git:*), Bash(ls:*), Agent, SendMessage, TaskStop
 ---
 
-# /watch-pr — Watch a PR in a Background Agent
+# /loop-watch-pr — Watch a PR in a Background Agent
 
 Spawns one long-lived agent that watches a PR through CI to landing. It acts on
 infra flakes silently and interrupts the user only for things needing a human.

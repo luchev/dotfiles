@@ -100,6 +100,28 @@ force to reach for, and only after the rebase in Step 2 is what made the
 histories diverge. If the lease itself is rejected, stop and report; do not
 escalate to a bare `--force`.
 
+## Step 7a: Push failed? Diagnose, do not retry-loop
+
+A push error is not automatically a flaky remote. Retry **once**. If the second attempt
+fails the same way, the failure is deterministic and further retries only burn the
+user's time — stop and diagnose:
+
+```bash
+git fetch origin main                                   # is the remote reachable at all?
+git push origin origin/main:refs/heads/<you>/probe      # does a zero-object push fail too?
+GIT_TRACE_PACKET=1 git push origin HEAD:refs/heads/<branch> 2>&1 | tail -20
+```
+
+Read the trace: a long gap between the last `push<` advertisement line and the first
+`push>` line is client-side work, not a server problem — the server closed an idle
+connection while git was still thinking. On a repo with a very large ref advertisement,
+`push.followTags` is the usual culprit; `git push --no-follow-tags` (or
+`git config --local push.followTags false`) fixes it.
+
+Distinguish this from a logical failure (lint, tests, rejected non-fast-forward), which
+the publish tool reports before it ever reaches the push. Never re-run the whole publish
+just to retry a push — push the branch directly, then resume publishing.
+
 ## Step 7b: Verify what actually landed
 
 A success banner is not evidence. Read the PR back before reporting anything:

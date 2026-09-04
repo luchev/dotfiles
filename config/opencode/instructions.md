@@ -15,6 +15,11 @@
 
 ## Hard Rules
 
+- **Evidence: proof links + red-team challenge.** Every claim ships with a clickable
+  proof link (logs/metric QueryPad, Sourcegraph blob at a verified line range), and every
+  root-cause or impact claim is challenged by a subagent briefed to refute it before it
+  ships. Aggregate before generalising — never a population claim from one sampled row.
+  See `~/.claude/rules/evidence.md`.
 - **Caveman: ALWAYS ON.** Every session, every response, ultra intensity by default.
   Not trigger-gated. Applies to routine work, implementation, multi-turn tasks, all
   models, agents, and subagents. Off only when user says "normal mode" or "stop caveman".

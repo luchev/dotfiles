@@ -47,7 +47,15 @@ Ask if: stacking is unclear (implied deps but no `UPSTREAM_BRANCH`), description
 
 ## Step 2: Create Worktree
 
-Invoke `/wt-new $TASK` (with `UPSTREAM_BRANCH` if set). If worktree already exists, note path and continue.
+Worktrees are **sparse checkouts** (~1.4G instead of ~17G). The one full tree lives in
+`~/go-code` and stays on `main` — never do feature work there; it is what
+`bazel query` uses to resolve dep closures for sparse worktrees.
+
+Invoke `/wt-new $TASK` (with `UPSTREAM_BRANCH` if set). Pass what the task needs
+materialised:
+
+- ticket names a Bazel target → `--target //pkg:target`
+- otherwise → `--dirs <service dir you will edit>`
 
 ```bash
 REPO_ROOT=$(git rev-parse --show-toplevel)
@@ -55,6 +63,30 @@ WT_DIR="$REPO_ROOT/.worktrees/$TASK"
 ```
 
 **Switch to the worktree. All subsequent commands run from here.**
+
+### Working in a sparse tree
+
+- `grep`/`find`/`rg` over `src/` only see checked-out dirs. For repo-wide exploration
+  during RESEARCH, search `~/go-code` (full, on main) — never edit there.
+- Bazel failing with `no such package 'src/...'` means the dir is not checked out, not
+  that the code is missing. Widen:
+  `~/.claude/scripts/wt-sparse-add.sh --target //pkg:target` (or a bare dir).
+- `git status` stays clean for absent dirs — sparse entries are marked skip-worktree,
+  so they can never show up as spurious deletions in a commit.
+## Step 2b: Check for work that already exists
+
+The state dir is deleted when implementation completes (I7), so its absence does **not**
+mean nothing was done. Before entering any phase, look at the durable artefacts:
+
+```bash
+git -C "$WT_DIR" log origin/main..HEAD --oneline
+git -C "$WT_DIR" status --short
+```
+
+If either shows content, an earlier session already did the work. Do not restart at
+research. Verify the existing change against the ticket instead — read the diff, check
+it covers the spec, build and test it — then continue at I3L/I4/I5 to lint, commit, and
+publish. Rebuilding work that already exists is the expensive failure here.
 
 ## Step 3: Write Ticket Context
 
@@ -112,13 +144,14 @@ For each task:
 1. Mark task in-progress
 2. Read files before editing
 3. Implement per plan
-4. `go build ./...` to verify compilation
+4. Build with Bazel: `bazel build <target>` (never `go build ./...` — sparse tree, and the monorepo builds with Bazel)
 5. Mark task completed
 
 ### I3: Tests
 
 ```bash
-go test ./...
+bin/gazelle <changed package dirs>   # only if imports changed
+bazel test <target>
 ```
 
 Fix failures before proceeding.
@@ -148,6 +181,10 @@ Stage specific files (never `git add -A`), then invoke `/commit-msg`.
 ### I5: Publish
 
 Invoke `/publish $TASK`. This rebases, updates the commit message, runs tests, and creates/updates the GitHub PR.
+
+In a sparse worktree, publish with `arh publish --no-test`: `arc unit` builds every package
+affected by the diff against local `main`, which reaches dirs the cone does not cover. Run
+the target's own tests yourself first (I3), and let CI run the rest.
 
 ### I6: Monitor CI
 

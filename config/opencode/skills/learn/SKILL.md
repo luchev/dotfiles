@@ -87,9 +87,14 @@ Three origins, three edit locations:
 - **dotbot-managed** (most personal skills, plus `instructions.md`) — edit the
   file under `~/.dotfiles/config/opencode/...` (the target symlinks to it), then
   `git -C ~/.dotfiles diff` to confirm only your change.
-- **work dotfiles** (symlinks into `~/.dotfiles-work/claude/skills/`, e.g. `babysit-pr`,
-  `gh-status`, `jira`, the `ucsd-*` family) — edit the file under `~/.dotfiles-work/`;
-  it is a separate repo with its own commits.
+- **work dotfiles** — edit the file under `~/.dotfiles-work/`; it is a separate repo
+  with its own commits. New work skills live in
+  `~/.dotfiles-work/config/opencode/skills/<name>/` as real directories, loaded via
+  `skills.paths` in `opencode/opencode.json`. Older ones (`confluence`, `jira`,
+  `oc-change`, `gh-status`, the `ucsd-*` family) still have their content in the
+  retired `~/.dotfiles-work/claude/skills/` — edit them there until they are migrated.
+  Never create or symlink a work skill under `~/.config/opencode/skills/` or
+  `~/.claude/skills/`: both resolve into `~/.dotfiles`, the personal repo.
 - **unmanaged** — edit `~/.config/opencode/skills/<name>/SKILL.md` directly.
 
 Then read current state before writing anything:

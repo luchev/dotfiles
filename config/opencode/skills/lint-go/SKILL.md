@@ -152,6 +152,8 @@ description: Check or fix Go coding conventions. Use when the user says "lint", 
 **CM2.** A comment that contradicts the code is a defect, not a style issue. Verify every claim in a comment against the code it sits on; fix or delete.
 **CM3.** Delete comments that restate the identifier — `// UserID is the user ID` adds nothing. Exported symbols still need doc comments, but the comment must add information.
 **CM4.** Don't comment values that will drift — restating a constant, a field list, or a call site in prose guarantees rot. Reference the symbol instead.
+**CM5.** Never add a comment to code the change does not otherwise touch. Explaining an existing function is scope creep and pollutes the diff — if it truly needs documenting, that is its own change.
+**CM6.** Comment budget: 1 line, 2 at the absolute most, and only where the code cannot say it. Multi-line prose explaining rationale belongs in the PR description, not the source.
 
 ---
 
