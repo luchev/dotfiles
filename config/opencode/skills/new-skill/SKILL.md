@@ -22,13 +22,12 @@ Ask (`AskUserQuestion`, batch): (1) Takes arguments? (2) How many steps/phases? 
 ## Step 2: Check for conflicts
 
 ```bash
-**First decide which repo the skill belongs to.** A work skill (Uber tooling, UCS,
-Jira/engwiki, go-code workflows) goes in `~/.dotfiles-work/config/opencode/skills/$NAME/`
-as a real directory — it is picked up via `skills.paths` in that repo's
-`opencode/opencode.json`, and it must NOT be created under or symlinked into
-`~/.config/opencode/skills/`, which resolves into the personal `~/.dotfiles` repo.
-Everything below assumes a personal skill; for a work skill substitute that path and
-commit in `~/.dotfiles-work`.
+**First decide which repo the skill belongs to.** Anything employer-specific — internal
+tooling, internal services, the company issue tracker or wiki, a work monorepo's workflows
+— belongs in the work dotfiles repo, never here. Put it in that repo's
+`config/opencode/skills/$NAME/` as a real directory, where its own `skills.paths` entry
+picks it up, and never create or symlink it under `~/.config/opencode/skills/`, which
+resolves into this personal repo. Everything below assumes a personal skill.
 
 test -d ~/.config/opencode/skills/$NAME
 ```

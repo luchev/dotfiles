@@ -87,14 +87,12 @@ Three origins, three edit locations:
 - **dotbot-managed** (most personal skills, plus `instructions.md`) — edit the
   file under `~/.dotfiles/config/opencode/...` (the target symlinks to it), then
   `git -C ~/.dotfiles diff` to confirm only your change.
-- **work dotfiles** — edit the file under `~/.dotfiles-work/`; it is a separate repo
-  with its own commits. New work skills live in
-  `~/.dotfiles-work/config/opencode/skills/<name>/` as real directories, loaded via
-  `skills.paths` in `opencode/opencode.json`. Older ones (`confluence`, `jira`,
-  `oc-change`, `gh-status`, the `ucsd-*` family) still have their content in the
-  retired `~/.dotfiles-work/claude/skills/` — edit them there until they are migrated.
-  Never create or symlink a work skill under `~/.config/opencode/skills/` or
-  `~/.claude/skills/`: both resolve into `~/.dotfiles`, the personal repo.
+- **work dotfiles** — a separate repo with its own commits, holding everything
+  employer-specific. Its skills live in that repo's `config/opencode/skills/<name>/` as
+  real directories, loaded through its own `skills.paths`. Never create or symlink a work
+  skill under `~/.config/opencode/skills/` or `~/.claude/skills/`: both resolve into
+  `~/.dotfiles`, the personal repo, which stays free of work-specific content. A finding
+  that is only true at work is written there, not here.
 - **unmanaged** — edit `~/.config/opencode/skills/<name>/SKILL.md` directly.
 
 Then read current state before writing anything:
@@ -153,7 +151,7 @@ ordering that matters — belong in the relevant SKILL.md, not in memory. A skil
 when it runs, so that is where the fix takes effect.
 
 For each skill improvement found:
-- Edit at the origin resolved in L3 — the `~/.dotfiles` repo file, `~/.dotfiles-work/`,
+- Edit at the origin resolved in L3 — the `~/.dotfiles` repo file, the work dotfiles repo,
   or the plain directory. Targets in `~/.config/` are symlinks into those repos, so edit
   the repo file (or the symlink, same bytes) — just not a cross-symlink in place.
 - If the new instruction tells the skill to run a command, add that command to the skill's

@@ -47,9 +47,8 @@ Ask if: stacking is unclear (implied deps but no `UPSTREAM_BRANCH`), description
 
 ## Step 2: Create Worktree
 
-Worktrees are **sparse checkouts** (~1.4G instead of ~17G). The one full tree lives in
-`~/go-code` and stays on `main` — never do feature work there; it is what
-`bazel query` uses to resolve dep closures for sparse worktrees.
+In a very large repo, worktrees may be **sparse checkouts**, with one full tree kept
+elsewhere on `main` for repo-wide queries. Never do feature work in the full tree.
 
 Invoke `/wt-new $TASK` (with `UPSTREAM_BRANCH` if set). Pass what the task needs
 materialised:
@@ -66,11 +65,10 @@ WT_DIR="$REPO_ROOT/.worktrees/$TASK"
 
 ### Working in a sparse tree
 
-- `grep`/`find`/`rg` over `src/` only see checked-out dirs. For repo-wide exploration
-  during RESEARCH, search `~/go-code` (full, on main) — never edit there.
-- Bazel failing with `no such package 'src/...'` means the dir is not checked out, not
-  that the code is missing. Widen:
-  `~/.claude/scripts/wt-sparse-add.sh --target //pkg:target` (or a bare dir).
+- `grep`/`find`/`rg` only see checked-out dirs. For repo-wide exploration during
+  RESEARCH, search the full checkout — never edit there.
+- A build error naming a package that is not checked out means the dir is absent, not
+  that the code is missing. Widen the cone rather than debugging the build.
 - `git status` stays clean for absent dirs — sparse entries are marked skip-worktree,
   so they can never show up as spurious deletions in a commit.
 ## Step 2b: Check for work that already exists
@@ -182,9 +180,11 @@ Stage specific files (never `git add -A`), then invoke `/commit-msg`.
 
 Invoke `/publish $TASK`. This rebases, updates the commit message, runs tests, and creates/updates the GitHub PR.
 
-In a sparse worktree, publish with `arh publish --no-test`: `arc unit` builds every package
-affected by the diff against local `main`, which reaches dirs the cone does not cover. Run
-the target's own tests yourself first (I3), and let CI run the rest.
+In a sparse worktree, rebase onto **local** `main` (`git rebase main`), never
+`origin/main`, before publishing. Affected-target selection is usually computed from the
+diff against local `main`; pinning the base keeps that set to the package you changed
+instead of every commit main has drifted by, which is what pulls in dirs the cone never
+checked out. Never publish with tests disabled.
 
 ### I6: Monitor CI
 
