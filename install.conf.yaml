@@ -68,6 +68,16 @@
     ~/.claude/output-styles: claude/output-styles
     ~/.claude/rules: claude/rules
 
+    # ── work board (granular: data/ is local, collect.sh comes from the
+    #    work dotfiles, so the dir itself must not be a symlink) ──────────
+    ~/.claude/dashboard/index.html: config/workboard/index.html
+    ~/.claude/dashboard/serve.sh: config/workboard/serve.sh
+    ~/.claude/dashboard/feed.sh: config/workboard/feed.sh
+    ~/.claude/dashboard/collect-oncall.py: config/workboard/collect-oncall.py
+    ~/.claude/dashboard/collect-reviews.py: config/workboard/collect-reviews.py
+    ~/.claude/dashboard/README.md: config/workboard/README.md
+    ~/.claude/dashboard/fonts: config/workboard/fonts
+
     # ── misc dot dirs ────────────────────────────────────────────────────
     # ~/.omo holds opencode runtime (session state, cached binaries); link only
     # the tracked config file, leave the rest of the dir alone.

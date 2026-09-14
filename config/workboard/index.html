@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Work Board</title>
+<style>
+/* Display face: condensed caps for band titles and masthead only. */
+@font-face{font-family:"Board";src:url("fonts/LiberationSansNarrow-Regular.ttf") format("truetype");font-weight:400;font-display:swap}
+@font-face{font-family:"Board";src:url("fonts/LiberationSansNarrow-Bold.ttf") format("truetype");font-weight:700;font-display:swap}
+/* Text face: variable, so weight 500 costs no extra file. */
+@font-face{font-family:"Inter";src:url("fonts/inter-var.woff2") format("woff2-variations");font-weight:100 900;font-display:swap}
+/* Numerals: monospaced so the age column aligns on its right edge. */
+@font-face{font-family:"Fira";src:url("fonts/fira-code-var.woff2") format("woff2-variations");font-weight:300 700;font-display:swap}
+@font-face{font-family:"JB";src:url("fonts/jbmono-bold.ttf") format("truetype");font-weight:700;font-display:swap}
+
+:root{
+  --display:"Board","Liberation Sans Narrow","Arial Narrow",system-ui,sans-serif;
+  --ui:"Inter",system-ui,sans-serif;
+  --digits:"Fira","Fira Code",ui-monospace,monospace;
+  --w-body:500;
+
+  /* light ground, the only ground */
+  --void:#fbfaf7;        /* board ground */
+  --rule:#e4e1da;        /* row rule */
+  --rule-hi:#c9c5bb;     /* band rule */
+  --ink:#16181a;         /* primary    15.8:1 */
+  --ink-2:#4a4e54;       /* secondary   8.4:1 */
+  --ink-3:#6c7077;       /* muted       5.1:1 */
+  --amber:#8a5b00;       /* board signal — darkened for AA on light */
+  --go:#0f7a3d;
+  --stop:#c0342a;
+  --band:#f2efe8;
+  --hover:#f1eee7;
+  --focus:#8a5b00;
+  /* type scale: 4 steps, each >=1.25x the last */
+  --t-micro:12px;   /* band labels, column heads, status, as-of */
+  --t-sec:15px;     /* descriptions */
+  --t-age:15px;     /* age column */
+  --t-pri:17.5px;   /* the values you actually read */
+  --t-mast:26px;    /* masthead + clock */
+}
+:root[data-digits="jb"]{--digits:"JB","JetBrains Mono",ui-monospace,monospace}
+*{box-sizing:border-box}
+html,body{background:var(--void)}
+body{
+  margin:0; color:var(--ink);
+  font:var(--w-body) var(--t-pri)/1.4 var(--ui);
+  font-variant-numeric:tabular-nums;
+  padding:0 0 64px;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+a:hover{color:var(--amber)}
+a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+
+/* ── masthead ─────────────────────────────── */
+.mast{
+  display:flex; align-items:baseline; gap:22px; flex-wrap:wrap;
+  padding:16px 26px 13px; border-bottom:2px solid var(--rule-hi);
+  position:sticky; top:0; background:var(--void); z-index:5;
+}
+.mast h1{
+  margin:0; font-family:var(--display); font-size:var(--t-mast); font-weight:700;
+  letter-spacing:.34em; text-transform:uppercase;
+}
+/* toggles sit with the build stamp, not near the signal counts */
+.tgl{display:flex; gap:6px; margin-left:auto}
+.tgl button{
+  font:700 var(--t-micro)/1 var(--display); letter-spacing:.14em; text-transform:uppercase;
+  color:var(--ink-3); background:none; border:1px solid var(--rule-hi); border-radius:2px;
+  padding:6px 9px; cursor:pointer;
+}
+.tgl button:hover{color:var(--ink); border-color:var(--ink-3)}
+.tgl button[aria-pressed="true"]{color:var(--void); background:var(--ink); border-color:var(--ink)}
+.summary{display:flex; gap:18px; flex-wrap:wrap; font-size:var(--t-micro); letter-spacing:.06em; text-transform:uppercase; color:var(--ink-3)}
+.summary b{font-weight:700; color:var(--ink); font-size:var(--t-pri)}
+.summary .hot b{color:var(--stop)}
+.summary .warm b{color:var(--amber)}
+.build{font-size:var(--t-micro); letter-spacing:.12em;
+  text-transform:uppercase; color:var(--ink-3)}
+.clock{font-family:var(--digits); font-size:var(--t-mast); letter-spacing:.06em; color:var(--amber)}
+
+/* ── panels: one board on a narrow screen, columns on a wide one ── */
+#board{display:flex; flex-wrap:wrap; align-items:flex-start}
+.panel{position:relative; flex:1 1 var(--w,540px); min-width:320px; max-width:100%;
+  border-right:1px solid var(--rule-hi); --c1:15ch; --c3:13ch; --c4:7ch}
+.panel.wide{--w:900px}
+/* drag the panel's right edge to rebalance the row */
+.pgrip{position:absolute; top:0; right:-4px; width:9px; height:100%; cursor:col-resize; z-index:3}
+.pgrip::after{content:""; position:absolute; left:4px; top:0; bottom:0; width:2px; background:transparent}
+.pgrip:hover::after,.pgrip.on::after{background:var(--amber)}
+
+/* ── alert records ────────────────────────── */
+.alert{padding:10px 26px 13px; border-bottom:1px solid var(--rule)}
+.alert .ah{display:flex; gap:10px; align-items:baseline; margin-bottom:5px}
+.alert .at{font-size:16.5px; color:var(--ink); font-weight:650; line-height:1.32; letter-spacing:-.005em}
+.alert dl{margin:6px 0 0; display:grid; grid-template-columns:9ch 1fr; gap:3px 12px}
+.alert dt{font-size:var(--t-micro); letter-spacing:.13em; text-transform:uppercase; color:var(--ink-3)}
+.alert dd{margin:0; font-size:var(--t-sec); color:var(--ink-2); line-height:1.45}
+.alert dd.rc{color:var(--ink)}
+.alert details{margin-top:7px}
+.alert summary{font-size:var(--t-micro); letter-spacing:.13em; text-transform:uppercase;
+  color:var(--amber); cursor:pointer; list-style:none}
+.alert summary::-webkit-details-marker{display:none}
+.alert summary::before{content:"▸ "}
+.alert details[open] summary::before{content:"▾ "}
+.alert ul{margin:7px 0 0; padding-left:16px}
+.alert li{font-size:var(--t-sec); color:var(--ink-2); line-height:1.45; margin-bottom:4px}
+.alert .ann{border-left:1px solid var(--amber); padding-left:10px; color:var(--ink-2)}
+
+/* ── section band ─────────────────────────── */
+.band{
+  display:flex; align-items:baseline; gap:12px;
+  padding:19px 26px 7px; border-bottom:1px solid var(--rule-hi);
+}
+.band h2{
+  margin:0; font-family:var(--display); font-size:13px; font-weight:700;
+  letter-spacing:.26em; text-transform:uppercase; color:var(--amber);
+}
+.band .n{font-size:var(--t-micro); color:var(--ink-3); letter-spacing:.1em}
+.band .as{margin-left:auto; font-size:var(--t-micro); letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3)}
+.band .as.stale{color:var(--amber)}
+.band .as.dead{color:var(--stop)}
+
+/* ── rows: the board grid ─────────────────── */
+.row{
+  display:grid; grid-template-columns:var(--c1) minmax(0,1fr) var(--c3) var(--c4);
+  gap:18px; align-items:start;
+  padding:8px 26px; border-bottom:1px solid var(--rule);
+}
+.row:hover{background:var(--hover)}
+.row .k{color:var(--ink); font-weight:600; letter-spacing:.01em; overflow-wrap:anywhere}
+.row .d{color:var(--ink-2); font-size:var(--t-sec); overflow-wrap:anywhere}
+.row .d em{font-style:normal; color:var(--ink-3)}
+.row .age{text-align:right; color:var(--ink-2); font-family:var(--digits); font-weight:700;
+  font-size:var(--t-age); letter-spacing:-.02em}
+.head{position:relative;
+  padding-top:6px; padding-bottom:6px; border-bottom:1px solid var(--rule-hi);
+  font-size:var(--t-micro); letter-spacing:.18em; text-transform:uppercase; color:var(--ink-3);
+}
+.head .age{text-align:right}
+.grip{position:absolute; top:0; bottom:0; width:11px; cursor:col-resize; z-index:2}
+.grip::after{content:""; position:absolute; left:5px; top:5px; bottom:5px; width:1px; background:transparent}
+.grip:hover::after,.grip.on::after{background:var(--amber)}
+.msg{padding:11px 26px; color:var(--ink-3); font-size:var(--t-sec); letter-spacing:.05em; border-bottom:1px solid var(--rule)}
+
+/* ── status: word + drawn mark, never colour alone ── */
+.st{display:inline-flex; align-items:center; gap:7px; letter-spacing:.15em; text-transform:uppercase; font-size:var(--t-micro); white-space:nowrap}
+.st svg{width:11px; height:11px; flex:none; stroke-width:2; fill:none; stroke:currentColor}
+.st.go{color:var(--go)} .st.wait{color:var(--amber)} .st.stop{color:var(--stop)} .st.off{color:var(--ink-3)}
+
+/* one authored motion: a value that changes flips like a split-flap */
+@keyframes flap{
+  0%{transform:rotateX(0);filter:brightness(1)}
+  45%{transform:rotateX(-88deg);filter:brightness(.35)}
+  55%{transform:rotateX(88deg);filter:brightness(.35)}
+  100%{transform:rotateX(0);filter:brightness(1)}
+}
+.flap{display:inline-block; transform-origin:50% 50%; animation:flap .42s cubic-bezier(.2,.75,.25,1)}
+@media (prefers-reduced-motion:reduce){.flap{animation:none}}
+
+/* ── meter rows (ratio against a limit) ───── */
+.meterbar{display:inline-grid; grid-template-columns:1fr auto; gap:9px; align-items:center; width:100%}
+.track{height:6px; background:var(--rule-hi); border-radius:1px; overflow:hidden}
+.fill{display:block; height:100%; background:var(--go)}
+.fill.warn{background:var(--amber)} .fill.crit{background:var(--stop)}
+
+@media (max-width:760px){
+  .row{grid-template-columns:minmax(0,1fr) 12ch; gap:10px}
+  .row .d,.head .d{display:none}
+  .row .age,.head .age{display:none}
+  .mast{padding:13px 16px 11px} .band,.row,.msg{padding-left:16px;padding-right:16px}
+}
+</style>
+<script>
+/* Applied before first paint so the age column does not swap face mid-glance. */
+(function(){
+  try{
+    if(localStorage.WB_DIGITS==="jb") document.documentElement.setAttribute("data-digits","jb");
+  }catch(e){}
+})();
+</script>
+</head>
+<body>
+<!--
+  THESIS: A watch-keeper's board, not a dashboard of cards. Eight feeds share one
+    status column so the whole surface answers "does anything need me" in one
+    downward scan. Refuses the card-grid dashboard, whose equal-weight tiles make
+    every panel look equally urgent.
+  OWN-WORLD: Airport FIDS. Void black ground, signal amber, condensed grotesk caps
+    (Liberation Sans Narrow, self-hosted) at wide tracking, hairline rules, tabular
+    figures. No boxes, no cards, no shadows: rules and tracking do the dividing.
+  STORY: Ivan glances from the terminal, reads the amber summary, scans the status
+    column for STOP or WAIT, and acts only on those.
+  FIRST VIEWPORT: Sticky masthead with the counts that matter, then BLOCKED ON
+    OTHERS band first because it is the standing answer, then open PRs. Status is
+    the third column on every row, at a fixed rhythm down the page.
+  FORM: Departure board; candidate 2 of 7 by resonance, user-pinned over the roll's
+    assignment (seed key workboard1, ASSIGNED INDEX 4).
+  FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
+-->
+<header class="mast">
+  <h1>Work Board</h1>
+  <div class="summary" id="summary"></div>
+  <div class="tgl">
+    <button id="t-digits" type="button" aria-pressed="false" title="age column: Fira Code / JetBrains Mono">JB Mono</button>
+  </div>
+  <div class="build" id="build"></div>
+  <div class="clock" id="clock">--:--</div>
+</header>
+
+<main id="board"></main>
+
+<script>
+"use strict";
+const BUILD="2026-09-11 10:02";
+
+/* age-column face, remembered per browser; Fira Code is the default */
+(function digitsToggle(){
+  const R=document.documentElement, b=document.getElementById("t-digits");
+  const paint=()=>{
+    const jb = R.getAttribute("data-digits")==="jb";
+    b.textContent = jb? "Fira" : "JB Mono";
+    b.setAttribute("aria-pressed", jb? "true":"false");
+  };
+  b.addEventListener("click",()=>{
+    if(R.getAttribute("data-digits")==="jb"){
+      R.removeAttribute("data-digits"); try{localStorage.removeItem("WB_DIGITS")}catch(e){}
+    }else{
+      R.setAttribute("data-digits","jb"); try{localStorage.WB_DIGITS="jb"}catch(e){}
+    }
+    paint();
+  });
+  paint();
+})();
+const FILES=["prs","reviews","oncall","jira","health","tasks"];
+const D={}, PREV={};
+
+/* Feeds are data/<name>.js files that call WB.set(). Script tags are used instead
+   of fetch() because fetch() cannot read a sibling file from a file:// page, and
+   this board must work with nothing running. */
+window.WB={ set(name,payload){ D[name]=payload; render(); } };
+
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* drawn marks, one stroke weight — status never rides colour alone */
+const MARK={
+  go:'<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5 4.8 9.2 10 3.4"/></svg>',
+  wait:'<svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="4.4"/><path d="M6 3.4V6l1.8 1.2"/></svg>',
+  stop:'<svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="4.4"/><path d="M6 3.6v3"/><path d="M6 8.5h.01"/></svg>',
+  off:'<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.4 6h7.2"/></svg>'
+};
+const st=(kind,label)=>`<span class="st ${kind}">${MARK[kind]}${esc(label)}</span>`;
+
+function mins(iso){ return iso? (Date.now()-new Date(iso).getTime())/60000 : null; }
+function ago(iso){
+  const m=mins(iso); if(m==null) return "";
+  if(m<1) return "just now";
+  if(m<60) return Math.round(m)+" min ago";
+  const h=m/60; if(h<48) return Math.round(h)+" hr ago";
+  return Math.round(h/24)+" days ago";
+}
+function dur(h){ if(h==null||h==="") return ""; return h<24? Math.round(h)+"h" : Math.round(h/24)+"d"; }
+
+/* split-flap only when the rendered value actually changed */
+function flap(key,html){
+  const same = PREV[key]===html; PREV[key]=html;
+  return same? html : `<span class="flap">${html}</span>`;
+}
+
+let panelSeq=0;
+function panel(cls,inner,id){
+  const pid = id||("p"+(++panelSeq));
+  return `<section class="panel ${cls}" data-id="${pid}">${inner}<span class="pgrip"></span></section>`;
+}
+function band(id,title,data,staleMin,deadMin){
+  const m=mins(data?.generated_at);
+  const cls = data==null||m==null ? "dead" : m>deadMin ? "dead" : m>staleMin ? "stale" : "";
+  const n = data?.items ? data.items.length : null;
+  const as = data==null ? "no feed" : (m>deadMin? "stale · "+ago(data.generated_at) : ago(data.generated_at));
+  return `<div class="band"><h2>${esc(title)}</h2>${n!=null?`<span class="n">${n}</span>`:""}
+    <span class="as ${cls}">${esc(as)}</span></div>`;
+}
+const headRow=(a,b,c,d)=>`<div class="row head"><div class="k">${a}<span class="grip" data-col="1"
+  style="right:-14px" title="drag to resize"></span></div><div class="d">${b}</div>
+  <div>${c}<span class="grip" data-col="3" style="left:-14px" title="drag to resize"></span></div>
+  <div class="age">${d}</div></div>`;
+const row=(k,d,s,a)=>`<div class="row"><div class="k">${k}</div><div class="d">${d}</div>
+  <div>${s}</div><div class="age">${esc(a??"")}</div></div>`;
+const msg=t=>`<div class="msg">${esc(t)}</div>`;
+
+function verdictPill(v){
+  v=(v||"unreviewed").toLowerCase();
+  if(v==="lgtm"||v==="approve"||v==="approved"||v==="clean") return st("go",v);
+  if(v==="nits") return st("off","nits");
+  if(v==="unreviewed") return st("wait","unreviewed");
+  return st("stop",v);            /* concerns, blocking */
+}
+function ciState(p){
+  const c=p.checks||{};
+  if(p.ci==="fail")    return st("stop", (c.fail?c.fail+" ":"")+"failing");
+  if(p.ci==="pending") return st("wait", (c.pending?c.pending+" ":"")+"pending");
+  return st("go","passing");
+}
+
+function render(){
+  const prs=D.prs?.items||[], rev=D.reviews?.items||[], onc=D.oncall?.items||[],
+        jira=D.jira?.items||[], open=D.jira?.open_items||[], tasks=D.tasks?.items||[],
+        h=D.health;
+
+  const blocked=[
+    ...prs.filter(p=>p.blocked_on).map(p=>({k:"#"+p.number, d:p.title, w:p.blocked_on, a:p.age_h, u:p.url})),
+    ...jira.filter(t=>t.blocked_on).map(t=>({k:t.key, d:t.summary, w:t.blocked_on, a:t.age_h, u:t.url})),
+  ];
+  const firing=onc.filter(a=>a.status!=="resolved");
+  const redCI=prs.filter(p=>p.ci==="fail");
+
+  document.getElementById("summary").innerHTML=
+    `<span class="${blocked.length?"warm":""}">blocked <b>${flap("s1",blocked.length)}</b></span>`+
+    `<span class="${redCI.length?"hot":""}">ci red <b>${flap("s2",redCI.length)}</b></span>`+
+    `<span>to review <b>${flap("s3",rev.filter(r=>r.verdict==="unreviewed").length)}</b></span>`+
+    `<span class="${firing.length?"hot":""}">alerts <b>${flap("s4",firing.length)}</b></span>`;
+
+  const B=[];
+
+  B.push(panel("", band("blocked","Blocked on others", D.prs?{items:blocked,generated_at:D.prs.generated_at}:null,10,60) + (blocked.length? headRow("Item","","Waiting on","Age")+blocked.map(b=>
+      row(`<a href="${esc(b.u)}">${esc(b.k)}</a>`, esc(b.d), st("wait",b.w), dur(b.a))).join("")
+    : D.prs? msg("Nothing waiting on anyone else.") : msg("No feed — data/prs.json missing.")), "blocked"));
+
+  B.push(panel("", band("prs","Open pull requests", D.prs,10,60) + (!D.prs? msg("No feed — data/prs.json missing.")
+    : prs.length? headRow("PR","Title","CI","Age")+prs.map(p=>
+        row(`<a href="${esc(p.url)}">#${esc(p.number)}</a>`,
+            `${esc(p.title)}${p.ticket?` <em>${esc(p.ticket)}</em>`:""}${p.base&&p.base!=="main"?` <em>· on ${esc(p.base)}</em>`:""}`,
+            flap("ci"+p.number, ciState(p)), dur(p.age_h))).join("")
+      : msg("No open pull requests.")), "prs"));
+
+  const revBody = !D.reviews? msg("No feed — run collect-reviews.py.")
+    : rev.length? rev.map(r=>{
+        const f=r.findings||[];
+        return `<div class="alert">
+          <div class="ah">${verdictPill(r.verdict)}<span class="at">${esc(r.title)}</span></div>
+          <dl>
+            <dt>PR</dt><dd><a href="${esc(r.url)}">#${esc(r.number)}</a>${r.author?` · ${esc(r.author)}`:""}${r.age_h!=null?` · ${esc(dur(r.age_h))} ago`:""}</dd>
+            ${r.what? `<dt>What</dt><dd>${esc(r.what)}</dd>`:""}
+          </dl>
+          ${f.length? `<details ${/concern|block/.test((r.verdict||""))?"open":""}><summary>${f.length} finding${f.length>1?"s":""}</summary><ul>${
+             f.map(x=>`<li>${esc(x.text)}${(x.links||[]).length? `<br>${
+               x.links.map(l=>`<a href="${esc(l.url)}">${esc(l.label)}</a>`).join(" · ")}`:""}</li>`).join("")
+             }</ul></details>`:""}
+        </div>`;
+      }).join("")
+    : msg("Review queue clear.");
+  B.push(panel("wide", band("reviews","Review queue", D.reviews,20,120) + revBody, "reviews"));
+
+  const openAlerts = onc.filter(a=>a.status!=="resolved");
+  const alertBody = !D.oncall? msg("No feed — run collect-oncall.py.")
+    : openAlerts.length? openAlerts.map(a=>{
+        const d=a.detail||{}, ev=a.evidence||[];
+        const state = a.status==="new"? st("stop","new") : st("wait","investigating");
+        const dl = [
+          d.status     ? `<dt>Status</dt><dd>${esc(d.status)}</dd>`:"",
+          d.fired      ? `<dt>Fired</dt><dd>${esc(d.fired)}</dd>`:"",
+          d.root_cause ? `<dt>Root cause</dt><dd class="rc">${esc(d.root_cause)}</dd>`:"",
+          d.fix        ? `<dt>Fix</dt><dd>${esc(d.fix)}</dd>`:"",
+          d.annotation ? `<dt>Annotation</dt><dd class="ann">${esc(d.annotation)}</dd>`:"",
+        ].join("");
+        return `<div class="alert">
+          <div class="ah">${state}<span class="at">${esc(a.class)}</span></div>
+          <dl>${dl}</dl>
+          ${ev.length? `<details><summary>${ev.length} evidence lines</summary>
+             <ul>${ev.map(e=>`<li>${esc(e)}</li>`).join("")}</ul></details>`:""}
+          ${a.runbook? `<details><summary>links</summary><ul><li><a href="${esc(a.runbook)}">Runbook</a></li></ul></details>`:""}
+        </div>`;
+      }).join("")
+    : msg("Nothing firing.");
+  B.push(panel("wide", band("oncall","Alerts",
+      D.oncall?{items:openAlerts,generated_at:D.oncall.generated_at}:null,45,180) + alertBody, "oncall"));
+
+  B.push(panel("", band("jira","Sprint"+(D.jira?.sprint?" · "+D.jira.sprint:""), D.jira,60,240) + (!D.jira? msg("No feed — data/jira.json missing.")
+    : (jira.length? headRow("Ticket","Summary","Status","Pts")+jira.map(t=>
+        row(`<a href="${esc(t.url)}">${esc(t.key)}</a>`, esc(t.summary),
+            t.status==="Closed"? st("go","closed") : t.status==="In Progress"? st("wait","in progress") : st("off",t.status),
+            t.points??"")).join("") : msg("No tickets in sprint."))
+      + (open.length? open.map(o=>row("","<em>open item</em> "+esc(o.text), st("off","todo"),"")).join("") : "")), "jira"));
+
+  B.push(panel("", band("tasks","Background work", D.tasks,10,60) + (!D.tasks? msg("No feed — data/tasks.json missing.")
+    : tasks.length? headRow("Task","Detail","State","Since")+tasks.map(t=>
+        row(esc(t.name), esc(t.detail||""),
+            t.state==="running"? st("wait","running") : t.state==="failed"? st("stop","failed") : st("go","done"),
+            ago(t.started).replace(" ago",""))).join("")
+      : msg("Nothing running.")), "tasks"));
+
+  let hb="";
+  if(!h) hb = msg("No feed — data/health.json missing.");
+  else{
+    const meter=(label,pct)=>{
+      const c=pct>=90?"crit":pct>=75?"warn":"";
+      return row(esc(label), `<span class="meterbar"><span class="track"><span class="fill ${c}" style="width:${Math.min(100,pct)}%"></span></span></span>`,
+        st(pct>=90?"stop":pct>=75?"wait":"go", pct+"%"), "");
+    };
+    hb += meter("disk", h.disk?.used_pct??0);
+    hb += meter("inodes", h.inodes?.used_pct??0);
+    if(h.repo) hb += row("worktrees", `${esc(h.repo.worktrees??"?")} checked out · ${esc(h.repo.worktree_gb??"?")} GB`, st("off","—"),"");
+    (h.notes||[]).forEach(n=>{ hb += row("note", esc(n), st("off","fyi"), ""); });
+  }
+  B.push(panel("", band("health","Repo & machine", h?{generated_at:h.generated_at}:null,30,180) + hb, "health"));
+
+  panelSeq=0;
+  document.getElementById("board").innerHTML=B.join("");
+  applyCols();
+}
+
+let cycle=0;
+function load(){
+  cycle++;
+  document.querySelectorAll("script[data-feed]").forEach(n=>n.remove());
+  FILES.forEach(f=>{
+    const t=document.createElement("script");
+    t.dataset.feed=f;
+    t.src=`data/${f}.js?v=${cycle}_${Date.now()}`;
+    t.onerror=()=>{ if(D[f]===undefined){ D[f]=null; render(); } };
+    document.head.appendChild(t);
+  });
+  render();
+}
+document.getElementById("build").textContent="build "+BUILD;
+
+/* ── draggable column widths, remembered per panel ── */
+const COLW = (()=>{ try{ return JSON.parse(localStorage.getItem("wb-cols")||"{}"); }catch(e){ return {}; } })();
+function applyCols(){
+  document.querySelectorAll("section.panel").forEach(p=>{
+    const w=COLW[p.dataset.id]; if(!w) return;
+    if(w.w)  p.style.setProperty("--w",  w.w+"px");
+    if(w.c1) p.style.setProperty("--c1", w.c1+"px");
+    if(w.c3) p.style.setProperty("--c3", w.c3+"px");
+  });
+}
+document.addEventListener("pointerdown", e=>{
+  const pg=e.target.closest(".pgrip");
+  if(pg){
+    const panelEl=pg.closest("section.panel"), id=panelEl.dataset.id;
+    const startX=e.clientX, startW=panelEl.offsetWidth;
+    pg.classList.add("on"); e.preventDefault();
+    const mv=ev=>{
+      const px=Math.max(320, startW + (ev.clientX-startX));
+      panelEl.style.setProperty("--w", px+"px");
+      COLW[id]=Object.assign({}, COLW[id], {w:px});
+    };
+    const up=()=>{ pg.classList.remove("on");
+      document.removeEventListener("pointermove",mv); document.removeEventListener("pointerup",up);
+      try{ localStorage.setItem("wb-cols", JSON.stringify(COLW)); }catch(e){} };
+    document.addEventListener("pointermove",mv); document.addEventListener("pointerup",up);
+    return;
+  }
+  const g=e.target.closest(".grip"); if(!g) return;
+  const panel=g.closest("section.panel"); if(!panel) return;
+  const col=g.dataset.col, id=panel.dataset.id;
+  const startX=e.clientX;
+  const cs=getComputedStyle(panel);
+  const start=parseFloat(cs.getPropertyValue(col==="1"?"--c1":"--c3"))||
+              (col==="1"? panel.querySelector(".row .k")?.offsetWidth : 120);
+  g.classList.add("on"); g.setPointerCapture(e.pointerId); e.preventDefault();
+  const move=ev=>{
+    const px=Math.max(60, Math.min(700, start + (col==="1"? ev.clientX-startX : startX-ev.clientX)));
+    panel.style.setProperty(col==="1"?"--c1":"--c3", px+"px");
+    COLW[id]=Object.assign({}, COLW[id], col==="1"?{c1:px}:{c3:px});
+  };
+  const up=()=>{
+    g.classList.remove("on");
+    document.removeEventListener("pointermove",move);
+    document.removeEventListener("pointerup",up);
+    try{ localStorage.setItem("wb-cols", JSON.stringify(COLW)); }catch(e){}
+  };
+  document.addEventListener("pointermove",move);
+  document.addEventListener("pointerup",up);
+});
+
+function tick(){
+  const d=new Date();
+  document.getElementById("clock").textContent=
+    String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+}
+tick(); setInterval(tick,10000);
+load(); setInterval(load,30000);
+</script>
+</body>
+</html>

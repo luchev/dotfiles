@@ -63,8 +63,14 @@ Then run one cycle: §1 → §8.
   annotated class already in the doc. **Spawn them unnamed** — a named background agent
   can go idle without ever delivering, and `TaskOutput` will not find it.
 - **Read the runbook first**, at the start of every investigation. Once a class is
-  challenge-cleared, open a Jira task proposing a runbook update — the task only, never
-  edit the runbook.
+  challenge-cleared, *propose* a Jira task for the runbook update — never edit the
+  runbook itself.
+- **Never open a Jira task without asking first.** The loop proposes; the user decides.
+  Collect proposals in the doc — one line each: the class, what the task would say, why
+  it is worth filing — and surface them in the rolling DM as "N tasks proposed". File
+  only the ones the user names, in the turn they name them. This covers every ticket the
+  loop would create, runbook followups included. An unfiled proposal is not a dropped
+  finding: it stays in the doc until the user rules on it.
 - **Corrections replace text, they do not accumulate.** The doc is an executive summary of
   the current truth, never a changelog. `RETRACTED`, `CORRECTED`, "an earlier revision
   said", "superseded figures follow" are banned in the doc; that history belongs in the
