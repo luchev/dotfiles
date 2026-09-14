@@ -1,6 +1,6 @@
 ---
 name: loop-watch-pr
-description: Spawn a background agent that watches a GitHub PR until it lands — polls CI, re-triggers infra flakes, fixes what it safely can, and pings you for a restamp or a genuine failure. Use when the user says "monitor this PR", "watch PR N until it lands", "babysit my PR", or "keep an eye on CI for N".
+description: Spawn a background agent that watches a GitHub PR until it lands — polls CI, re-triggers infra flakes, fixes what it safely can, and pings you for a restamp or a genuine failure. Can report by notification, by a JSON status file, or both (`--sink json|doc|both`). Use when the user says "monitor this PR", "watch PR N until it lands", "babysit my PR", or "keep an eye on CI for N".
 allowed-tools: Bash(cd:*), Bash(gh:*), Bash(git:*), Bash(ls:*), Agent, SendMessage, TaskStop
 ---
 
@@ -19,6 +19,43 @@ infra flakes silently and interrupts the user only for things needing a human.
 
 Parse: `PR` = digits. `REPO` = from the URL, else `gh repo view --json nameWithOwner --jq .nameWithOwner`.
 `WT_DIR` = second arg, else the worktree whose branch matches the PR head.
+
+## Output sinks
+
+This loop has no shared doc; its sinks are **JSON** (a file other skills read) and
+**notifications** (the one-line `SendMessage` pings in §3h/§4).
+
+`--sink json|doc|both` on the invocation wins; otherwise `both`. `doc` means the
+notification path — the name is kept so callers can pass one flag to any of the watch
+loops.
+
+| sink | behaviour |
+|---|---|
+| `json` | refresh the status file only. Send nothing — not even on landing. For a caller that polls the file itself. |
+| `doc` | notify as described below, write no file. |
+| `both` | write the file on every poll, notify by the same rules. The default. |
+
+`~/.claude/loop-watch-pr/<owner>__<repo>__<pr>.json`, rewritten whole on every poll
+(`.tmp` then `mv`, so a reader never sees a half-file):
+
+```json
+{
+  "schema": "pr-watch/1",
+  "generated_at": "<ISO 8601 Z>",
+  "sink": "json|doc|both",
+  "items": [
+    {"id": "<owner>/<repo>/<pr>", "url": "…", "branch": "…", "head_sha": "…",
+     "state": "watching|needs-restamp|blocked|landed|abandoned",
+     "checks": [{"name": "…", "status": "pass|fail|pending", "url": "…"}],
+     "actions": [{"at": "<ISO>", "what": "retriggered <check>|pushed fix|none"}],
+     "needs_human": "<one line, or null>", "landed_at": "<ISO or null>"}],
+  "removed": []
+}
+```
+
+`items` holds exactly one entry — the watched PR — so a caller can concatenate the files
+of several watchers into one list without special-casing. `needs_human` is the field to
+branch on: non-null means this watcher would have pinged.
 
 ## Step 1: Gather context
 

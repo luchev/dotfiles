@@ -3,7 +3,8 @@ name: loop-update-workdoc
 description: >
   Recurring loop that watches recent coding-agent sessions (Claude Code and opencode),
   groups them by ticket or project, and folds each one into the shared workdoc — updating
-  sections in place and managing Open items on its own. Use when the user says "loop
+  sections in place and managing Open items on its own, or emitting the same state as JSON
+  for another skill (`--sink json|doc|both`). Use when the user says "loop
   update workdoc", "watch my sessions", "keep the workdoc current", "start the workdoc
   loop", or "auto-update the workdoc".
 ---
@@ -46,6 +47,53 @@ for every write. This skill adds discovery, keying and scheduling.
 `last_tick` advances only after a **verified** write. A failed cycle re-scans the same
 window next time rather than losing the sessions in it.
 
+
+## Output sinks
+
+Two sinks, selected per run: **JSON** (a local file other skills read) and **the doc**.
+
+`--sink json|doc|both` on the invocation wins; otherwise `sink=` in `~/.config/workdoc/loop/README.md`; otherwise
+`both`. A cron prompt that names a sink keeps naming it, so a re-armed job does not drift
+back to the default.
+
+| sink | behaviour |
+|---|---|
+| `json` | write `~/.config/workdoc/loop/state.json`. Skip every doc read and doc write. `sections.tsv` and `last_tick` are still maintained — they are loop state, not a sink. |
+| `doc` | write the doc as described below. No JSON file is written or updated. |
+| `both` | JSON first, then the doc. The default. |
+
+The JSON is the contract other skills depend on, so treat it like one:
+
+- **Rewrite the whole file every cycle**, never append — including a quiet cycle, which
+  rewrites an identical `items` with a fresh `generated_at`. Freshness is how a consumer
+  tells "nothing changed" from "the loop is dead".
+- **Write atomically**: `state.json.tmp` then `mv` into place. A consumer may read
+  mid-cycle.
+- An item that leaves the set this cycle appears once in `removed[]` with its reason, then
+  is gone. Never drop an item silently.
+- Under `doc`, do not delete a stale `state.json` — leave it, and let its `generated_at`
+  show it is not being maintained.
+
+```json
+{
+  "schema": "workdoc-loop/1",
+  "generated_at": "<ISO 8601 Z>",
+  "cycle_started_at": "<ISO 8601 Z>",
+  "sink": "json|doc|both",
+  "items": [
+    {"key": "<ticket or project>", "kind": "ticket|project", "heading": "…",
+     "status": "<the Status line>", "context": "…",
+     "done": ["…"], "todo": ["…"], "notes": "…",
+     "sources": ["claude", "opencode"], "sessions": ["<session id>"],
+     "updated": "<ISO>", "content_hash": "<sha256>"}],
+  "removed": [{"id": "…", "reason": "…"}]
+}
+```
+
+Under `json` the loop still scans and still keys groups — it just lands them in the
+file instead of the doc, so a caller can render them somewhere else. `content_hash` is the
+same value `sections.tsv` carries, so a consumer can skip unchanged items too.
+
 ## Step 1 — arm or confirm the cron job
 
 `CronList` first. The job is session-only: it dies with the agent session, so a resumed
@@ -86,7 +134,8 @@ Sources (both sqlite; a missing one is skipped, and paths override with `--claud
   those rows carry the title, the last three user prompts and the last assistant reply.
   Sessions with a short reply and no file changes are dropped as greetings.
 
-An empty scan is a no-op cycle: touch nothing, leave `last_tick` where it is, re-arm, exit.
+An empty scan is a no-op cycle: touch the doc not at all, leave `last_tick` where it is,
+re-arm, exit — the JSON sink still refreshes its `generated_at` (see Output sinks).
 
 ## Step 3 — key each group to a section
 

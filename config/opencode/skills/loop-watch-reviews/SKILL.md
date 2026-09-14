@@ -4,7 +4,8 @@ description: >
   Recurring loop that tracks PRs awaiting your review, reviews each one WITHOUT
   posting anything to GitHub or to a team channel, records verdicts in a shared
   doc, drops entries once the PR is gone, and DMs you a short "you can review
-  these N PRs" summary. Use when the user says "watch my review queue", "loop
+  these N PRs" summary. Writes to a JSON file, the doc, or both (`--sink json|doc|both`).
+  Use when the user says "watch my review queue", "loop
   watch reviews", "keep track of PRs to review", or "start the review loop".
 ---
 
@@ -37,6 +38,52 @@ A state dir outside any repo, holding:
 `diff_hash` is `sha256` of the PR's diff, so a rebase can be told apart from a real
 change. `head_sha` is why a PR gets re-reviewed: if the head moved since `reviewed_at`,
 the old verdict is stale.
+
+
+## Output sinks
+
+Two sinks, selected per run: **JSON** (a local file other skills read) and **the doc**.
+
+`--sink json|doc|both` on the invocation wins; otherwise `sink=` in the state dir's `README.md`; otherwise
+`both`. A cron prompt that names a sink keeps naming it, so a re-armed job does not drift
+back to the default.
+
+| sink | behaviour |
+|---|---|
+| `json` | write `<state dir>/state.json`. Skip every doc read and doc write. The rolling DM follows the doc, so it is skipped too. |
+| `doc` | write the doc as described below. No JSON file is written or updated. |
+| `both` | JSON first, then the doc. The default. |
+
+The JSON is the contract other skills depend on, so treat it like one:
+
+- **Rewrite the whole file every cycle**, never append — including a quiet cycle, which
+  rewrites an identical `items` with a fresh `generated_at`. Freshness is how a consumer
+  tells "nothing changed" from "the loop is dead".
+- **Write atomically**: `state.json.tmp` then `mv` into place. A consumer may read
+  mid-cycle.
+- An item that leaves the set this cycle appears once in `removed[]` with its reason, then
+  is gone. Never drop an item silently.
+- Under `doc`, do not delete a stale `state.json` — leave it, and let its `generated_at`
+  show it is not being maintained.
+
+```json
+{
+  "schema": "review-watch/1",
+  "generated_at": "<ISO 8601 Z>",
+  "cycle_started_at": "<ISO 8601 Z>",
+  "sink": "json|doc|both",
+  "items": [
+    {"id": "<pr_id>", "url": "…", "thread": "<url or null>", "title": "…",
+     "author": "…", "state": "open|draft", "verdict": "Clean|Nits|Concerns|Blocking|Unreviewed",
+     "one_liner": "…", "head_sha": "…", "diff_hash": "…", "reviewed_at": "<ISO>",
+     "size": {"logic": {"added": 0, "removed": 0}, "tests": {"added": 0, "removed": 0}},
+     "findings": [{"file": "…", "line": 0, "text": "…", "url": "<link pinned at head_sha>"}]}],
+  "removed": [{"id": "…", "reason": "…"}]
+}
+```
+
+`findings[].url` is already pinned at `head_sha`, so a consumer never has to
+reconstruct a link. `verdict` is the only field another skill should branch on.
 
 ## Cycle
 
@@ -85,7 +132,7 @@ gh pr view <N> --repo <owner>/<repo> --json state,isDraft,headRefOid,title,autho
 - **Unchanged** — carry the verdict, do no work.
 
 Nothing new, stale, or gone: **quiet cycle**. Touch neither the doc nor the DM, say so in
-one line, stop.
+one line, stop — the JSON sink still refreshes its `generated_at` (see Output sinks).
 
 ### Step 3 — Review
 

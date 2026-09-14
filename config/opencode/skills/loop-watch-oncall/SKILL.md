@@ -4,7 +4,8 @@ description: >
   Recurring loop that sweeps every alert definition on an oncall rotation, investigates
   each new firing to a root cause with proof links, writes the findings into a per-shift
   Google Doc tab, and refreshes one rolling Slack DM — WITHOUT acking, resolving or
-  annotating anything on the oncall dashboard. Schedules itself. Use when the user says
+  annotating anything on the oncall dashboard. Schedules itself, and writes to a JSON file, the doc, or both (`--sink json|doc|both`) so
+  other skills can consume it. Use when the user says
   "watch my oncall alerts", "loop watch oncall", "resume the oncall loop", "start the
   alert watch loop", or asks to investigate what fired on the rotation this shift.
 ---
@@ -106,6 +107,56 @@ Then run one cycle: §1 → §8.
 code edit.
 
 ---
+
+
+## Output sinks
+
+Two sinks, selected per run: **JSON** (a local file other skills read) and **the doc**.
+
+`--sink json|doc|both` on the invocation wins; otherwise `sink=` in `~/.claude/oncall-watch/README.md`; otherwise
+`both`. A cron prompt that names a sink keeps naming it, so a re-armed job does not drift
+back to the default.
+
+| sink | behaviour |
+|---|---|
+| `json` | write `~/.claude/oncall-watch/state.json`. Skip every doc read and doc write. The rolling DM follows the doc, so it is skipped too. |
+| `doc` | write the doc as described below. No JSON file is written or updated. |
+| `both` | JSON first, then the doc. The default. |
+
+The JSON is the contract other skills depend on, so treat it like one:
+
+- **Rewrite the whole file every cycle**, never append — including a quiet cycle, which
+  rewrites an identical `items` with a fresh `generated_at`. Freshness is how a consumer
+  tells "nothing changed" from "the loop is dead".
+- **Write atomically**: `state.json.tmp` then `mv` into place. A consumer may read
+  mid-cycle.
+- An item that leaves the set this cycle appears once in `removed[]` with its reason, then
+  is gone. Never drop an item silently.
+- Under `doc`, do not delete a stale `state.json` — leave it, and let its `generated_at`
+  show it is not being maintained.
+
+```json
+{
+  "schema": "oncall-watch/1",
+  "generated_at": "<ISO 8601 Z>",
+  "cycle_started_at": "<ISO 8601 Z>",
+  "sink": "json|doc|both",
+  "items": [
+    {"id": "<class id>", "name": "<class name>", "def_id": "<alert def id>",
+     "urgency": "high|low", "status": "investigating|root-caused|blocked|annotated|closed",
+     "first_fired": "<ISO>", "last_fired": "<ISO>", "firing_ids": ["…"],
+     "confidence": 1, "root_cause": "<one paragraph>",
+     "proof_links": [{"kind": "logs|metric|code", "url": "…", "claim": "…"}],
+     "annotation_text": "<paste-ready>", "ticket": "<id or null>",
+     "predictions": [{"made_at": "<ISO>", "expect_by": "<ISO>", "claim": "…",
+                      "outcome": "pending|held|failed"}]}],
+  "removed": [{"id": "…", "reason": "…"}]
+}
+```
+
+A consumer that only wants what is still open filters on `status`; one that wants
+annotation text takes `annotation_text` verbatim — it is the same string the doc shows, so
+the two can never disagree.
 
 ## 1. Sweep
 
