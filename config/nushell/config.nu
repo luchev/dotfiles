@@ -1183,6 +1183,17 @@ def o [...args: string] {
     }
 }
 
+# Keep the Mac awake with the lid closed (macOS, needs sudo).
+# No arg prints current state.
+def nosleep [enabled?: bool] {
+    if $enabled == null {
+        let v = (pmset -g | lines | where $it =~ SleepDisabled | str trim | split row -r '\s+' | last)
+        $v == "1"
+    } else {
+        sudo pmset -a disablesleep (if $enabled { 1 } else { 0 })
+    }
+}
+
 # Theme
 source ~/.config/nushell/themes/monokai-soda.nu
 
