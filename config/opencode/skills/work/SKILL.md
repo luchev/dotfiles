@@ -164,6 +164,18 @@ git diff --name-only main...HEAD | grep '\.go$'
 
 Pass the resulting file list to `/lint-go check <files>`. Fix all violations before proceeding. Re-run build and tests after fixing if any files were modified.
 
+Then run the repo's own import formatter, which `gofmt` does **not** substitute for —
+`gofmt` accepts any number of import groups, so a stray blank line inside the import block
+passes locally and fails the CI import check:
+
+```bash
+goimports -l <changed .go files>   # must print nothing; some repos vendor the binary in-tree
+```
+
+This matters most when imports were added by a script rather than by hand. If the publish
+step had to skip its own lint stage for an unrelated reason, this is the only thing
+standing between you and that CI failure.
+
 *If `$PHASE` is `lint`: stop here after fixing and print:*
 ```
 ## Lint Complete
@@ -212,8 +224,14 @@ Only infrastructure failures should be noted and the loop continued.
 
 ### I7: Cleanup
 
+Remove only the files this skill wrote. **Never `rm -rf "$STATE_DIR"`** — in some repos
+`.claude/` is tracked and holds checked-in commands, so the recursive delete silently
+stages deletions of other people's files and leaves the worktree dirty.
+
 ```bash
-rm -rf "$STATE_DIR"
+rm -f "$STATE_DIR"/TICKET.md "$STATE_DIR"/RESEARCH.md "$STATE_DIR"/PLAN.md
+git -C "$WT_DIR" status --short   # must be clean; if `.claude/…` shows as deleted,
+                                  # restore with: git checkout -- .claude
 ```
 
 Print: `## Done — run /summarize for a session overview.`

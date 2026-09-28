@@ -96,6 +96,22 @@ gh api repos/$REPO/check-runs/$CHECK_RUN_ID --jq '.output.text'
 
 Output only failures. Keep entries tight.
 
+**Report only what this run's output says.** Three rules, each learned from getting it
+wrong while polling a stack:
+
+- **A green belongs to a commit, not a PR.** Any push — rebase, amend, restack — resets
+  every check. Discard every prior result for that branch and say the checks restarted.
+- **Diff against the previous run before writing "newly green" or "now cleared".** A
+  completed check re-appears every poll with an identical duration string, which reads
+  like stale data; an unchanged row means unchanged, not resolved. If a row is still in
+  this run's output, it is still true.
+- **Enumerate every non-passing row**, not just the interesting one — an aggregate check
+  pending behind a job is easy to drop from the summary.
+
+A bot check whose findings are not reachable (no PR comments, no API, an auth-walled
+dashboard) is reported as unreadable with its `details_url`. Never infer the content from
+the diff's subject matter, and probe each channel once rather than every poll.
+
 ```
 ## CI: PR #<N> — <Title>
 

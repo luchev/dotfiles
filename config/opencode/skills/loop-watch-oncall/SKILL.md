@@ -71,6 +71,16 @@ Then run one cycle: §1 → §8.
   only the ones the user names, in the turn they name them. This covers every ticket the
   loop would create, runbook followups included. An unfiled proposal is not a dropped
   finding: it stays in the doc until the user rules on it.
+- **Never register a ticket as an oncall followup.** Tickets filed out of this loop are
+  plain **Tasks** in the tracker; the alert goes in the task *description* as a link (alert
+  URL, firing URL, runbook), never as a dashboard followup attachment. The rotation's
+  followups list is the team's own backlog — the loop does not write to it.
+  **Undoing a wrong attachment:** list the rotation's followups (resolution state: any) and
+  find the entry by ticket key. The record's own id is what the remove call wants, not the
+  ticket key, and the record lists every annotation it is attached to — call remove once per
+  annotation, then re-list to confirm the key is gone. The ticket itself is untouched.
+  Re-attaching may not be possible, so treat removal as one-way and only remove what the
+  user names.
 - **Corrections replace text, they do not accumulate.** The doc is an executive summary of
   the current truth, never a changelog. `RETRACTED`, `CORRECTED`, "an earlier revision
   said", "superseded figures follow" are banned in the doc; that history belongs in the
@@ -445,18 +455,22 @@ measurement, not a recovery.
 1. Spawn a subagent to reproduce it **with a test** in a worktree on a `<you>/<slug>`
    branch, apply the proposed fix, re-run. It must report CONFIRMED or NOT-REPRODUCED with
    real command output — never a faked pass.
-2. If reproduced: create a followup ticket with the description, assign it to yourself, then
-   invoke `/work` on it. Pin the tracker's calling convention once and follow it — argument
-   order, the rich-text shape a description field demands, which client is read-only — because
-   a malformed call here returns an error page that mimics a tracker outage.
-3. Record the ticket and the resulting PR in that class's doc section and move Status on.
+2. If reproduced: **propose** a followup ticket — do not create it. Write the paste-ready
+   description into the doc and count it in the DM's "N tasks proposed". File it, and invoke
+   `/work` on it, only in the turn the user names it. Pin the tracker's calling convention once
+   and follow it — argument order, the rich-text shape a description field demands, which
+   client is read-only — because a malformed call here returns an error page that mimics a
+   tracker outage.
+3. Record the proposal (and, once filed, the ticket and resulting PR) in that class's doc
+   section and move Status on.
 
 ## 5b. Propose a runbook fix when a class is settled
 
 Once a class is root-caused, the challenge subagent has cleared it, and you are confident in
-the steps that actually pinpointed it, file a task proposing the runbook change.
+the steps that actually pinpointed it, propose a task for the runbook change. Propose only —
+filing waits for the user to name it.
 
-- **Open a task only. Never edit the runbook itself.**
+- **A task at most. Never edit the runbook itself.**
 - The task carries the proposed runbook text, ready to paste.
 - Write only the steps that LED TO the diagnosis and the fix — not the path you took. Dead
   ends, refuted hypotheses and tool fumbles stay out.

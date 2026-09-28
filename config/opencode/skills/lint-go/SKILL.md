@@ -116,7 +116,10 @@ description: Check or fix Go coding conventions. Use when the user says "lint", 
 **O8.** Avoid mutable global variables — prefer dependency injection. Don't mutate package-level `var`s after initialization.
 **O9.** Only call `os.Exit` or `log.Fatal*` in `main()`. All other functions return `error`.
 **O10.** Group related `const`/`var`/`type`/`import` in blocks; split unrelated items into separate groups.
-**O11.** Two import groups only: stdlib first, everything else second. (goimports enforces this.)
+**O11.** Two import groups only: stdlib first, everything else second. Check it by running
+`goimports -l` — `gofmt` does **not** enforce grouping and reports a three-group import block
+as clean, so a `gofmt`-clean file can still fail the CI import check. Large repos often vendor
+the binary in-tree rather than putting it on `PATH`.
 **O12.** In loops, use `continue` to guard early — `if v.F1 != 1 { continue }; process(v)` not `if v.F1 == 1 { process(v) } else { ... }`
 
 ---
@@ -153,7 +156,8 @@ description: Check or fix Go coding conventions. Use when the user says "lint", 
 **CM3.** Delete comments that restate the identifier — `// UserID is the user ID` adds nothing. Exported symbols still need doc comments, but the comment must add information.
 **CM4.** Don't comment values that will drift — restating a constant, a field list, or a call site in prose guarantees rot. Reference the symbol instead.
 **CM5.** Never add a comment to code the change does not otherwise touch. Explaining an existing function is scope creep and pollutes the diff — if it truly needs documenting, that is its own change.
-**CM6.** Comment budget: 1 line, 2 at the absolute most, and only where the code cannot say it. Multi-line prose explaining rationale belongs in the PR description, not the source.
+**CM6.** Comment budget: **1 line, hard limit** — a 2-line comment is already too long, and a 3-line block explaining a mechanism, an ordering, or a rollout stage is the exact thing being rejected. If it does not fit on one line, delete it and put the rationale in the PR description.
+**CM7.** Commented-out code carries a one-line marker saying what re-enables it — `// Acting stage, off during shadow mode. Uncomment as a whole to promote.` Never a paragraph justifying why it is off; that is PR-description material. Comment out every symbol the block was the sole user of (test helpers, locals) in the same change, or the package stops compiling.
 
 ---
 

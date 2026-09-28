@@ -318,4 +318,4 @@ type Config struct {
 
 ### Comments
 
-**CM1.** No `TODO`/`FIXME`/`XXX` comments without an associated tracking ticket — `// TODO(UCSD-1234): handle retries` not `// TODO: handle retries`. Untracked TODOs accumulate and become permanent.
+**CM1.** No `TODO`/`FIXME`/`XXX` comments without an associated tracking ticket — `// TODO(PROJ-1234): handle retries` not `// TODO: handle retries`. Untracked TODOs accumulate and become permanent.

@@ -43,6 +43,15 @@ Sparse checkouts fail loudly, never silently: the build reports a missing packag
 ~/.claude/scripts/wt-sparse-add.sh path/to/dir               # one dir
 ```
 
+**Commit first.** Widening reapplies the sparse checkout, which resets tracked paths in the
+cone to HEAD — new files that are only staged or only on disk are deleted without warning.
+Commit (or stash) before every widen; if files vanish mid-task, that is what happened.
+
+Widen for the **test** target, not just the library: a library's dep closure is a strict
+subset, so provisioning it guarantees a second round trip as soon as you run the tests. The
+same goes for any toolchain binary the repo's documented commands invoke (coverage, lint) —
+those build from their own trees, unrelated to yours.
+
 Resolving a dependency closure needs the **full** checkout, because a sparse tree cannot
 answer that query about code it does not have. If the full checkout is missing or itself
 sparse, the script falls back to an auto-heal loop driven by the build's own
