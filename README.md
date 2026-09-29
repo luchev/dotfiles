@@ -59,10 +59,9 @@ Create local overrides that won't be committed:
 - `~/.config/nushell/local-env.nu` — Nushell local env override
 - `~/.config-local.nu` — local secrets / env (sourced by config.nu, untracked)
 
-The OpenCode config picks a variant by machine: work machines (those with a
-`~/.dotfiles-work` checkout) get `config/opencode/opencode.work.jsonc`, everyone
-else gets `config/opencode/opencode.jsonc`. `setup/link-opencode-jsonc.sh` links
-the right one.
+The OpenCode config here is personal-only: `config/opencode/opencode.jsonc` is
+linked to `~/.config/opencode-personal/`, the config dir `bin/opencode` points
+`OPENCODE_CONFIG_DIR` at. Work/aifx config lives in `~/.dotfiles-work`.
 
 `~/.claude/settings.json` is **not** symlinked — an external tool owns most of it,
 so `setup/merge-claude-settings.sh` merges in only the personal keys on each apply.

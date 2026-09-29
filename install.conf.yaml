@@ -55,7 +55,6 @@
     ~/.config/opencode/command: config/opencode/command
     ~/.config/opencode/prompts/verify.txt: config/opencode/prompts/verify.txt
     ~/.config/opencode/skills: config/opencode/skills
-    # opencode.jsonc is machine-dependent (personal vs work) → linked in shell:
 
     # ── opencode-personal: config dir used by bin/opencode (OPENCODE_CONFIG_DIR)
     # Keeps the aifx/work config out. instructions.md and skills still resolve
@@ -105,8 +104,6 @@
       description: Merge personal keys into ~/.claude/settings.json
       stdout: true
       stderr: true
-    - command: setup/link-opencode-jsonc.sh
-      description: Link personal/work opencode.jsonc variant
       stdout: true
     - command: setup/claude-symlinks.sh
       description: Cross-symlink ~/.claude/{CLAUDE.md,skills} to opencode
