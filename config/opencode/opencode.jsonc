@@ -42,7 +42,7 @@
   //                              but ship files:["dist"], so index.tsx is absent
   //                              from the tarball and the import fails. 0.1.2 is
   //                              the last good release (./tui -> ./dist/index.js)
-  //                              but predates `preset`. unpm.uberinternal.com also
+  //                              but predates `preset`. the internal mirror also
   //                              mirrors only <=0.1.3. Move to the registry once a
   //                              fixed release is published AND mirrored.
   "plugin": [

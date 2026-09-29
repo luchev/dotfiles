@@ -13,23 +13,25 @@ A described query the reader would have to reconstruct is not a proof. Neither i
 tool name, a row count on its own, or "I checked". If a claim goes into a doc, a
 ticket, a PR, a Slack message or a report, the artifact goes with it.
 
-At Uber the three shapes are:
+Three shapes cover almost everything:
 
 ```
-logs    https://umonitor.uberinternal.com/services/<svc>/logs?q=<urlencoded lucene>&from=<ISO .000Z>&until=<ISO .000Z>
-metric  https://umonitor.uberinternal.com/query?from=<ISO>&q=<urlencoded M3QL>&sources=m3&until=<ISO>
-code    https://sg.uberinternal.com/r/code.uber.internal/uber-code/go-code/-/blob/<path>?L<start>-<end>
+logs     a log-search URL carrying the query, the time range, and the field breakdown
+metric   a chart URL carrying the query verbatim, and the same time range
+code     a permalink pinned to a SHA or tag, with the line range
 ```
 
-- Add `| @table:<field>` to a logs link so it renders the breakdown the claim rests on.
-- Paste the alert's or dashboard's own query verbatim into a metric link.
-- Verify a code range at HEAD before citing it; a local checkout lags.
-- Encode with `jq -rn --arg s "$Q" '$s|@uri'`.
+- Make a logs link render the breakdown the claim rests on, not just the matching rows.
+- Paste the alert's or dashboard's own query verbatim into a metric link — a query you
+  retyped is a different query.
+- Pin code links to an immutable ref and verify the range there; a local checkout lags,
+  and line numbers drift.
+- URL-encode the query rather than hand-escaping: `jq -rn --arg s "$Q" '$s|@uri'`.
 - State the sample size, and say when a result was truncated at a row cap.
 
-Elsewhere the same rule holds in the local idiom: a permalink at a pinned SHA, a build
-URL, a dashboard link, a command with its output. **A claim with no reproducible
-artifact does not ship** — cut it, or mark it explicitly as unverified inference.
+Where an environment has its own house formats for these, they live in that
+environment's own config, not here. **A claim with no reproducible artifact does not
+ship** — cut it, or mark it explicitly as unverified inference.
 
 ## 2. Challenge root-cause and impact claims before they ship
 

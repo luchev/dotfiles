@@ -162,3 +162,8 @@ config/opencode/skills/impeccable/
 pi/agent/auth.json
 pi/agent/models-store.json
 pi/agent/sessions/
+
+# Work-only rule files symlinked in by the work dotfiles' install.sh.
+# ~/.claude/rules resolves into this repo, so anything employer-specific dropped
+# there must never be committed here — it lives in the work repo.
+claude/rules/*-uber.md

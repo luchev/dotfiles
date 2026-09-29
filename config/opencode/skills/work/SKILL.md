@@ -169,7 +169,11 @@ Then run the repo's own import formatter, which `gofmt` does **not** substitute 
 passes locally and fails the CI import check:
 
 ```bash
-goimports -l <changed .go files>   # must print nothing; some repos vendor the binary in-tree
+# one file per call: a vendored wrapper can echo every
+# argument when handed a list, which reads as "all files unformatted" and is noise.
+for f in $(git diff --name-only main...HEAD | grep '\.go$'); do
+  d=$(bin/goimports -d "$f") && [ -n "$d" ] && echo "UNFORMATTED: $f"
+done   # must print nothing; some repos vendor the binary in-tree, others use $PATH
 ```
 
 This matters most when imports were added by a script rather than by hand. If the publish

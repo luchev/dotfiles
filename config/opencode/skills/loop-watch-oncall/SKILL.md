@@ -287,7 +287,7 @@ calls return 429s indistinguishable from empty results. Check for live `probe.sh
   Compute the gap DISTRIBUTION before calling a chain broken: one def's four handoffs ran 32s,
   2m26s, 2m26s and 6m07s, and a 6-minute gap was read as a break against a 2m30s "cadence" taken
   from the first three.
-- **The ocdash index lags creation by more than a few seconds.** A re-query at 21:42:04 returned
+- **The alerting system's index lags creation by more than a few seconds.** A re-query at 21:42:04 returned
   four firings while a fifth, created 21:41:57, was absent — and that absence is what made a live
   chain look broken. A "nothing yet" reading taken seconds after the expected event is unknown,
   not evidence; wait a cycle.
