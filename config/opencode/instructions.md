@@ -15,6 +15,13 @@
 
 ## Hard Rules
 
+- **NEVER post under the user's name.** No GitHub comment or reply, no Jira comment,
+  no Slack message, no wiki edit — nothing that other people read as the user —
+  unless they explicitly said to post it, and you asked permission first and showed
+  the exact text. "Fix it", "address it", "resolve it", "handle it" are about code
+  and state, never permission to write publicly. A correction or retraction is a
+  second post held to the same bar. Reading, fixing code, and resolving a thread
+  when asked to resolve are all still fine. See `~/.claude/rules/no-posting-as-user.md`.
 - **Evidence: proof links + red-team challenge.** Every claim ships with a clickable
   proof link (logs/metric QueryPad, Sourcegraph blob at a verified line range), and every
   root-cause or impact claim is challenged by a subagent briefed to refute it before it

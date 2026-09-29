@@ -37,7 +37,7 @@ Stop if `BRANCH` is `main`/`master`. Verify worktree path exists.
 
 ```bash
 git fetch origin main
-git log HEAD ^origin/main --oneline  # empty = merged (covers squash merges)
+git log HEAD ^origin/main --oneline  # empty = merged — but NOT for squash merges, see below
 gh pr view --head "$BRANCH" --json state,mergedAt \
   --jq '"state=\(.state) merged=\(.mergedAt // "null")"' 2>/dev/null
 ```
@@ -45,6 +45,22 @@ gh pr view --head "$BRANCH" --json state,mergedAt \
 - **Merged**: log is empty
 - **Abandoned**: PR state=CLOSED, mergedAt=null
 - **Neither**: print status and stop
+
+**Where the forge squash-merges, both of those signals lie.** A squash-merge creates a
+brand-new commit on main, so the branch's own commits are never ancestors of it:
+`git log HEAD ^origin/main` stays non-empty forever, and the PR reports
+`state=CLOSED, mergedAt=null` — identical to an abandoned PR. Judging by those alone
+marks every landed branch "abandoned" and every branch "unmerged" at the same time.
+
+Prove it from main's history instead, by the PR number the squash commit carries:
+
+```bash
+PR=$(gh pr list --head "$BRANCH" --state all --json number --jq '.[0].number')
+git log origin/main --oneline --grep="(#$PR)" | head -1   # non-empty = landed
+```
+
+Non-empty → landed. Empty **and** PR CLOSED → genuinely abandoned. Empty and PR OPEN →
+still in flight, leave it alone.
 
 ### S3: Check uncommitted changes
 
@@ -73,7 +89,7 @@ REPO_ROOT=$(git -C "$WT_PATH" rev-parse --show-superproject-working-tree 2>/dev/
 cd "$REPO_ROOT"
 git worktree remove "$WT_PATH"
 git worktree prune
-git branch -d "$BRANCH"          # -D if squash-merged
+git branch -d "$BRANCH"          # see below when this refuses
 ```
 
 ---
@@ -94,12 +110,18 @@ Invoke `/rebase all`. Wait for completion.
 
 ### A3: Check merge / abandoned status
 
-For each worktree:
+For each worktree, use the S2 method — the PR number grepped out of main's history.
+The ancestry check and `mergedAt` are both wrong under squash-merge:
+
 ```bash
-git -C <path> log HEAD ^origin/main --oneline
-gh pr view --head "<branch>" --json state,mergedAt \
-  --jq '"state=\(.state) merged=\(.mergedAt // "null")"' 2>/dev/null
+PR=$(gh pr list --head "<branch>" --state all --json number --jq '.[0].number')
+git log origin/main --oneline --grep="(#$PR)" | head -1   # non-empty = landed
+gh pr view "$PR" --json state --jq .state                 # CLOSED + not on main = abandoned
 ```
+
+This is one `gh` call per worktree against a remote API — with a dozen worktrees it runs
+for minutes. Start it in the background and keep working; do not report any worktree's
+status until the whole sweep has returned.
 
 ### A4: Check uncommitted changes
 
@@ -135,7 +157,20 @@ git worktree prune
 
 Same re-pointing logic as S4 for each branch, then:
 ```bash
-git branch -d <branch>   # -D if squash-merged; do NOT delete remote branches
+git branch -d <branch>   # do NOT delete remote branches
+```
+
+**`-d` refuses a squash-merged branch, and `-D` is banned.** Git only counts a branch as
+merged when its commits are ancestors of main, which a squash-merge never makes them, so
+`-d` reports "not fully merged" on exactly the branches you just proved landed. `-D` is
+blocked by the dangerous-git hook and by the standing no-`--force` rule.
+
+Remove the worktree, leave the local branch, and tell the user — a stale local branch is
+inert. Print the one command they can run themselves, and let them decide:
+
+```
+Worktrees removed. These local branches remain (squash-merged, `-d` refuses them):
+  git branch -D <branch> <branch> ...
 ```
 
 ### A9: Summary
@@ -153,6 +188,10 @@ Cleaned up N worktree(s):
 | "The PR is up, so the worktree is clutter" | Review feedback gets fixed in that worktree. It stays until the work lands. |
 | "This other worktree looks stale, clean it too" | Only `.worktrees/`/`worktrees/` paths are ours. The rest belong to the host. |
 | "`git log HEAD ^origin/main` is empty, obviously merged" | It is also empty for a branch that never had commits. Check the PR state too. |
+| "`git log HEAD ^origin/main` is non-empty, so it is unmerged" | Under squash-merge it is non-empty for landed branches too. Grep main for `(#PR)`. |
+| "PR says CLOSED with mergedAt null, so it was abandoned" | That is also exactly what a squash-merge looks like. Grep main for `(#PR)`. |
+| "The sweep has printed most rows, I can report now" | A partial scan is not a result. Wait for every row before saying anything. |
+| "`-d` refused, so use `-D`" | `-D` is banned. Leave the branch, print the command, let the user run it. |
 | "The uncommitted changes are probably junk" | Show the diff and stop. You do not know what is in it. |
 | "`git worktree remove` failed, so force it" | A failing remove means state you have not accounted for. Diagnose it. |
 | "Delete the remote branch too, it is merged" | Never. Remote branch deletion is the forge's job or the user's. |

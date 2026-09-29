@@ -1,6 +1,6 @@
 ---
 name: review-reply
-description: Receive and act on code review feedback — verify each item against the codebase before implementing, push back with technical reasoning when a suggestion is wrong, and reply in-thread. Use when review comments land on a PR or diff, when the user says "address the review", "respond to the reviewer", "the reviewer says X", or pastes review feedback. The counterpart to /review, which produces feedback.
+description: Receive and act on code review feedback — verify each item against the codebase before implementing, push back with technical reasoning when a suggestion is wrong, and draft in-thread replies for the user to approve before anything is posted. Use when review comments land on a PR or diff, when the user says "address the review", "respond to the reviewer", "the reviewer says X", or pastes review feedback. The counterpart to /review, which produces feedback.
 ---
 
 # /review-reply — Act on Review Feedback
@@ -15,7 +15,7 @@ Review is a technical exchange. Evaluate, then implement. Do not perform agreeme
 4. **Verify** each item against the codebase.
 5. **Decide** implement or push back.
 6. **Implement** one item at a time, testing each.
-7. **Reply** in-thread, per item.
+7. **Draft** a reply per item; post only what the user explicitly approves.
 
 ## Step 3: Clarify First, Implement Nothing
 
@@ -79,7 +79,19 @@ Test each individually. Verify no regressions before moving on.
 
 ## Step 7: Replying
 
-One reply per thread, at the comment it answers — not a top-level summary comment.
+**Never post without an explicit instruction to post, and never without asking
+first.** A reply goes out under the user's name: it notifies the reviewer and is
+public in the PR. Being sent here to act on review feedback is *not* permission —
+"address the review", "fix these comments", "resolve it" are about the code and
+the thread state. So is a correction to something you already posted: a retraction
+is a second post, held to the same bar.
+
+Default: finish the work, then write the drafts in the terminal, one per thread,
+and ask which to post. Post only the ones the user says yes to. See
+`~/.claude/rules/no-posting-as-user.md`.
+
+Once the user has said yes, one reply per thread, at the comment it answers — not
+a top-level summary comment.
 
 ```bash
 gh api repos/{owner}/{repo}/pulls/{pr}/comments/{comment_id}/replies \
@@ -115,3 +127,5 @@ the pushback, no re-litigating.
 | Implementing the clear items, asking about the rest later | Clarify everything first |
 | Can't verify, proceeding anyway | State the limitation, ask |
 | Top-level comment summarizing all replies | Reply in each thread |
+| Posting a reply because you were told to "address the review" | Draft it, ask, post only on an explicit yes |
+| Publicly retracting a reply you now think was wrong | A retraction is a post too — report in the terminal and ask |

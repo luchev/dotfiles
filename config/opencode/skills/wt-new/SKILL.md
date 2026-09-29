@@ -70,9 +70,31 @@ missing-package errors.
 
 ## Troubleshooting
 
-- The build fails computing the workspace/repository mapping — the bootstrap cache is
-  stale. Delete it and re-run.
-- A missing-package error during analysis — widen with `wt-sparse-add.sh`.
+- The build fails computing the workspace/repository mapping — a **bootstrap** dir is
+  missing, and the error names only the first one. Do not widen one dir at a time: each
+  build is minutes long and there may be a dozen, so you chase the same error all
+  afternoon. Regenerate the whole list at once, from the **full** checkout, and apply it:
+
+  ```bash
+  rm -f <bootstrap cache file>
+  <bootstrap-generating script> <full checkout> > /tmp/bootstrap-dirs.txt
+  cp /tmp/bootstrap-dirs.txt <bootstrap cache file>
+  git -C <worktree> sparse-checkout add $(tr '\n' ' ' < /tmp/bootstrap-dirs.txt)
+  ```
+
+  Deleting the cache alone fixes nothing — the regenerating script must actually run and
+  produce a non-empty file. Check `wc -l` on it before trusting a later widen; an empty
+  cache silently yields a worktree whose build cannot bootstrap at all.
+- **A cone that worked yesterday can break after a rebase.** The bootstrap set is a
+  property of `main`, not of your branch, so someone else's commit can add a dir your cone
+  lacks — it surfaces as the same mapping error, mid-publish, with no diff of your own.
+  Same fix.
+- Fastest recovery when another worktree already builds: copy its cone wholesale, rather
+  than rebuilding it. `git -C <good-wt> sparse-checkout list > /tmp/cone.txt`, then
+  `git -C <broken-wt> sparse-checkout set $(tr '\n' ' ' < /tmp/cone.txt)`. Commit first —
+  `set` reapplies the cone and drops uncommitted files in paths it removes.
+- A missing-package error during analysis — that is a **target** dep, not bootstrap.
+  Widen with `wt-sparse-add.sh --target <the test target>`, not the library target.
 - A grep finds nothing you expected — you are in a sparse tree. Search the full checkout
   instead, or widen.
 - `fatal: '<branch>' is already checked out` — git allows a branch in exactly one

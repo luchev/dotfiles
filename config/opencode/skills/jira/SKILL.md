@@ -82,5 +82,9 @@ arbitrarily. Never start a sprint that is already complete.
 - **Quote URLs containing `?`** in zsh, or the shell globs them.
 - **Bodies need `-d`.** A PUT/POST without one sends an empty body and returns 400.
 - **Close, never delete.** Deleting loses history; a closed issue stays searchable.
+- **Never comment or transition without being told to.** Every write here posts under
+  the user's identity and notifies watchers. Reads are free; writes need an explicit
+  instruction *and* a permission check showing the exact text. See
+  `~/.claude/rules/no-posting-as-user.md`.
 - **Never overwrite someone's comment** with a PUT. Add a new one.
 - Keep comments terse — the ticket is a record, not a transcript.
