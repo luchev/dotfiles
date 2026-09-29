@@ -57,6 +57,12 @@
     ~/.config/opencode/skills: config/opencode/skills
     # opencode.jsonc is machine-dependent (personal vs work) → linked in shell:
 
+    # ── opencode-personal: config dir used by bin/opencode (OPENCODE_CONFIG_DIR)
+    # Keeps the aifx/work config out. instructions.md and skills still resolve
+    # through ~/.config/opencode/* above, which are personal symlinks.
+    ~/.config/opencode-personal/opencode.jsonc: config/opencode/opencode.jsonc
+    ~/.config/opencode-personal/tui.json: config/opencode/tui.json
+
     # ── claude (settings.json + cross-symlinks handled in shell:) ────────
     ~/.claude/hooks: claude/hooks
     ~/.claude/output-styles: claude/output-styles
@@ -79,6 +85,10 @@
 
     # ── ~/.bin (on PATH in both zshrc and config.nu) ─────────────────────
     ~/.bin/ralph: bin/ralph
+
+    # ── ~/.local/bin (first on PATH). The work repo installs its aifx shim as
+    # `opencode-work`, so plain `opencode` stays personal either install order.
+    ~/.local/bin/opencode: bin/opencode
 
 - shell:
     - command: setup/merge-claude-settings.sh

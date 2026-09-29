@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Personal opencode launcher. Keeps the work/aifx config out of the way by
+# pointing OPENCODE_CONFIG_DIR at a personal config dir -- that env var replaces
+# Path.config wholesale, so none of the aifx-managed opencode.json, plugins or
+# work skills get loaded. Execs the real binary directly (no aifx write-settings).
+#
+# Uber-flavoured opencode still lives at ~/.dotfiles-work/bin/opencode.
+#
+# Must be a real executable on PATH: the nvim opencode plugin spawns `opencode`
+# via execvp and never sees shell aliases.
+
+export OPENCODE_CONFIG_DIR="${OPENCODE_CONFIG_DIR:-$HOME/.config/opencode-personal}"
+exec "$HOME/.opencode/bin/opencode" "$@"
