@@ -146,6 +146,8 @@ the binary in-tree rather than putting it on `PATH`.
 **T4.** Table test inputs use `give` prefix, expected outputs use `want` prefix — `{give: "foo", want: "bar"}` not `{input: "foo", expected: "bar"}`
 **T5.** No conditional logic inside a table test loop body (`if tt.shouldCallX`, mock branching) — split complex scenarios into separate `Test...` functions.
 **T6.** Every test must correspond to a regression it would catch. If deleting a line of production code leaves the suite green, that line is untested — line coverage over the branch does not count.
+**T7.** Never assert a bare `require.Error`/`assert.Error` — name the error with `require.ErrorIs` (sentinel or wrapped) or `require.ErrorContains` (message). A bare check passes on *any* failure, so the test keeps passing when the code starts failing for an unrelated reason: a mis-wired mock, a renamed sentinel, a context deadline. Same for `require.NoError`'s opposite direction — if the case is about a specific failure, say which.
+**T8.** One assertion per fact: `require.Error` followed by `assert.ErrorIs` on the next line is one assertion written twice. Collapse to the specific one.
 
 ---
 
@@ -158,6 +160,7 @@ the binary in-tree rather than putting it on `PATH`.
 **CM5.** Never add a comment to code the change does not otherwise touch. Explaining an existing function is scope creep and pollutes the diff — if it truly needs documenting, that is its own change.
 **CM6.** Comment budget: **1 line, hard limit** — a 2-line comment is already too long, and a 3-line block explaining a mechanism, an ordering, or a rollout stage is the exact thing being rejected. If it does not fit on one line, delete it and put the rationale in the PR description.
 **CM7.** Commented-out code carries a one-line marker saying what re-enables it — `// Acting stage, off during shadow mode. Uncomment as a whole to promote.` Never a paragraph justifying why it is off; that is PR-description material. Comment out every symbol the block was the sole user of (test helpers, locals) in the same change, or the package stops compiling.
+**CM8.** Never restate a config value, a derived duration, or a computed number in a comment — it goes stale silently and no test catches it. Name the knob (`RestoreTimeout`), not its value (`29m today`).
 
 ---
 
